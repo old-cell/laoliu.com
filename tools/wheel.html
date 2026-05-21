@@ -69,6 +69,11 @@ body {
 .spin-btn:active { transform: scale(0.95); }
 .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* Spin info */
+.spin-info { text-align: center; font-size: 13px; color: var(--text-light); margin-bottom: 16px; }
+.spin-info #spinsLeft { color: var(--green-deep); font-weight: 700; font-size: 16px; }
+.spin-info.exhausted { color: var(--gold); font-weight: 600; }
+
 /* Prize list */
 .prize-list {
   width: 100%; max-width: 360px;
@@ -155,15 +160,15 @@ body {
   <button class="spin-btn" id="spinBtn" onclick="spin()">🎯 转动运势</button>
 
   <div class="prize-list">
-    <h3>🎁 奖项设置</h3>
-    <div class="pl-item"><span class="pli-name">🥇 老六免费一卦</span><span class="pli-rate gold">3%</span></div>
-    <div class="pl-item"><span class="pli-name">大吉</span><span class="pli-rate">17%</span></div>
-    <div class="pl-item"><span class="pli-name">吉</span><span class="pli-rate">20%</span></div>
-    <div class="pl-item"><span class="pli-name">中吉</span><span class="pli-rate">20%</span></div>
-    <div class="pl-item"><span class="pli-name">小吉</span><span class="pli-rate">15%</span></div>
-    <div class="pl-item"><span class="pli-name">末吉</span><span class="pli-rate">15%</span></div>
-    <div class="pl-item"><span class="pli-name">下下签</span><span class="pli-rate">10%</span></div>
+    <h3>🎁 每日3次 · 奖项设置</h3>
+    <div class="pl-item"><span class="pli-name">👑 老六免费一卦</span><span class="pli-rate gold">10%</span></div>
+    <div class="pl-item"><span class="pli-name">🌟 大吉</span><span class="pli-rate">20%</span></div>
+    <div class="pl-item"><span class="pli-name">🍀 小吉</span><span class="pli-rate">25%</span></div>
+    <div class="pl-item"><span class="pli-name">🤝 比助</span><span class="pli-rate">20%</span></div>
+    <div class="pl-item"><span class="pli-name">⚠️ 小凶</span><span class="pli-rate">15%</span></div>
+    <div class="pl-item"><span class="pli-name">💀 大凶</span><span class="pli-rate">10%</span></div>
   </div>
+  <div class="spin-info" id="spinInfo">今日剩余 <span id="spinsLeft">3</span> 次</div>
 </div>
 
 <!-- Modal -->
@@ -184,19 +189,40 @@ body {
 <script>
 // ===== Segments (weight-based) =====
 const SEGMENTS = [
-  { label: '老六免费一卦', weight: 3,  color: '#FFD700', icon: '👑', desc: '恭喜获得老六免费一卦！添加微信号 laoliuchashi，老六亲自为你解卦一次。', special: true },
-  { label: '大吉',           weight: 17, color: '#e74c3c', icon: '🌟', desc: '大吉大利！今日万事顺遂，宜大胆行动。财运亨通，贵人相助。' },
-  { label: '吉',             weight: 20, color: '#e67e22', icon: '👍', desc: '运势不错！今日适合推进计划，与人沟通顺畅。注意把握良机。' },
-  { label: '中吉',           weight: 20, color: '#27ae60', icon: '✨', desc: '中吉之兆。今日宜稳中求进，不宜冒进。踏踏实实就有好结果。' },
-  { label: '小吉',           weight: 15, color: '#3498db', icon: '🍀', desc: '小有喜气。今天适合处理日常事务，可能会有小惊喜等着你。' },
-  { label: '末吉',           weight: 15, color: '#9b59b6', icon: '🎋', desc: '末吉，尚可。今天宜静不宜动，做好分内事即可。以退为进。' },
-  { label: '下下签',         weight: 10, color: '#7f8c8d', icon: '⚠️', desc: '今天运势略低，不宜做重大决定。建议低调做事，明日运势会好转。' }
+  { label: '老六免费一卦', weight: 10, color: '#FFD700', icon: '👑', desc: '恭喜获得老六免费一卦！请加微信 laoliuchashi，老六亲自为你解卦一次。', special: true },
+  { label: '大吉',           weight: 20, color: '#e74c3c', icon: '🌟', desc: '大吉大利！今日万事顺遂，运势极佳，宜大胆行动，把握良机。' },
+  { label: '小吉',           weight: 25, color: '#27ae60', icon: '🍀', desc: '小吉之兆。今日虽有波折但整体向好，稳扎稳打必有收获。' },
+  { label: '比助',           weight: 20, color: '#3498db', icon: '🤝', desc: '比助之象。今日宜合作共赢，与人配合胜过单打独斗，顺势而为。' },
+  { label: '小凶',           weight: 15, color: '#9b59b6', icon: '⚠️', desc: '小凶，宜谨慎。今日不宜冒进，做好本职即可，冲动易招损失。' },
+  { label: '大凶',           weight: 10, color: '#7f8c8d', icon: '💀', desc: '大凶，宜守不宜攻。今天诸事不宜，建议低调蛰伏，以静制动。' }
 ];
 
 const TOTAL_WEIGHT = SEGMENTS.reduce((s, seg) => s + seg.weight, 0);
 
 let isSpinning = false;
 let currentAngle = 0;
+
+// ===== Daily Limit (3 spins per day) =====
+function getTodayKey() {
+  const d = new Date();
+  return 'wheel_spins_' + d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2);
+}
+function getSpinsLeft() {
+  const count = parseInt(localStorage.getItem(getTodayKey()) || '0');
+  return Math.max(0, 3 - count);
+}
+function recordSpin() {
+  const key = getTodayKey();
+  localStorage.setItem(key, parseInt(localStorage.getItem(key) || '0') + 1);
+}
+function updateSpinUI() {
+  const left = getSpinsLeft();
+  document.getElementById('spinsLeft').textContent = left;
+  const info = document.getElementById('spinInfo');
+  info.classList.toggle('exhausted', left === 0);
+  document.getElementById('spinBtn').disabled = left === 0;
+  document.getElementById('spinBtn').textContent = left > 0 ? '🎯 转动运势（剩' + left + '次）' : '⏰ 今日已用完，明日再来';
+}
 
 function drawWheel() {
   const canvas = document.getElementById('wheelCanvas');
@@ -286,11 +312,18 @@ function getRandomSegment() {
 
 function spin() {
   if (isSpinning) return;
+  if (getSpinsLeft() <= 0) {
+    alert('今日抽奖次数已用完，明天再来吧！');
+    return;
+  }
   isSpinning = true;
   document.getElementById('spinBtn').disabled = true;
 
   // Pick result
   const winnerIdx = getRandomSegment();
+  
+  // Record this spin
+  recordSpin();
   
   // Calculate target angle: land on the middle of the winning segment
   // The pointer is at the top (12 o'clock position = -Math.PI/2 or 3*Math.PI/2)
@@ -332,7 +365,7 @@ function spin() {
     } else {
       // Done spinning
       isSpinning = false;
-      document.getElementById('spinBtn').disabled = false;
+      updateSpinUI();
       showResult(winnerIdx);
     }
   }
@@ -396,6 +429,7 @@ function launchConfetti() {
 
 // ===== Init =====
 drawWheel();
+updateSpinUI();
 </script>
 </body>
 </html>
