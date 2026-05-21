@@ -26,6 +26,78 @@
       "summary": "小满是最有智慧的节气。贪凉过度、说话太满、久坐不动、情绪过激——这4件事今天千万别做。",
       "label": "小知识",
       "has_content": true
+    },
+    {
+      "id": "jc-01",
+      "category": "jiaocheng",
+      "title": "《梅花易数》小白快速入门教程一：简单整体认识梅花易数",
+      "date": "2026-04-20",
+      "summary": "发现很多朋友对《梅花易数》特别感兴趣，但普遍反馈书看不懂、网上资料又乱又散，踩了不少入门坑。这篇帮你理清核心认知。",
+      "label": "教程",
+      "has_content": true
+    },
+    {
+      "id": "jc-02",
+      "category": "jiaocheng",
+      "title": "梅花易数小白快速入门教程（二）：书的结构与解字",
+      "date": "2026-04-21",
+      "summary": "为什么前半本讲起卦解卦，后半本突然变成了一本汉字拆解手册？解字才是梅花易数的隐藏秘籍。",
+      "label": "教程",
+      "has_content": true
+    },
+    {
+      "id": "jc-03",
+      "category": "jiaocheng",
+      "title": "八卦次序、符号及相关易理（上）",
+      "date": "2026-04-22",
+      "summary": "先天八卦排序、符号口诀、太极两仪四象的易理内涵。乾1兑2离3震4巽5坎6艮7坤8。",
+      "label": "教程",
+      "has_content": true
+    },
+    {
+      "id": "jc-04",
+      "category": "jiaocheng",
+      "title": "八卦次序、符号以及相关易理（下）",
+      "date": "2026-04-23",
+      "summary": "四象之少阴太阴，从乾坤衍生的六子卦。理解即记忆，八卦符号一网打尽。",
+      "label": "教程",
+      "has_content": true
+    },
+    {
+      "id": "jc-05",
+      "category": "jiaocheng",
+      "title": "八卦属性及五行生克理解",
+      "date": "2026-04-24",
+      "summary": "金生水 → 水生木 → 木生火 → 火生土 → 土生金。八卦五行属性对照表，生克关系完整解读。",
+      "label": "教程",
+      "has_content": true
+    },
+    {
+      "id": "jc-06",
+      "category": "jiaocheng",
+      "title": "干支排序及时辰对照",
+      "date": "2026-04-25",
+      "summary": "天干地支的排序与记忆方法，时辰与生肖对照表。手节掌诀帮你轻松记住干支时辰。",
+      "label": "教程",
+      "has_content": true
+    },
+    {
+      "id": "jc-07",
+      "category": "jiaocheng",
+      "title": "起卦示例",
+      "date": "2026-04-26",
+      "summary": "梅花易数起卦方式多种多样，大体可以分为先天起卦和后天起卦两大类。",
+      "label": "教程",
+      "has_content": true
+    },
+    {
+      "id": "jc-08",
+      "category": "jiaocheng",
+      "title": "解卦示例",
+      "date": "2026-04-27",
+      "summary": "起卦只是第一步，解卦才是真正的精髓。本篇通过真实案例，带你一步步理解如何解读卦象。",
+      "label": "教程",
+      "has_content": true
     }
   ]
 }
