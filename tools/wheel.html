@@ -449,8 +449,19 @@ function closeModal() {
 
 // ===== Certificate Generation =====
 let currentCertId = '';
+let currentVerifyCode = '';
 
-function generateCertificate() {
+// 生成验证码 (SHA-256哈希截取前6位)
+const CERT_SECRET = 'laoliu2026Cert@Secret!';
+async function generateVerifyCode(certId) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(certId + CERT_SECRET);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  const hex = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+  return hex.substring(0, 6).toUpperCase();
+}
+
+async function generateCertificate() {
   const canvas = document.getElementById('certCanvas');
   const ctx = canvas.getContext('2d');
   const W = 800, H = 1120;
@@ -461,9 +472,12 @@ function generateCertificate() {
   const rand = Math.floor(1000 + Math.random() * 9000);
   currentCertId = 'LLCS-' + dateStr + '-' + rand;
   
+  // Generate verification code
+  currentVerifyCode = await generateVerifyCode(currentCertId);
+  
   // Save to localStorage
   const certs = JSON.parse(localStorage.getItem('wheel_certificates') || '[]');
-  certs.push({ id: currentCertId, date: dateStr, claimed: false });
+  certs.push({ id: currentCertId, code: currentVerifyCode, date: dateStr, claimed: false });
   localStorage.setItem('wheel_certificates', JSON.stringify(certs));
   
   // Draw certificate
@@ -519,53 +533,62 @@ function generateCertificate() {
   ctx.textAlign = 'center';
   ctx.fillText('编号：' + currentCertId, W/2, 290);
   
+  // Verification code
+  ctx.fillStyle = '#d4af37';
+  ctx.font = 'bold 22px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText('验证码：' + currentVerifyCode, W/2, 330);
+  
+  ctx.fillStyle = '#bbb';
+  ctx.font = '12px "PingFang SC", sans-serif';
+  ctx.fillText('凭此验证码可在 laoliuchashi.top/tools/cert-verify 查验真伪', W/2, 358);
+  
   // Hexagram decoration
   ctx.font = '80px sans-serif';
-  ctx.fillText('☯', W/2, 400);
+  ctx.fillText('☯', W/2, 480);
   
   // Prize description
   ctx.fillStyle = '#1a3c2a';
   ctx.font = 'bold 28px "PingFang SC", "Microsoft YaHei", sans-serif';
-  ctx.fillText('老六免费一卦', W/2, 510);
+  ctx.fillText('老六免费一卦', W/2, 590);
   
   ctx.fillStyle = '#666';
   ctx.font = '20px "PingFang SC", sans-serif';
-  ctx.fillText('凭此凭证可找老六为你卜一卦', W/2, 555);
+  ctx.fillText('凭此凭证可找老六为你卜一卦', W/2, 635);
   
   // Date
   ctx.fillStyle = '#999';
   ctx.font = '18px "PingFang SC", sans-serif';
-  ctx.fillText('发放日期：' + now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日', W/2, 620);
+  ctx.fillText('发放日期：' + now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日', W/2, 700);
   
   // Separator
   ctx.strokeStyle = '#ddd';
   ctx.lineWidth = 1;
   ctx.setLineDash([5, 5]);
   ctx.beginPath();
-  ctx.moveTo(120, 670);
-  ctx.lineTo(W-120, 670);
+  ctx.moveTo(120, 750);
+  ctx.lineTo(W-120, 750);
   ctx.stroke();
   ctx.setLineDash([]);
   
   // WeChat info
   ctx.fillStyle = '#1a3c2a';
   ctx.font = 'bold 22px "PingFang SC", sans-serif';
-  ctx.fillText('📱 联系兑奖', W/2, 730);
+  ctx.fillText('📱 联系兑奖', W/2, 810);
   
   ctx.fillStyle = '#555';
   ctx.font = '18px "PingFang SC", sans-serif';
-  ctx.fillText('微信号：laoliuchashi', W/2, 775);
+  ctx.fillText('微信号：laoliuchashi', W/2, 855);
   ctx.font = '16px "PingFang SC", sans-serif';
-  ctx.fillText('添加时备注"免费一卦"', W/2, 810);
+  ctx.fillText('添加时备注"免费一卦"', W/2, 890);
   
   // Bottom branding
   ctx.fillStyle = '#1a3c2a';
   ctx.font = '16px "PingFang SC", sans-serif';
-  ctx.fillText('老六茶事 · laoliuchashi.top', W/2, 920);
+  ctx.fillText('老六茶事 · laoliuchashi.top', W/2, 1000);
   
   ctx.fillStyle = '#bbb';
   ctx.font = '14px "PingFang SC", sans-serif';
-  ctx.fillText('内容仅供娱乐参考，请理性看待', W/2, 960);
+  ctx.fillText('内容仅供娱乐参考，请理性看待', W/2, 1040);
   
   // Convert to image and show
   const img = document.getElementById('certImage');
@@ -590,7 +613,7 @@ function roundRect(ctx, x, y, w, h, r) {
 function downloadCert() {
   const canvas = document.getElementById('certCanvas');
   const link = document.createElement('a');
-  link.download = '老六免费一卦_' + currentCertId + '.png';
+  link.download = '凭证_' + currentCertId + '.png';
   link.href = canvas.toDataURL('image/png');
   link.click();
 }

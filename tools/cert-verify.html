@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>凭证验证 - 老六茶事</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --green-deep: #1a3c2a; --green-mid: #2d5a3e;
+  --gold: #d4af37; --gold-light: #f5e6b8; --gold-pale: #faf3e0;
+  --bg: #efe4d0; --bg-card: #ffffff;
+  --text: #2c2c2c; --text-light: #888;
+  --radius: 14px; --radius-sm: 10px;
+}
+body {
+  font-family: -apple-system, "PingFang SC", sans-serif;
+  background: var(--bg); color: var(--text); min-height: 100vh;
+}
+.header {
+  background: linear-gradient(135deg, var(--green-deep), #0f2b1e);
+  padding: 20px 16px; text-align: center;
+}
+.header h1 {
+  font-size: 22px; font-weight: 700;
+  background: linear-gradient(135deg, var(--gold), #e8c840, var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.header .sub { font-size: 12px; color: rgba(212,175,55,0.6); margin-top: 4px; }
+.header .back-link {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--gold); font-size: 13px; text-decoration: none;
+}
+.wrap { max-width: 500px; margin: 0 auto; padding: 20px 16px; }
+.card {
+  background: var(--bg-card); border-radius: var(--radius);
+  padding: 24px 20px; box-shadow: 0 2px 12px rgba(26,60,42,0.08);
+  margin-bottom: 16px;
+}
+.card h3 { font-size: 16px; color: var(--green-deep); margin-bottom: 14px; }
+.input-group { margin-bottom: 14px; }
+.input-group label { display: block; font-size: 13px; color: var(--text-light); margin-bottom: 4px; }
+.input-group input {
+  width: 100%; padding: 12px 14px; border: 1px solid #ddd;
+  border-radius: var(--radius-sm); font-size: 16px; background: var(--bg);
+  font-family: monospace; letter-spacing: 1px;
+}
+.input-group input:focus { outline: none; border-color: var(--gold); }
+.btn {
+  display: block; width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+  color: var(--gold); border: none; border-radius: var(--radius);
+  font-size: 16px; font-weight: 600; cursor: pointer; letter-spacing: 2px;
+}
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.result-box {
+  margin-top: 16px; padding: 16px; border-radius: var(--radius-sm);
+  text-align: center; display: none;
+}
+.result-box.show { display: block; }
+.result-box.valid { background: #e8f5e9; border: 2px solid #4caf50; }
+.result-box.invalid { background: #fbe9e7; border: 2px solid #ff5722; }
+.result-box .rb-icon { font-size: 40px; margin-bottom: 8px; }
+.result-box .rb-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.result-box .rb-detail { font-size: 13px; color: var(--text-light); line-height: 1.6; }
+
+.info-box {
+  background: var(--gold-pale); border-left: 4px solid var(--gold);
+  border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;
+}
+.info-box p { font-size: 13px; color: #666; line-height: 1.7; }
+
+.footer { text-align: center; padding: 20px; color: var(--text-light); font-size: 11px; }
+</style>
+</head>
+<body>
+
+<div class="header" style="position:relative">
+  <a href="/" class="back-link">← 返回首页</a>
+  <h1>🔐 凭证验证</h1>
+  <div class="sub">老六茶事 · 免费一卦 · 真伪查验</div>
+</div>
+
+<div class="wrap">
+  <div class="info-box">
+    <p><strong>使用方法：</strong>向用户索取「免费一卦」凭证上的 <strong>编号</strong> 和 <strong>验证码</strong>，输入下方即可验证真伪。</p>
+  </div>
+
+  <div class="card">
+    <h3>输入凭证信息</h3>
+    <div class="input-group">
+      <label>凭证编号</label>
+      <input type="text" id="certId" placeholder="例如：LLCS-20260522-4511">
+    </div>
+    <div class="input-group">
+      <label>凭证验证码（6位）</label>
+      <input type="text" id="certCode" placeholder="例如：A1B2C3" maxlength="6" style="text-transform:uppercase;letter-spacing:4px;font-size:20px;text-align:center;">
+    </div>
+    <button class="btn" id="verifyBtn" onclick="verifyCert()">🔍 验证真伪</button>
+
+    <div class="result-box" id="resultBox">
+      <div class="rb-icon" id="resultIcon">✅</div>
+      <div class="rb-title" id="resultTitle">验证通过</div>
+      <div class="rb-detail" id="resultDetail">凭证真实有效</div>
+    </div>
+  </div>
+
+  <div class="footer">© 老六茶事 · 仅供内部查验使用</div>
+</div>
+
+<script>
+const CERT_SECRET = 'laoliu2026Cert@Secret!';
+
+function decodeHex(hex) {
+  const bytes = [];
+  for (let i = 0; i < hex.length; i += 2) {
+    bytes.push(parseInt(hex.substr(i, 2), 16));
+  }
+  return new Uint8Array(bytes);
+}
+
+async function generateVerifyCode(certId) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(certId + CERT_SECRET);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  const hex = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+  return hex.substring(0, 6).toUpperCase();
+}
+
+async function verifyCert() {
+  const certId = document.getElementById('certId').value.trim();
+  const certCode = document.getElementById('certCode').value.trim().toUpperCase();
+  const btn = document.getElementById('verifyBtn');
+  const result = document.getElementById('resultBox');
+  
+  if (!certId || !certCode) {
+    result.className = 'result-box show invalid';
+    document.getElementById('resultIcon').textContent = '⚠️';
+    document.getElementById('resultTitle').textContent = '输入不完整';
+    document.getElementById('resultDetail').textContent = '请填写凭证编号和验证码';
+    return;
+  }
+  
+  btn.disabled = true;
+  btn.textContent = '⏳ 验证中...';
+  
+  try {
+    const expectedCode = await generateVerifyCode(certId);
+    
+    if (certCode === expectedCode) {
+      result.className = 'result-box show valid';
+      document.getElementById('resultIcon').textContent = '✅';
+      document.getElementById('resultTitle').textContent = '✅ 凭证真实有效';
+      document.getElementById('resultDetail').innerHTML = 
+        '编号：<strong>' + certId + '</strong><br>' +
+        '验证码匹配！此凭证为老六茶事官方发放，可以兑奖。';
+    } else {
+      result.className = 'result-box show invalid';
+      document.getElementById('resultIcon').textContent = '❌';
+      document.getElementById('resultTitle').textContent = '❌ 凭证无效';
+      document.getElementById('resultDetail').innerHTML = 
+        '编号：<strong>' + certId + '</strong><br>' +
+        '验证码不匹配！此凭证疑似伪造或已被篡改。';
+    }
+  } catch(e) {
+    result.className = 'result-box show invalid';
+    document.getElementById('resultIcon').textContent = '⚠️';
+    document.getElementById('resultTitle').textContent = '验证出错';
+    document.getElementById('resultDetail').textContent = '系统错误，请重试。';
+  }
+  
+  btn.disabled = false;
+  btn.textContent = '🔍 验证真伪';
+}
+</script>
+</body>
+</html>
