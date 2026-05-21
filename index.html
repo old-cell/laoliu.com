@@ -9,7 +9,6 @@
 <style>
 /* ===== Reset & Variables ===== */
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
 :root {
   --bg-page: #f5efe6;
   --bg-card: #ffffff;
@@ -19,8 +18,6 @@
   --gold: #d4af37;
   --gold-light: #f5e6b8;
   --gold-pale: #faf3e0;
-  --red: #c0392b;
-  --red-light: #fce8e6;
   --text: #2c2c2c;
   --text-light: #888;
   --text-muted: #bbb;
@@ -29,22 +26,21 @@
   --shadow-hover: 0 4px 20px rgba(26,60,42,0.15);
   --radius: 14px;
   --radius-sm: 10px;
+  --sidebar-w: 280px;
 }
-
 body {
   font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Serif SC", serif;
   background: var(--bg-page);
   color: var(--text);
   min-height: 100vh;
-  padding-bottom: 64px;
-  background-image:
-    radial-gradient(circle at 10% 20%, rgba(212,175,55,0.06) 0%, transparent 50%),
-    radial-gradient(circle at 90% 80%, rgba(26,60,42,0.04) 0%, transparent 50%);
 }
-
 a { text-decoration: none; color: inherit; }
 
-/* ===== Top Bar ===== */
+/* ================================================================
+   MOBILE FIRST (< 768px)
+   ================================================================ */
+
+/* Top Bar */
 .topbar {
   background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
   padding: 24px 20px 18px;
@@ -70,12 +66,10 @@ a { text-decoration: none; color: inherit; }
   margin-top: 4px;
 }
 
-/* ===== Bottom Nav ===== */
+/* Bottom Nav (mobile only) */
 .bottom-nav {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0; left: 0; right: 0;
   background: rgba(255,255,255,0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -103,584 +97,508 @@ a { text-decoration: none; color: inherit; }
 }
 .nav-item:active { background: var(--gold-pale); }
 
-/* ===== Page System ===== */
+/* Page System (mobile) */
+body { padding-bottom: 64px; }
 .page { display: none; padding: 16px 16px 0; max-width: 640px; margin: 0 auto; }
 .page.active { display: block; }
 .page-header {
   padding: 10px 0 14px;
   margin-bottom: 14px;
 }
-.page-header h2 {
-  font-size: 20px;
-  color: var(--green-deep);
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-.page-header .sub {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 3px;
-}
+.page-header h2 { font-size: 20px; color: var(--green-deep); font-weight: 700; letter-spacing: 1px; }
+.page-header .sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
 
-/* ===== Section Title ===== */
+/* Section Title */
 .section-title {
-  font-size: 15px;
-  color: var(--green-deep);
-  font-weight: 600;
+  font-size: 15px; color: var(--green-deep); font-weight: 600;
   padding: 18px 0 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: flex; align-items: center; gap: 8px;
 }
 .section-title::after {
-  content: '';
-  flex: 1;
-  height: 1px;
+  content: ''; flex: 1; height: 1px;
   background: linear-gradient(to right, #ddd, transparent);
 }
 
-/* ===== Home: 4 Menu Cards ===== */
-.menu-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding: 4px 0 8px;
-}
+/* Home Menu Grid (mobile 2×2) */
+.menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 4px 0 8px; }
 .menu-card {
-  background: var(--bg-card);
-  border-radius: var(--radius);
-  padding: 22px 16px 18px;
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: center;
-  border: 1px solid rgba(212,175,55,0.1);
-  position: relative;
-  overflow: hidden;
+  background: var(--bg-card); border-radius: var(--radius);
+  padding: 22px 16px 18px; box-shadow: var(--shadow);
+  cursor: pointer; transition: all 0.2s; text-align: center;
+  border: 1px solid rgba(212,175,55,0.1); position: relative; overflow: hidden;
 }
 .menu-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
 }
 .menu-card.green::before { background: linear-gradient(90deg, var(--green-deep), var(--gold)); }
-.menu-card.gold::before { background: linear-gradient(90deg, var(--gold), #e8c840); }
+.menu-card.gold::before  { background: linear-gradient(90deg, var(--gold), #e8c840); }
 .menu-card.purple::before { background: linear-gradient(90deg, #6b4c8a, #9b6db0); }
-.menu-card.blue::before { background: linear-gradient(90deg, #2c6b8a, #4a9bb5); }
-
+.menu-card.blue::before  { background: linear-gradient(90deg, #2c6b8a, #4a9bb5); }
 .menu-card:active { transform: scale(0.96); box-shadow: var(--shadow-hover); }
 .mc-icon-img {
-  width: 56px; height: 56px;
-  margin: 0 auto 10px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px; margin: 0 auto 10px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
   font-size: 28px;
 }
 .mc-icon-img.green { background: var(--green-light); }
-.mc-icon-img.gold { background: var(--gold-pale); }
+.mc-icon-img.gold  { background: var(--gold-pale); }
 .mc-icon-img.purple { background: #f0eaf5; }
-.mc-icon-img.blue { background: #e6f0f5; }
+.mc-icon-img.blue  { background: #e6f0f5; }
+.mc-label { font-size: 15px; font-weight: 600; color: var(--green-deep); margin-bottom: 4px; }
+.mc-desc  { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
 
-.mc-label {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--green-deep);
-  margin-bottom: 4px;
-}
-.mc-desc {
-  font-size: 11px;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-/* ===== Home: WeChat Follow Section ===== */
-/* ===== WeChat Follow Section ===== */
-.wechat-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 16px 0 6px;
-}
+/* WeChat Follow (mobile) */
+.wechat-section { display: flex; flex-direction: column; gap: 10px; margin: 16px 0 6px; }
 .wechat-follow {
   background: linear-gradient(135deg, var(--green-deep), #153322);
-  border-radius: var(--radius);
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  box-shadow: var(--shadow);
-  position: relative;
-  overflow: hidden;
+  border-radius: var(--radius); padding: 16px;
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: var(--shadow); position: relative; overflow: hidden;
 }
-.wechat-follow.personal {
-  background: linear-gradient(135deg, #2c3e50, #1a2a38);
-}
+.wechat-follow.personal { background: linear-gradient(135deg, #2c3e50, #1a2a38); }
 .wechat-follow::after {
-  content: '🏮';
-  position: absolute;
-  right: -8px;
-  bottom: -8px;
-  font-size: 70px;
-  opacity: 0.08;
+  content: '🏮'; position: absolute; right: -8px; bottom: -8px;
+  font-size: 70px; opacity: 0.08;
 }
-.wechat-follow.personal::after {
-  content: '💬';
-}
+.wechat-follow.personal::after { content: '💬'; }
 .wechat-qr {
-  width: 80px;
-  height: 80px;
-  border-radius: var(--radius-sm);
-  background: #fff;
-  padding: 4px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 80px; height: 80px; border-radius: var(--radius-sm);
+  background: #fff; padding: 4px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
 }
-.wechat-qr img {
-  width: 100%;
-  height: 100%;
-  image-rendering: pixelated;
-}
+.wechat-qr img { width: 100%; height: 100%; }
 .wechat-info { flex: 1; }
-.wechat-info h4 {
-  color: var(--gold);
-  font-size: 16px;
-  margin-bottom: 4px;
-  letter-spacing: 1px;
-}
-.wechat-info p {
-  color: rgba(255,255,255,0.6);
-  font-size: 12px;
-  line-height: 1.6;
-}
+.wechat-info h4 { color: var(--gold); font-size: 16px; margin-bottom: 4px; letter-spacing: 1px; }
+.wechat-info p { color: rgba(255,255,255,0.6); font-size: 12px; line-height: 1.6; }
 .wechat-info .wc-id {
-  display: inline-block;
-  background: rgba(212,175,55,0.2);
-  color: var(--gold-light);
-  font-size: 11px;
-  padding: 2px 10px;
-  border-radius: 4px;
-  margin-top: 4px;
-  letter-spacing: 0.5px;
+  display: inline-block; background: rgba(212,175,55,0.2);
+  color: var(--gold-light); font-size: 11px;
+  padding: 2px 10px; border-radius: 4px; margin-top: 4px;
 }
 
-/* ===== Home: Recent Articles ===== */
-.recent-section {
-  margin-top: 8px;
-}
-
-/* ===== Article List ===== */
+/* Article List (mobile) */
 .article-list { padding: 4px 0; }
 .article-item {
-  background: var(--bg-card);
-  border-radius: var(--radius-sm);
-  padding: 14px 16px;
-  margin-bottom: 10px;
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  transition: all 0.2s;
-  border-left: 4px solid var(--gold);
+  background: var(--bg-card); border-radius: var(--radius-sm);
+  padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow);
+  cursor: pointer; transition: all 0.2s; border-left: 4px solid var(--gold);
 }
 .article-item:active { transform: scale(0.97); }
 .ai-label {
-  display: inline-block;
-  font-size: 10px;
-  color: #fff;
-  background: var(--green-deep);
-  padding: 1px 10px;
-  border-radius: 3px;
-  margin-bottom: 5px;
-  letter-spacing: 0.5px;
+  display: inline-block; font-size: 10px; color: #fff;
+  background: var(--green-deep); padding: 1px 10px; border-radius: 3px;
+  margin-bottom: 5px; letter-spacing: 0.5px;
 }
 .ai-date { font-size: 11px; color: #b8952e; margin-bottom: 3px; }
-.ai-title {
-  font-size: 15px;
-  color: var(--green-deep);
-  line-height: 1.5;
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-.ai-summary {
-  font-size: 13px;
-  color: var(--text-light);
-  line-height: 1.6;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.empty-list {
-  text-align: center;
-  color: #ddd;
-  padding: 40px 0;
-  font-size: 14px;
-}
+.ai-title { font-size: 15px; color: var(--green-deep); line-height: 1.5; font-weight: 600; margin-bottom: 5px; }
+.ai-summary { font-size: 13px; color: var(--text-light); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.empty-list { text-align: center; color: #ddd; padding: 40px 0; font-size: 14px; }
 
-/* ===== Category Header ===== */
-.cat-header-icon {
-  display: inline-flex;
-  width: 44px; height: 44px;
-  border-radius: 12px;
-  align-items: center; justify-content: center;
-  font-size: 22px;
-  margin-right: 10px;
-  vertical-align: middle;
-}
-.cat-header-icon.green { background: var(--green-light); }
-.cat-header-icon.gold { background: var(--gold-pale); }
-.cat-header-icon.purple { background: #f0eaf5; }
-.cat-header-icon.blue { background: #e6f0f5; }
+/* Back Button (mobile) */
+.back-btn { display: inline-flex; align-items: center; gap: 4px; color: var(--green-deep); font-size: 13px; margin-bottom: 12px; cursor: pointer; padding: 8px 0; }
 
-/* ===== Article Detail ===== */
-.detail-wrap {
-  background: var(--bg-card);
-  border-radius: var(--radius);
-  padding: 22px 20px;
-  line-height: 1.9;
-  font-size: 15px;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow);
-}
-.detail-wrap h1 {
-  font-size: 20px;
-  color: var(--green-deep);
-  margin-bottom: 6px;
-  line-height: 1.4;
-}
-.detail-meta {
-  font-size: 12px;
-  color: #b8952e;
-  margin-bottom: 18px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #eee;
-}
-.detail-wrap .dl-tag {
-  display: inline-block;
-  background: var(--green-deep);
-  color: var(--gold);
-  font-size: 10px;
-  padding: 1px 10px;
-  border-radius: 3px;
-  margin-right: 6px;
-}
-.detail-wrap p {
-  margin-bottom: 14px;
-  text-indent: 2em;
-  color: #444;
-}
-.detail-wrap .dl-section {
-  font-weight: 700;
-  color: var(--green-deep);
-  font-size: 16px;
-  margin: 20px 0 10px;
-  text-indent: 0;
-}
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--green-deep);
-  font-size: 13px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  padding: 8px 0;
-}
-.back-btn:active { opacity: 0.6; }
+/* Article Detail (mobile) */
+.detail-wrap { background: var(--bg-card); border-radius: var(--radius); padding: 22px 20px; line-height: 1.9; font-size: 15px; margin-bottom: 20px; box-shadow: var(--shadow); }
+.detail-wrap h1 { font-size: 20px; color: var(--green-deep); margin-bottom: 6px; line-height: 1.4; }
+.detail-meta { font-size: 12px; color: #b8952e; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid #eee; }
+.detail-wrap .dl-tag { display: inline-block; background: var(--green-deep); color: var(--gold); font-size: 10px; padding: 1px 10px; border-radius: 3px; margin-right: 6px; }
+.detail-wrap p { margin-bottom: 14px; text-indent: 2em; color: #444; }
+.detail-wrap .dl-section { font-weight: 700; color: var(--green-deep); font-size: 16px; margin: 20px 0 10px; text-indent: 0; }
+.detail-wrap .placeholder-text { color: #bbb; text-align: center; padding: 30px 0; font-style: italic; }
 
-/* ===== Ad Placeholder ===== */
-.ad-placeholder {
-  background: rgba(212,175,55,0.05);
-  border-radius: var(--radius-sm);
-  text-align: center;
-  padding: 14px;
-  color: var(--text-muted);
-  font-size: 11px;
-  margin: 16px 0;
-  border: 1px dashed rgba(212,175,55,0.3);
-}
+/* Ad Placeholder (mobile) */
+.ad-placeholder { background: rgba(212,175,55,0.05); border-radius: var(--radius-sm); text-align: center; padding: 14px; color: var(--text-muted); font-size: 11px; margin: 16px 0; border: 1px dashed rgba(212,175,55,0.3); }
 
-/* ===== Back to Top ===== */
-.back-top {
-  position: fixed;
-  bottom: 76px;
-  right: 16px;
-  width: 40px; height: 40px;
-  background: var(--green-deep);
-  color: var(--gold);
-  border: none;
-  border-radius: 50%;
-  font-size: 18px;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.3s;
-  box-shadow: var(--shadow);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 50;
-}
+/* Back to Top (mobile) */
+.back-top { position: fixed; bottom: 76px; right: 16px; width: 40px; height: 40px; background: var(--green-deep); color: var(--gold); border: none; border-radius: 50%; font-size: 18px; cursor: pointer; opacity: 0; transition: opacity 0.3s; box-shadow: var(--shadow); display: flex; align-items: center; justify-content: center; z-index: 50; }
 .back-top.show { opacity: 0.85; }
 
-/* ===== Footer ===== */
-.footer {
-  text-align: center;
-  padding: 24px 16px 20px;
-  color: #ddd;
-  font-size: 11px;
+/* Footer (mobile) */
+.footer { text-align: center; padding: 24px 16px 20px; color: #ddd; font-size: 11px; }
+
+/* Category Header Icons (mobile) */
+.cat-header-icon { display: inline-flex; width: 44px; height: 44px; border-radius: 12px; align-items: center; justify-content: center; font-size: 22px; margin-right: 10px; vertical-align: middle; }
+.cat-header-icon.green { background: var(--green-light); }
+.cat-header-icon.gold  { background: var(--gold-pale); }
+.cat-header-icon.purple { background: #f0eaf5; }
+.cat-header-icon.blue  { background: #e6f0f5; }
+
+/* ================================================================
+   DESKTOP (≥ 768px)
+   ================================================================ */
+@media (min-width: 768px) {
+  body {
+    display: flex;
+    min-height: 100vh;
+    padding-bottom: 0 !important;
+    background: var(--bg-page);
+  }
+
+  /* ---- SIDEBAR ---- */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: linear-gradient(180deg, var(--green-deep) 0%, #0f2b1e 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .sidebar-brand {
+    padding: 32px 24px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(212,175,55,0.15);
+  }
+  .sidebar-brand h1 { font-size: 28px; letter-spacing: 3px; font-weight: 700; }
+  .sidebar-brand .brand-sub {
+    font-size: 11px; color: rgba(212,175,55,0.6);
+    letter-spacing: 2px; margin-top: 3px;
+  }
+  .sidebar-brand .brand-divider {
+    width: 40px; height: 2px; background: var(--gold);
+    margin: 12px auto 0; border-radius: 2px;
+  }
+
+  /* Sidebar Navigation */
+  .sidebar-nav { padding: 12px 16px; flex: 1; }
+  .sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    margin-bottom: 4px;
+    user-select: none;
+  }
+  .sidebar-nav-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+  .sidebar-nav-item.active {
+    background: rgba(212,175,55,0.12);
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+  .sidebar-nav-item .sni-icon { font-size: 20px; width: 28px; text-align: center; }
+
+  /* Sidebar WeChat QR */
+  .sidebar-wechat {
+    padding: 16px 20px 20px;
+    border-top: 1px solid rgba(212,175,55,0.15);
+  }
+  .sidebar-wechat .sw-title {
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    letter-spacing: 1px; margin-bottom: 10px;
+  }
+  .sidebar-wechat .sw-row {
+    display: flex; gap: 12px; margin-bottom: 10px;
+  }
+  .sidebar-wechat .sw-row:last-child { margin-bottom: 0; }
+  .sidebar-wechat .sw-qr {
+    width: 64px; height: 64px; border-radius: 8px;
+    background: #fff; padding: 3px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sidebar-wechat .sw-qr img { width: 100%; height: 100%; }
+  .sidebar-wechat .sw-info h5 {
+    font-size: 13px; color: var(--gold); margin-bottom: 2px;
+  }
+  .sidebar-wechat .sw-info p { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.4; }
+  .sidebar-wechat .sw-info .sw-tag {
+    display: inline-block; font-size: 10px;
+    background: rgba(212,175,55,0.15); color: var(--gold-light);
+    padding: 1px 8px; border-radius: 3px; margin-top: 2px;
+  }
+
+  /* Sidebar Footer */
+  .sidebar-foot {
+    padding: 12px 20px 20px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.25);
+    text-align: center;
+    border-top: 1px solid rgba(212,175,55,0.1);
+  }
+
+  /* ---- MAIN CONTENT ---- */
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 40px 40px;
+    max-width: 100%;
+    overflow-y: auto;
+  }
+  .main-content .page {
+    display: none;
+    max-width: 800px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  .main-content .page.active { display: block; }
+
+  /* Hide mobile-only elements */
+  .topbar { display: none; }
+  .bottom-nav { display: none !important; }
+  body { padding-bottom: 0; }
+
+  /* Desktop page header */
+  .main-content .page-header {
+    padding: 0 0 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .main-content .page-header h2 { font-size: 24px; }
+  .main-content .page-header .sub { font-size: 13px; }
+
+  /* Desktop menu grid - 2×2 or 4 in a row */
+  .main-content .menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .main-content .menu-card {
+    padding: 28px 24px 22px;
+  }
+  .main-content .menu-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
+  .main-content .menu-card:active { transform: scale(0.97); }
+  .main-content .mc-icon-img { width: 64px; height: 64px; font-size: 32px; }
+  .main-content .mc-label { font-size: 17px; }
+  .main-content .mc-desc { font-size: 12px; }
+
+  /* Desktop WeChat cards - side by side */
+  .main-content .wechat-section {
+    flex-direction: row;
+    gap: 14px;
+  }
+  .main-content .wechat-follow {
+    flex: 1;
+    padding: 18px;
+  }
+
+  /* Desktop article list */
+  .main-content .article-item {
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+  }
+  .main-content .article-item:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+  }
+  .main-content .ai-title { font-size: 16px; }
+  .main-content .ai-summary { font-size: 14px; }
+
+  /* Desktop article detail */
+  .main-content .detail-wrap {
+    padding: 28px 28px;
+    line-height: 2;
+    font-size: 16px;
+  }
+  .main-content .detail-wrap h1 { font-size: 24px; }
+
+  /* Desktop back to top */
+  .main-content .back-top {
+    bottom: 32px;
+    right: 32px;
+  }
+
+  /* Desktop footer */
+  .main-content .footer { padding: 32px 0 16px; }
+
+  /* Desktop ad */
+  .main-content .ad-placeholder { padding: 20px; font-size: 12px; margin: 24px 0; }
 }
-.footer a { color: var(--gold); }
 </style>
 </head>
 <body>
 
-<!-- Top Bar -->
+<!-- ================================================================
+     DESKTOP SIDEBAR (hidden on mobile via .sidebar display via media)
+     ================================================================ -->
+<div class="sidebar">
+  <div class="sidebar-brand">
+    <h1>🏮 爱老六</h1>
+    <div class="brand-sub">每日黄历 · 麻将运势 · 易学知识</div>
+    <div class="brand-divider"></div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="sidebar-nav-item active" data-page="home" onclick="deskNav('home')">
+      <span class="sni-icon">🏠</span>首页
+    </div>
+    <div class="sidebar-nav-item" data-page="huangli" onclick="deskNav('huangli')">
+      <span class="sni-icon">📅</span>每日黄历
+    </div>
+    <div class="sidebar-nav-item" data-page="majiang" onclick="deskNav('majiang')">
+      <span class="sni-icon">🀄</span>麻将运势
+    </div>
+    <div class="sidebar-nav-item" data-page="zhishi" onclick="deskNav('zhishi')">
+      <span class="sni-icon">📖</span>易学小知识
+    </div>
+    <div class="sidebar-nav-item" data-page="jiaocheng" onclick="deskNav('jiaocheng')">
+      <span class="sni-icon">☯</span>梅花易数教程
+    </div>
+  </div>
+  <div class="sidebar-wechat">
+    <div class="sw-title">📱 联系我们</div>
+    <div class="sw-row">
+      <div class="sw-qr"><img src="/images/qrcode-wechat.jpg" alt="公众号二维码"></div>
+      <div class="sw-info">
+        <h5>📢 老六茶事</h5>
+        <p>每日运势文章</p>
+        <span class="sw-tag">微信搜：老六茶事</span>
+      </div>
+    </div>
+    <div class="sw-row">
+      <div class="sw-qr"><img src="/images/qrcode-wechat-personal.png" alt="个人微信"></div>
+      <div class="sw-info">
+        <h5>💬 老六茶室</h5>
+        <p>咨询交流</p>
+        <span class="sw-tag">微信号：laoliuchashi</span>
+      </div>
+    </div>
+  </div>
+  <div class="sidebar-foot">© 爱老六 · 内容仅供娱乐参考</div>
+</div>
+
+<!-- ================================================================
+     MOBILE TOP BAR (hidden on desktop)
+     ================================================================ -->
 <div class="topbar">
   <h1>🏮 爱老六</h1>
   <div class="sub">每日黄历 · 麻将运势 · 易学知识</div>
 </div>
 
-<!-- ===== PAGES ===== -->
-<div id="app">
+<!-- ================================================================
+     MAIN CONTENT
+     ================================================================ -->
+<div class="main-content">
+  <div id="app">
 
-  <!-- ===== Home ===== -->
-  <div class="page active" id="page-home">
-
-    <!-- 4 Menu Cards -->
-    <div class="menu-grid">
-      <div class="menu-card green" onclick="goCategory('huangli')">
-        <div class="mc-icon-img green">📅</div>
-        <div class="mc-label">每日黄历</div>
-        <div class="mc-desc">梅花易数占卜<br>十二生肖今日运程</div>
-      </div>
-      <div class="menu-card gold" onclick="goCategory('majiang')">
-        <div class="mc-icon-img gold">🀄</div>
-        <div class="mc-label">麻将运势</div>
-        <div class="mc-desc">财神方位<br>吉时吉位牌运指南</div>
-      </div>
-      <div class="menu-card purple" onclick="goCategory('zhishi')">
-        <div class="mc-icon-img purple">📖</div>
-        <div class="mc-label">易学小知识</div>
-        <div class="mc-desc">风水禁忌<br>生肖传说传统文化</div>
-      </div>
-      <div class="menu-card blue" onclick="goCategory('jiaocheng')">
-        <div class="mc-icon-img blue">☯</div>
-        <div class="mc-label">梅花易数教程</div>
-        <div class="mc-desc">起卦方法<br>解卦入门进阶</div>
-      </div>
-    </div>
-
-    <!-- WeChat Follow -->
-    <div class="wechat-section">
-      <div class="wechat-follow">
-        <div class="wechat-qr">
-          <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+    <!-- ===== Home ===== -->
+    <div class="page active" id="page-home">
+      <div class="menu-grid">
+        <div class="menu-card green" onclick="goCategory('huangli')">
+          <div class="mc-icon-img green">📅</div>
+          <div class="mc-label">每日黄历</div>
+          <div class="mc-desc">梅花易数占卜<br>十二生肖今日运程</div>
         </div>
-        <div class="wechat-info">
-          <h4>📢 公众号：老六茶事</h4>
-          <p>每日运势早知道</p>
-          <span class="wc-id">🔍 微信搜索：老六茶事</span>
+        <div class="menu-card gold" onclick="goCategory('majiang')">
+          <div class="mc-icon-img gold">🀄</div>
+          <div class="mc-label">麻将运势</div>
+          <div class="mc-desc">财神方位<br>吉时吉位牌运指南</div>
+        </div>
+        <div class="menu-card purple" onclick="goCategory('zhishi')">
+          <div class="mc-icon-img purple">📖</div>
+          <div class="mc-label">易学小知识</div>
+          <div class="mc-desc">风水禁忌<br>生肖传说传统文化</div>
+        </div>
+        <div class="menu-card blue" onclick="goCategory('jiaocheng')">
+          <div class="mc-icon-img blue">☯</div>
+          <div class="mc-label">梅花易数教程</div>
+          <div class="mc-desc">起卦方法<br>解卦入门进阶</div>
         </div>
       </div>
-      <div class="wechat-follow personal">
-        <div class="wechat-qr">
-          <img src="/images/qrcode-wechat-personal.png" alt="老六茶室个人微信">
+      <div class="wechat-section">
+        <div class="wechat-follow">
+          <div class="wechat-qr"><img src="/images/qrcode-wechat.jpg" alt="公众号二维码"></div>
+          <div class="wechat-info">
+            <h4>📢 公众号：老六茶事</h4>
+            <p>每日运势早知道</p>
+            <span class="wc-id">🔍 微信搜索：老六茶事</span>
+          </div>
         </div>
-        <div class="wechat-info">
-          <h4>💬 个人微信：老六茶室</h4>
-          <p>咨询交流 · 商务合作</p>
-          <span class="wc-id">微信号：laoliuchashi</span>
+        <div class="wechat-follow personal">
+          <div class="wechat-qr"><img src="/images/qrcode-wechat-personal.png" alt="个人微信"></div>
+          <div class="wechat-info">
+            <h4>💬 个人微信：老六茶室</h4>
+            <p>咨询交流 · 商务合作</p>
+            <span class="wc-id">微信号：laoliuchashi</span>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Recent Articles -->
-    <div class="recent-section">
       <div class="section-title">📌 最新文章</div>
       <div class="article-list" id="home-recent"></div>
+      <div class="footer" style="display:block !important;">© 爱老六 · 内容仅供娱乐参考</div>
     </div>
 
-    <div class="footer">© 爱老六 · 内容仅供娱乐参考</div>
+    <!-- ===== 每日黄历 ===== -->
+    <div class="page" id="page-huangli">
+      <div class="page-header">
+        <h2><span class="cat-header-icon green">📅</span>每日黄历运势</h2>
+        <div class="sub">梅花易数 · <span id="count-huangli">0</span></div>
+      </div>
+      <div class="article-list" id="list-huangli"></div>
+      <div class="ad-placeholder">📢 广告位</div>
+      <div class="footer">© 爱老六</div>
+    </div>
+
+    <!-- ===== 麻将运势 ===== -->
+    <div class="page" id="page-majiang">
+      <div class="page-header">
+        <h2><span class="cat-header-icon gold">🀄</span>每日麻将运势</h2>
+        <div class="sub">财神方位 · 牌运指南 · <span id="count-majiang">0</span></div>
+      </div>
+      <div class="article-list" id="list-majiang"></div>
+      <div class="ad-placeholder">📢 广告位</div>
+      <div class="footer">© 爱老六</div>
+    </div>
+
+    <!-- ===== 易学小知识 ===== -->
+    <div class="page" id="page-zhishi">
+      <div class="page-header">
+        <h2><span class="cat-header-icon purple">📖</span>易学小知识</h2>
+        <div class="sub">传统文化 · <span id="count-zhishi">0</span></div>
+      </div>
+      <div class="article-list" id="list-zhishi"></div>
+      <div class="ad-placeholder">📢 广告位</div>
+      <div class="footer">© 爱老六</div>
+    </div>
+
+    <!-- ===== 梅花易数教程 ===== -->
+    <div class="page" id="page-jiaocheng">
+      <div class="page-header">
+        <h2><span class="cat-header-icon blue">☯</span>梅花易数教程</h2>
+        <div class="sub">起卦方法 · 解卦入门 · <span id="count-jiaocheng">0</span></div>
+      </div>
+      <div class="article-list" id="list-jiaocheng"></div>
+      <div class="article-list" id="list-jiaocheng-empty">
+        <div class="empty-list">📚 教程陆续上线中，敬请期待 ✨</div>
+      </div>
+      <div class="ad-placeholder">📢 广告位</div>
+      <div class="footer">© 爱老六</div>
+    </div>
+
+    <!-- ===== Article Detail ===== -->
+    <div class="page" id="page-article">
+      <div class="back-btn" onclick="backToList()">← 返回</div>
+      <div class="detail-wrap" id="article-body"></div>
+      <div class="ad-placeholder">📢 广告位</div>
+      <div class="footer">© 爱老六 · 内容仅供娱乐参考</div>
+    </div>
   </div>
 
-  <!-- ===== 每日黄历 ===== -->
-  <div class="page" id="page-huangli">
-    <div class="page-header">
-      <h2><span class="cat-header-icon green">📅</span>每日黄历运势</h2>
-      <div class="sub">梅花易数 · <span id="count-huangli">0</span></div>
-    </div>
-    <div class="article-list" id="list-huangli"></div>
-    <div class="wechat-section">
-      <div class="wechat-follow">
-        <div class="wechat-qr">
-          <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
-        </div>
-        <div class="wechat-info">
-          <h4>📢 公众号：老六茶事</h4>
-          <p>每日运势早知道</p>
-          <span class="wc-id">🔍 微信搜索：老六茶事</span>
-        </div>
-      </div>
-      <div class="wechat-follow personal">
-        <div class="wechat-qr">
-          <img src="/images/qrcode-wechat-personal.png" alt="老六茶室个人微信">
-        </div>
-        <div class="wechat-info">
-          <h4>💬 个人微信：老六茶室</h4>
-          <p>咨询交流 · 商务合作</p>
-          <span class="wc-id">微信号：laoliuchashi</span>
-        </div>
-      </div>
-    </div>
-    <div class="ad-placeholder">📢 广告位</div>
-    <div class="footer">© 爱老六</div>
-  </div>
-
-  <!-- ===== 麻将运势 ===== -->
-  <div class="page" id="page-majiang">
-    <div class="page-header">
-      <h2><span class="cat-header-icon gold">🀄</span>每日麻将运势</h2>
-      <div class="sub">财神方位 · 牌运指南 · <span id="count-majiang">0</span></div>
-    </div>
-    <div class="article-list" id="list-majiang"></div>
-    <div class="wechat-section">
-      <div class="wechat-follow">
-        <div class="wechat-qr">
-          <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
-        </div>
-        <div class="wechat-info">
-          <h4>📢 公众号：老六茶事</h4>
-          <p>每日运势早知道</p>
-          <span class="wc-id">🔍 微信搜索：老六茶事</span>
-        </div>
-      </div>
-      <div class="wechat-follow personal">
-        <div class="wechat-qr">
-          <img src="/images/qrcode-wechat-personal.png" alt="老六茶室个人微信">
-        </div>
-        <div class="wechat-info">
-          <h4>💬 个人微信：老六茶室</h4>
-          <p>咨询交流 · 商务合作</p>
-          <span class="wc-id">微信号：laoliuchashi</span>
-        </div>
-      </div>
-    </div>
-    <div class="ad-placeholder">📢 广告位</div>
-    <div class="footer">© 爱老六</div>
-  </div>
-
-  <!-- ===== 易学小知识 ===== -->
-  <div class="page" id="page-zhishi">
-    <div class="page-header">
-      <h2><span class="cat-header-icon purple">📖</span>易学小知识</h2>
-      <div class="sub">传统文化 · <span id="count-zhishi">0</span></div>
-    </div>
-    <div class="article-list" id="list-zhishi"></div>
-    <div class="wechat-section">
-      <div class="wechat-follow">
-        <div class="wechat-qr">
-          <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
-        </div>
-        <div class="wechat-info">
-          <h4>📢 公众号：老六茶事</h4>
-          <p>每日运势早知道</p>
-          <span class="wc-id">🔍 微信搜索：老六茶事</span>
-        </div>
-      </div>
-      <div class="wechat-follow personal">
-        <div class="wechat-qr">
-          <img src="/images/qrcode-wechat-personal.png" alt="老六茶室个人微信">
-        </div>
-        <div class="wechat-info">
-          <h4>💬 个人微信：老六茶室</h4>
-          <p>咨询交流 · 商务合作</p>
-          <span class="wc-id">微信号：laoliuchashi</span>
-        </div>
-      </div>
-    </div>
-    <div class="ad-placeholder">📢 广告位</div>
-    <div class="footer">© 爱老六</div>
-  </div>
-
-  <!-- ===== 梅花易数教程 ===== -->
-  <div class="page" id="page-jiaocheng">
-    <div class="page-header">
-      <h2><span class="cat-header-icon blue">☯</span>梅花易数教程</h2>
-      <div class="sub">起卦方法 · 解卦入门 · <span id="count-jiaocheng">0</span></div>
-    </div>
-    <div class="article-list" id="list-jiaocheng"></div>
-    <div class="article-list" id="list-jiaocheng-empty">
-      <div class="empty-list">📚 教程陆续上线中，敬请期待 ✨</div>
-    </div>
-    <div class="wechat-section">
-      <div class="wechat-follow">
-        <div class="wechat-qr">
-          <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
-        </div>
-        <div class="wechat-info">
-          <h4>📢 公众号：老六茶事</h4>
-          <p>每日运势早知道</p>
-          <span class="wc-id">🔍 微信搜索：老六茶事</span>
-        </div>
-      </div>
-      <div class="wechat-follow personal">
-        <div class="wechat-qr">
-          <img src="/images/qrcode-wechat-personal.png" alt="老六茶室个人微信">
-        </div>
-        <div class="wechat-info">
-          <h4>💬 个人微信：老六茶室</h4>
-          <p>咨询交流 · 商务合作</p>
-          <span class="wc-id">微信号：laoliuchashi</span>
-        </div>
-      </div>
-    </div>
-    <div class="ad-placeholder">📢 广告位</div>
-    <div class="footer">© 爱老六</div>
-  </div>
-
-  <!-- ===== Article Detail ===== -->
-  <div class="page" id="page-article">
-    <div class="back-btn" onclick="backToList()">← 返回</div>
-    <div class="detail-wrap" id="article-body"></div>
-    <div class="wechat-section">
-      <div class="wechat-follow">
-        <div class="wechat-qr">
-          <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
-        </div>
-        <div class="wechat-info">
-          <h4>📢 公众号：老六茶事</h4>
-          <p>每日运势早知道</p>
-          <span class="wc-id">🔍 微信搜索：老六茶事</span>
-        </div>
-      </div>
-      <div class="wechat-follow personal">
-        <div class="wechat-qr">
-          <img src="/images/qrcode-wechat-personal.png" alt="老六茶室个人微信">
-        </div>
-        <div class="wechat-info">
-          <h4>💬 个人微信：老六茶室</h4>
-          <p>咨询交流 · 商务合作</p>
-          <span class="wc-id">微信号：laoliuchashi</span>
-        </div>
-      </div>
-    </div>
-    <div class="ad-placeholder">📢 广告位</div>
-    <div class="footer">© 爱老六 · 内容仅供娱乐参考</div>
-  </div>
-
+  <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 </div>
 
-<!-- Bottom Nav -->
+<!-- ================================================================
+     MOBILE BOTTOM NAV
+     ================================================================ -->
 <div class="bottom-nav" id="bottomNav">
   <div class="nav-item active" data-page="home"><span class="ni-icon">🏠</span>首页</div>
   <div class="nav-item" data-page="huangli"><span class="ni-icon">📅</span>黄历</div>
   <div class="nav-item" data-page="majiang"><span class="ni-icon">🀄</span>麻将</div>
   <div class="nav-item" data-page="jiaocheng"><span class="ni-icon">☯</span>教程</div>
 </div>
-
-<!-- Back to Top -->
-<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
 // ===== Data =====
@@ -691,7 +609,6 @@ let lastCategory = 'huangli';
 
 const CAT_LABELS  = { huangli:'黄历', majiang:'麻将', zhishi:'知识', jiaocheng:'教程' };
 const CAT_ICONS   = { huangli:'📅', majiang:'🀄', zhishi:'📖', jiaocheng:'☯' };
-const NAV_PAGES   = ['home','huangli','majiang','jiaocheng'];
 
 // ===== Load Data =====
 async function loadData() {
@@ -709,9 +626,7 @@ async function loadData() {
 // ===== Render =====
 function renderAll() {
   renderRecent();
-  for (const cat of ['huangli','majiang','zhishi','jiaocheng']) {
-    renderCategory(cat);
-  }
+  for (const cat of ['huangli','majiang','zhishi','jiaocheng']) renderCategory(cat);
 }
 
 function renderRecent() {
@@ -737,14 +652,12 @@ function renderCategory(cat) {
 }
 
 function articleHTML(a) {
-  return `
-    <div class="article-item" onclick="openArticle('${a.id}')">
+  return `<div class="article-item" onclick="openArticle('${a.id}')">
       <span class="ai-label">${a.label || CAT_LABELS[a.category] || a.category}</span>
       <div class="ai-date">${a.date}</div>
       <div class="ai-title">${a.title}</div>
       <div class="ai-summary">${a.summary}</div>
-    </div>
-  `;
+    </div>`;
 }
 
 // ===== Navigation =====
@@ -753,23 +666,36 @@ function showPage(page) {
   const el = document.getElementById('page-' + page);
   if (el) el.classList.add('active');
 
-  let navPage = page;
-  if (page === 'article') navPage = lastCategory;
-  else if (page === 'zhishi') navPage = 'home'; // zhishi not in bottom nav
-  else if (!NAV_PAGES.includes(navPage)) navPage = 'home';
+  // Mobile nav highlight
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  let mPage = page;
+  if (page === 'article') mPage = lastCategory;
+  if (page === 'zhishi') mPage = 'home';
+  const mItem = document.querySelector(`.nav-item[data-page="${mPage}"]`);
+  if (mItem) mItem.classList.add('active');
 
-  document.querySelectorAll('.nav-item').forEach(n => {
-    n.classList.toggle('active', n.dataset.page === navPage || (navPage === 'huangli' && ['majiang','zhishi'].includes(n.dataset.page) ? false : n.dataset.page === navPage));
-  });
-  // Simpler nav highlight
-  document.querySelectorAll('.nav-item').forEach(n => {
-    n.classList.remove('active');
-  });
-  const navItem = document.querySelector(`.nav-item[data-page="${navPage}"]`);
-  if (navItem) navItem.classList.add('active');
+  // Desktop sidebar highlight
+  document.querySelectorAll('.sidebar-nav-item').forEach(n => n.classList.remove('active'));
+  let sPage = page;
+  if (page === 'article') sPage = lastCategory;
+  const sItem = document.querySelector(`.sidebar-nav-item[data-page="${sPage}"]`);
+  if (sItem) sItem.classList.add('active');
 
   currentPage = page;
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deskNav(page) {
+  if ((page === 'home' || page === 'huangli' || page === 'majiang' || page === 'zhishi' || page === 'jiaocheng')) {
+    if (page !== 'home' && page !== 'home') renderCategory(page);
+    if (page === 'home') {
+      navHistory = ['home'];
+    } else {
+      lastCategory = page;
+      navHistory = ['category', page];
+    }
+    showPage(page);
+  }
 }
 
 function goCategory(cat) {
@@ -783,15 +709,12 @@ function openArticle(id) {
   if (!a) return;
   lastCategory = a.category;
   navHistory = ['article', a.category];
-
   const el = document.getElementById('article-body');
   el.innerHTML = `<h1>${a.title}</h1>
-    <div class="detail-meta">
-      <span class="dl-tag">${CAT_LABELS[a.category] || a.category}</span> ${a.date}
-    </div>
+    <div class="detail-meta"><span class="dl-tag">${CAT_LABELS[a.category] || a.category}</span> ${a.date}</div>
     <p>${a.summary}</p>
     <div class="dl-section">📖 全文</div>
-    <p class="placeholder-text" style="color:#bbb;text-align:center;padding:30px 0;font-style:italic;">—— 完整内容陆续上线 ——</p>`;
+    <p class="placeholder-text">—— 完整内容陆续上线 ——</p>`;
   showPage('article');
 }
 
@@ -831,8 +754,8 @@ const FALLBACK_ARTICLES = [
   { id:"mj-20260521", category:"majiang", title:"【今日麻将运势】5月21日｜小满打牌，这个方位最旺你", date:"2026-05-21", summary:"宜打牌，概率65%。财神正东，喜神西北。避开属虎的对家，坐北朝南最佳...", label:"麻将" },
   { id:"zs-01", category:"zhishi", title:"为什么打麻将总输？这5个风水禁忌你犯了几个", date:"2026-05-18", summary:"打麻将除了技术，风水也很重要。背后空门、头顶横梁、对面镜子...这些禁忌你中了几个？", label:"小知识" },
   { id:"zs-02", category:"zhishi", title:"十二生肖的由来，你知道几个？", date:"2026-05-15", summary:"子鼠丑牛寅虎卯兔辰龙巳蛇午马未羊申猴酉鸡戌狗亥猪，每个生肖背后都有一个传说...", label:"小知识" },
-  { id:"jc-01", category:"jiaocheng", title:"梅花易数入门：什么是体用生克？", date:"2026-05-20", summary:"体用生克是梅花易数的核心。体卦代表问卦者，用卦代表所问之事，生克关系决定吉凶...", label:"教程" },
-  { id:"jc-02", category:"jiaocheng", title:"起卦方法：数字起卦法详解", date:"2026-05-18", summary:"任意三个数字即可起卦。第一数作上卦，第二数作下卦，第三数作动爻...", label:"教程" }
+  { id:"jc-01", category:"jiaocheng", title:"梅花易数入门：什么是体用生克？", date:"2026-05-20", summary:"体用生克是梅花易数的核心。体卦代表问卦者，用卦代表所问之事，生克关系决定吉凶。", label:"教程" },
+  { id:"jc-02", category:"jiaocheng", title:"起卦方法：数字起卦法详解", date:"2026-05-18", summary:"任意三个数字即可起卦。第一数作上卦，第二数作下卦，第三数作动爻，简单易学。", label:"教程" }
 ];
 
 // ===== Init =====
