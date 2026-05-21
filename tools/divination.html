@@ -110,6 +110,10 @@ body {
 }
 
 .yao-row { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 4px; }
+.yao-row .yr-label {
+  position: absolute; left: calc(50% + 80px); font-size: 11px; color: var(--text-light); white-space: nowrap;
+}
+.yao-row .yr-label .yr-lightning { color: var(--gold); font-weight: bold; }
 
 /* Info grid */
 .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
@@ -460,11 +464,14 @@ function renderYaoLines(lines, movingYin = -1) {
   const yaoNames = ['初爻','二爻','三爻','四爻','五爻','上爻'];
   container.innerHTML = lines.map((line, idx) => {
     const isYang = line === 1;
-    const moving = idx === movingYin ? ' ⚡' : '';
+    const isMoving = idx === movingYin;
     const lineHtml = isYang
       ? '<div class="yao-line yang"></div>'
       : '<div class="yao-line yin"><div class="yl-piece"></div><div class="yl-piece"></div></div>';
-    return `<div class="yao-row">${lineHtml}<span style="font-size:11px;color:var(--text-light);margin-left:8px;">${yaoNames[5-idx]}${moving}</span></div>`;
+    const label = isMoving
+      ? `<span class="yr-label">${yaoNames[5-idx]} <span class="yr-lightning">⚡</span></span>`
+      : `<span class="yr-label">${yaoNames[5-idx]}</span>`;
+    return `<div class="yao-row">${lineHtml}${label}</div>`;
   }).join('');
 }
 
