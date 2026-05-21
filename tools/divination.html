@@ -93,13 +93,17 @@ body {
 /* Yao lines */
 .yao-container { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 16px; }
 .yao-line {
-  width: 140px; height: 10px; display: flex; align-items: center; justify-content: center;
+  width: 140px; height: 12px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
-.yao-line.yang { background: var(--green-deep); border-radius: 3px; }
+.yao-line.yang {
+  background: var(--green-deep); border-radius: 3px; height: 12px; width: 140px;
+}
 .yao-line.yin {
-  background: transparent;
-  background-image: linear-gradient(90deg, var(--green-deep) 0%, var(--green-deep) 42%, transparent 42%, transparent 58%, var(--green-deep) 58%, var(--green-deep) 100%);
-  height: 10px; border-radius: 3px;
+  display: flex; justify-content: space-between; width: 140px; height: 12px;
+}
+.yao-line.yin .yl-piece {
+  width: 58px; height: 12px; background: var(--green-deep); border-radius: 3px;
 }
 .yao-label {
   position: absolute; right: -40px; font-size: 11px; color: var(--text-muted);
@@ -456,9 +460,11 @@ function renderYaoLines(lines, movingYin = -1) {
   const yaoNames = ['初爻','二爻','三爻','四爻','五爻','上爻'];
   container.innerHTML = lines.map((line, idx) => {
     const isYang = line === 1;
-    const cls = isYang ? 'yang' : 'yin';
     const moving = idx === movingYin ? ' ⚡' : '';
-    return `<div class="yao-row"><div class="yao-line ${cls}"></div><span style="font-size:11px;color:var(--text-light);margin-left:8px;">${yaoNames[5-idx]}${moving}</span></div>`;
+    const lineHtml = isYang
+      ? '<div class="yao-line yang"></div>'
+      : '<div class="yao-line yin"><div class="yl-piece"></div><div class="yl-piece"></div></div>';
+    return `<div class="yao-row">${lineHtml}<span style="font-size:11px;color:var(--text-light);margin-left:8px;">${yaoNames[5-idx]}${moving}</span></div>`;
   }).join('');
 }
 
