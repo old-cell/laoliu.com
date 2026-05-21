@@ -293,51 +293,67 @@ body { padding-bottom: 64px; }
   }
   .sidebar-nav-item .sni-icon { font-size: 20px; width: 28px; text-align: center; }
 
-  /* Sidebar Directory */
-  .sidebar-dir {
-    flex: 1;
+  /* ---- RIGHT SIDEBAR (Directory) ---- */
+  .right-sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--bg-card);
+    border-left: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
     overflow-y: auto;
-    padding: 0 16px 12px;
-    border-top: 1px solid rgba(212,175,55,0.1);
+    padding: 32px 16px 20px;
+    display: none;
   }
-  .sidebar-dir .dir-title {
-    font-size: 11px; color: rgba(212,175,55,0.5);
-    padding: 12px 12px 6px;
+  .right-sidebar.show { display: block; }
+  .right-sidebar .rs-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green-deep);
+    padding: 0 12px 14px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
     letter-spacing: 1px;
-    text-transform: uppercase;
   }
-  .sidebar-dir .dir-item {
+  .right-sidebar .rs-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: 6px;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.15s;
-    color: rgba(255,255,255,0.55);
-    font-size: 12px;
+    color: var(--text);
+    font-size: 13px;
     line-height: 1.4;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
+    border-left: 3px solid transparent;
   }
-  .sidebar-dir .dir-item:hover {
-    background: rgba(255,255,255,0.06);
-    color: rgba(255,255,255,0.8);
+  .right-sidebar .rs-item:hover {
+    background: var(--green-light);
+    color: var(--green-deep);
   }
-  .sidebar-dir .dir-item.active {
-    background: rgba(212,175,55,0.15);
-    color: var(--gold-light);
+  .right-sidebar .rs-item.active {
+    background: var(--green-light);
+    color: var(--green-deep);
     font-weight: 600;
+    border-left-color: var(--green-deep);
   }
-  .sidebar-dir .dir-item .dir-num {
-    font-size: 10px;
-    color: rgba(212,175,55,0.4);
+  .right-sidebar .rs-item .rs-num {
+    font-size: 11px;
+    color: var(--text-muted);
     min-width: 20px;
     text-align: right;
+    font-weight: 400;
   }
-  .sidebar-dir .dir-empty {
+  .right-sidebar .rs-item.active .rs-num {
+    color: var(--green-deep);
+  }
+  .right-sidebar .rs-empty {
     padding: 20px 12px;
-    color: rgba(255,255,255,0.2);
-    font-size: 11px;
+    color: var(--text-muted);
+    font-size: 12px;
     text-align: center;
   }
 
@@ -503,11 +519,7 @@ body { padding-bottom: 64px; }
       <span class="sni-icon">☯</span>梅花易数教程
     </div>
   </div>
-  <!-- Sidebar Directory: shows articles for selected category -->
-  <div class="sidebar-dir" id="sidebarDir">
-    <div class="dir-title" id="dirTitle"></div>
-    <div id="dirList"></div>
-  </div>
+  <!-- NO directory here - moved to right sidebar -->
   <div class="sidebar-wechat">
     <div class="sw-title">📱 联系我们</div>
     <div class="sw-row">
@@ -647,6 +659,14 @@ body { padding-bottom: 64px; }
 </div>
 
 <!-- ================================================================
+     RIGHT SIDEBAR (desktop only — article directory for current category)
+     ================================================================ -->
+<div class="right-sidebar" id="rightSidebar">
+  <div class="rs-title" id="rightDirTitle"></div>
+  <div id="rightDirList"></div>
+</div>
+
+<!-- ================================================================
      MOBILE BOTTOM NAV (hidden on desktop)
      ================================================================ -->
 <div class="bottom-nav" id="bottomNav">
@@ -776,28 +796,28 @@ function getCurrentArticleId() {
 }
 
 function renderDir(category, activeId) {
-  const dir = document.getElementById('sidebarDir');
-  const title = document.getElementById('dirTitle');
-  const list = document.getElementById('dirList');
+  const dir = document.getElementById('rightSidebar');
+  const title = document.getElementById('rightDirTitle');
+  const list = document.getElementById('rightDirList');
 
   if (!category || category === 'home') {
-    dir.style.display = 'none';
+    dir.classList.remove('show');
     return;
   }
 
-  dir.style.display = 'block';
+  dir.classList.add('show');
   title.textContent = CAT_LABELS[category] || category;
   
   const items = allArticles.filter(a => a.category === category);
   
   if (items.length === 0) {
-    list.innerHTML = '<div class="dir-empty">暂无文章</div>';
+    list.innerHTML = '<div class="rs-empty">暂无文章</div>';
     return;
   }
 
   list.innerHTML = items.map((a, i) => `
-    <div class="dir-item${a.id === activeId ? ' active' : ''}" onclick="openArticle('${a.id}')">
-      <span class="dir-num">${String(i + 1).padStart(2, '0')}</span>
+    <div class="rs-item${a.id === activeId ? ' active' : ''}" onclick="openArticle('${a.id}')">
+      <span class="rs-num">${String(i + 1).padStart(2, '0')}</span>
       <span>${a.title.replace(/^.{0,30}/, m => m.length < a.title.length ? m + '…' : m)}</span>
     </div>
   `).join('');
