@@ -472,7 +472,12 @@ body { padding-bottom: 64px; }
   }
   .main-content .menu-card {
     padding: 28px 24px 22px;
+    background: var(--bg-card);
   }
+  .main-content .menu-card.green { background: linear-gradient(135deg, var(--green-light), #fff); }
+  .main-content .menu-card.gold  { background: linear-gradient(135deg, var(--gold-pale), #fff); }
+  .main-content .menu-card.purple { background: linear-gradient(135deg, #f0eaf5, #fff); }
+  .main-content .menu-card.blue  { background: linear-gradient(135deg, #e6f0f5, #fff); }
   .main-content .menu-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
