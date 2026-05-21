@@ -442,18 +442,21 @@ function getHexagram(upper, lower) {
 }
 
 function buildYaoLines(upperNum, lowerNum) {
-  // Upper trigram yin/yang: 3 lines (top to bottom: line 4,5,6)
-  // Lower trigram yin/yang: 3 lines (bottom to top: line 1,2,3)
-  // Yang = 1 (solid), Yin = 0 (broken)
+  // 先天数 → 二进制编码: 乾111(1), 兑110(2), 离101(3), 震100(4), 巽011(5), 坎010(6), 艮001(7), 坤000(8)
+  // 转换公式: binary = 8 - xiantianNum
+  const upperBits = 8 - upperNum;
+  const lowerBits = 8 - lowerNum;
+  // Upper trigram: 3 lines (top=bit2, middle=bit1, bottom=bit0)
+  // Lower trigram: 3 lines (top=bit2, middle=bit1, bottom=bit0)
   const upperYao = [
-    (upperNum & 4) ? 1 : 0,
-    (upperNum & 2) ? 1 : 0,
-    (upperNum & 1) ? 1 : 0
+    (upperBits & 4) ? 1 : 0,
+    (upperBits & 2) ? 1 : 0,
+    (upperBits & 1) ? 1 : 0
   ];
   const lowerYao = [
-    (lowerNum & 4) ? 1 : 0,
-    (lowerNum & 2) ? 1 : 0,
-    (lowerNum & 1) ? 1 : 0
+    (lowerBits & 4) ? 1 : 0,
+    (lowerBits & 2) ? 1 : 0,
+    (lowerBits & 1) ? 1 : 0
   ];
   // Full 6 lines: top to bottom = upper[0], upper[1], upper[2], lower[0], lower[1], lower[2]
   return [...upperYao, ...lowerYao];
@@ -509,20 +512,23 @@ function getShengKe(selfElem, otherElem) {
 }
 
 function getChangedTrigram(upperNum, lowerNum, movingYin) {
-  // movingYin: 0-5, 0=初爻(lowest bit of lower), 5=上爻(highest bit of upper)
-  // Flip the bit
-  let newUpper = upperNum;
-  let newLower = lowerNum;
+  // 先天数变二进制: binary = 8 - num
+  // 翻转动爻所在的位，再转回先天数
+  let upperBits = 8 - upperNum;
+  let lowerBits = 8 - lowerNum;
+  
   if (movingYin >= 3) {
-    // Upper trigram: yao 3,4,5 = bits 4,2,1
-    const bit = [4,2,1][movingYin - 3];
-    newUpper = upperNum ^ bit;
+    // Upper trigram: 动爻0→bit2, 1→bit1, 2→bit0 (从下往上)
+    const bit = [4, 2, 1][movingYin - 3];
+    upperBits = upperBits ^ bit;
   } else {
-    // Lower trigram: yao 0,1,2 = bits 4,2,1
-    const bit = [4,2,1][movingYin];
-    newLower = lowerNum ^ bit;
+    // Lower trigram
+    const bit = [4, 2, 1][movingYin];
+    lowerBits = lowerBits ^ bit;
   }
-  return [newUpper, newLower];
+  
+  // 转回先天数: xiantian = 8 - binary
+  return [8 - upperBits, 8 - lowerBits];
 }
 
 function divinate(yy, mm, dd, hh, nums) {
