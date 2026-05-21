@@ -186,6 +186,19 @@ body {
 
 <div class="confetti-container" id="confettiContainer"></div>
 
+<!-- Hidden canvas for certificate -->
+<canvas id="certCanvas" width="800" height="1120" style="display:none"></canvas>
+
+<!-- Grand Prize Certificate Area (shown inside modal) -->
+<div id="grandPrizeContent" style="display:none;">
+  <img id="certImage" style="width:100%;max-width:320px;border-radius:10px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,0.15);">
+  <button class="mb-btn" onclick="downloadCert()">📥 下载凭证</button>
+  <br><button class="mb-close" onclick="closeModal()">关闭</button>
+  <div style="margin-top:12px;font-size:12px;color:#888;line-height:1.6;background:#f5f0e8;padding:12px;border-radius:8px;">
+    💡 保存此凭证截图，加微信号 <strong style="color:#1a3c2a;">laoliuchashi</strong> 备注"免费一卦"即可兑奖
+  </div>
+</div>
+
 <script>
 // ===== Segments (weight-based) =====
 const SEGMENTS = [
@@ -378,27 +391,50 @@ function showResult(idx) {
   const modal = document.getElementById('modal');
   const box = document.getElementById('modalBox');
   
-  document.getElementById('modalIcon').textContent = seg.icon;
-  document.getElementById('modalTitle').textContent = seg.special ? '🎉 恭喜获得特等奖！' : seg.label;
-  document.getElementById('modalResult').textContent = seg.desc;
-  
-  // Grand prize special styling
-  box.className = 'modal-box';
   if (seg.special) {
-    box.classList.add('grand-box');
-    // Confetti for grand prize
-    launchConfetti();
+    // Grand prize: show certificate instead of standard modal content
+    document.getElementById('modalIcon').style.display = 'none';
+    document.getElementById('modalTitle').style.display = 'none';
+    document.getElementById('modalResult').style.display = 'none';
+    // Hide standard buttons
+    const stdBtn = box.querySelector('.mb-btn:not([onclick*="downloadCert"])');
+    const stdClose = box.querySelector('.mb-close');
+    if (stdBtn) stdBtn.style.display = 'none';
+    if (stdClose) stdClose.style.display = 'none';
     
-    // Also update WeChat copy button
-    const btn = box.querySelector('.mb-btn');
-    btn.textContent = '📱 联系老六领奖';
-    btn.onclick = function() {
-      alert('微信号已复制：laoliuchashi\n请打开微信搜索添加，备注"免费一卦"');
-    };
+    box.className = 'modal-box';
+    box.style.padding = '16px';
+    box.style.maxWidth = '360px';
+    box.style.background = '#faf6ef';
+    
+    // Show certificate content
+    document.getElementById('grandPrizeContent').style.display = 'block';
+    generateCertificate();
+    
+    launchConfetti();
   } else {
+    document.getElementById('modalIcon').style.display = 'block';
+    document.getElementById('modalTitle').style.display = 'block';
+    document.getElementById('modalResult').style.display = 'block';
+    document.getElementById('grandPrizeContent').style.display = 'none';
+    
+    document.getElementById('modalIcon').textContent = seg.icon;
+    document.getElementById('modalTitle').textContent = seg.label;
+    document.getElementById('modalResult').textContent = seg.desc;
+    
+    box.className = 'modal-box';
+    box.style.padding = '28px 24px';
+    box.style.maxWidth = '340px';
+    box.style.background = '#fff';
+    
     const btn = box.querySelector('.mb-btn');
-    btn.textContent = '再来一次';
-    btn.onclick = closeModal;
+    if (btn) {
+      btn.style.display = 'inline-block';
+      btn.textContent = '再来一次';
+      btn.onclick = closeModal;
+    }
+    const closeBtn = box.querySelector('.mb-close');
+    if (closeBtn) closeBtn.style.display = 'inline-block';
   }
   
   modal.classList.add('show');
@@ -406,6 +442,155 @@ function showResult(idx) {
 
 function closeModal() {
   document.getElementById('modal').classList.remove('show');
+  document.getElementById('grandPrizeContent').style.display = 'none';
+}
+
+// ===== Certificate Generation =====
+let currentCertId = '';
+
+function generateCertificate() {
+  const canvas = document.getElementById('certCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = 800, H = 1120;
+  
+  // Generate unique certificate ID
+  const now = new Date();
+  const dateStr = now.getFullYear() + ('0'+(now.getMonth()+1)).slice(-2) + ('0'+now.getDate()).slice(-2);
+  const rand = Math.floor(1000 + Math.random() * 9000);
+  currentCertId = 'LLCS-' + dateStr + '-' + rand;
+  
+  // Save to localStorage
+  const certs = JSON.parse(localStorage.getItem('wheel_certificates') || '[]');
+  certs.push({ id: currentCertId, date: dateStr, claimed: false });
+  localStorage.setItem('wheel_certificates', JSON.stringify(certs));
+  
+  // Draw certificate
+  ctx.clearRect(0, 0, W, H);
+  
+  // Background
+  ctx.fillStyle = '#faf6ef';
+  ctx.fillRect(0, 0, W, H);
+  
+  // Outer border
+  ctx.strokeStyle = '#1a3c2a';
+  ctx.lineWidth = 12;
+  ctx.strokeRect(30, 30, W-60, H-60);
+  
+  // Inner gold border
+  ctx.strokeStyle = '#d4af37';
+  ctx.lineWidth = 4;
+  ctx.strokeRect(50, 50, W-100, H-100);
+  
+  // Corner decorations
+  const corners = [[60,60], [W-60,60], [60,H-60], [W-60,H-60]];
+  corners.forEach(([x,y]) => {
+    ctx.fillStyle = '#d4af37';
+    ctx.font = '40px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🏮', x, y);
+  });
+  
+  // Title area - dark green banner
+  ctx.fillStyle = '#1a3c2a';
+  roundRect(ctx, 100, 120, W-200, 80, 12);
+  
+  ctx.fillStyle = '#d4af37';
+  ctx.font = 'bold 40px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🎉 免费一卦 · 兑奖凭证', W/2, 160);
+  
+  // Decorative line
+  ctx.strokeStyle = '#d4af37';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([8, 6]);
+  ctx.beginPath();
+  ctx.moveTo(120, 250);
+  ctx.lineTo(W-120, 250);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  
+  // Certificate ID
+  ctx.fillStyle = '#888';
+  ctx.font = '18px "PingFang SC", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('编号：' + currentCertId, W/2, 290);
+  
+  // Hexagram decoration
+  ctx.font = '80px sans-serif';
+  ctx.fillText('☯', W/2, 400);
+  
+  // Prize description
+  ctx.fillStyle = '#1a3c2a';
+  ctx.font = 'bold 28px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText('老六免费一卦', W/2, 510);
+  
+  ctx.fillStyle = '#666';
+  ctx.font = '20px "PingFang SC", sans-serif';
+  ctx.fillText('凭此凭证可找老六为你卜一卦', W/2, 555);
+  
+  // Date
+  ctx.fillStyle = '#999';
+  ctx.font = '18px "PingFang SC", sans-serif';
+  ctx.fillText('发放日期：' + now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日', W/2, 620);
+  
+  // Separator
+  ctx.strokeStyle = '#ddd';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([5, 5]);
+  ctx.beginPath();
+  ctx.moveTo(120, 670);
+  ctx.lineTo(W-120, 670);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  
+  // WeChat info
+  ctx.fillStyle = '#1a3c2a';
+  ctx.font = 'bold 22px "PingFang SC", sans-serif';
+  ctx.fillText('📱 联系兑奖', W/2, 730);
+  
+  ctx.fillStyle = '#555';
+  ctx.font = '18px "PingFang SC", sans-serif';
+  ctx.fillText('微信号：laoliuchashi', W/2, 775);
+  ctx.font = '16px "PingFang SC", sans-serif';
+  ctx.fillText('添加时备注"免费一卦"', W/2, 810);
+  
+  // Bottom branding
+  ctx.fillStyle = '#1a3c2a';
+  ctx.font = '16px "PingFang SC", sans-serif';
+  ctx.fillText('老六茶事 · laoliuchashi.top', W/2, 920);
+  
+  ctx.fillStyle = '#bbb';
+  ctx.font = '14px "PingFang SC", sans-serif';
+  ctx.fillText('内容仅供娱乐参考，请理性看待', W/2, 960);
+  
+  // Convert to image and show
+  const img = document.getElementById('certImage');
+  img.src = canvas.toDataURL('image/png');
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function downloadCert() {
+  const canvas = document.getElementById('certCanvas');
+  const link = document.createElement('a');
+  link.download = '老六免费一卦_' + currentCertId + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
 }
 
 // Confetti for grand prize
