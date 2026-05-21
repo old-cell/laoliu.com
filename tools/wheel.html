@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>每日运势转盘 - 老六茶事</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg-page: #efe4d0; --bg-card: #ffffff;
+  --green-deep: #1a3c2a; --green-mid: #2d5a3e;
+  --gold: #d4af37; --gold-light: #f5e6b8; --gold-pale: #faf3e0;
+  --text: #2c2c2c; --text-light: #888;
+  --border: #e8e0d6;
+  --radius: 14px; --radius-sm: 10px;
+}
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Serif SC", serif;
+  background: var(--bg-page); color: var(--text); min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+}
+.header {
+  width: 100%;
+  background: linear-gradient(135deg, var(--green-deep) 0%, #0f2b1e 100%);
+  padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100;
+}
+.header h1 {
+  font-size: 22px; font-weight: 700; letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--gold) 0%, #e8c840 50%, var(--gold) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.header .sub { font-size: 11px; color: rgba(212,175,55,0.6); margin-top: 3px; }
+.header .back-link {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--gold); font-size: 13px; text-decoration: none;
+  display: flex; align-items: center; gap: 4px;
+}
+.wrap {
+  max-width: 480px; width: 100%; padding: 24px 20px;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+/* Wheel area */
+.wheel-area { position: relative; width: 300px; height: 300px; margin-bottom: 20px; }
+#wheelCanvas { width: 300px; height: 300px; border-radius: 50%; box-shadow: 0 4px 30px rgba(26,60,42,0.2); }
+.pointer {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 28px solid var(--green-deep);
+  z-index: 10;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+.pointer::after {
+  content: '▼'; position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; color: var(--gold);
+}
+
+/* Spin button */
+.spin-btn {
+  display: block; width: 200px; padding: 14px;
+  background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+  color: var(--gold); border: none; border-radius: 50px;
+  font-size: 18px; font-weight: 700; cursor: pointer;
+  transition: all 0.2s; letter-spacing: 2px; margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(26,60,42,0.2);
+}
+.spin-btn:active { transform: scale(0.95); }
+.spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Prize list */
+.prize-list {
+  width: 100%; max-width: 360px;
+  background: var(--bg-card); border-radius: var(--radius);
+  padding: 16px 20px; box-shadow: 0 2px 12px rgba(26,60,42,0.08);
+}
+.prize-list h3 { font-size: 14px; color: var(--green-deep); margin-bottom: 10px; text-align: center; }
+.pl-item {
+  display: flex; justify-content: space-between;
+  padding: 6px 0; font-size: 13px; border-bottom: 1px solid #f0ebe3;
+}
+.pl-item:last-child { border-bottom: none; }
+.pl-item .pli-name { color: var(--text); }
+.pl-item .pli-rate { color: var(--text-light); font-size: 11px; }
+.pl-item .pli-rate.gold { color: var(--gold); font-weight: 600; }
+
+/* Modal overlay */
+.modal-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 999;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+  background: var(--bg-card); border-radius: var(--radius);
+  padding: 28px 24px; max-width: 340px; width: 100%;
+  text-align: center; box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+  animation: modalIn 0.3s ease;
+}
+@keyframes modalIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.modal-box .mb-icon { font-size: 48px; margin-bottom: 12px; }
+.modal-box h3 { font-size: 22px; color: var(--green-deep); margin-bottom: 8px; }
+.modal-box .mb-result { font-size: 14px; color: var(--text-light); margin-bottom: 16px; line-height: 1.6; }
+.modal-box .mb-btn {
+  display: inline-block; padding: 12px 36px;
+  background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+  color: var(--gold); border: none; border-radius: 50px;
+  font-size: 15px; font-weight: 600; cursor: pointer;
+}
+.modal-box .mb-btn:active { transform: scale(0.95); }
+.modal-box .mb-close {
+  display: inline-block; margin-top: 10px;
+  color: var(--text-light); font-size: 13px; cursor: pointer;
+  background: none; border: none; text-decoration: underline;
+}
+
+/* Grand prize special */
+.grand-box { background: linear-gradient(135deg, #1a3c2a, #2a5a3e); }
+.grand-box h3 { color: var(--gold); }
+.grand-box .mb-result { color: rgba(255,255,255,0.7); }
+.grand-box .mb-btn { background: var(--gold); color: var(--green-deep); }
+
+.footer { text-align: center; padding: 20px; color: var(--text-light); font-size: 11px; max-width: 480px; }
+
+/* Confetti */
+.confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; overflow: hidden; }
+.confetti-piece {
+  position: absolute; width: 10px; height: 10px; top: -20px;
+  animation: confettiFall 3s ease-in forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="/" class="back-link">← 返回首页</a>
+  <h1>🎡 每日运势转盘</h1>
+  <div class="sub">老六茶事 · 转动好运</div>
+</div>
+
+<div class="wrap">
+  <div class="wheel-area">
+    <canvas id="wheelCanvas" width="600" height="600"></canvas>
+    <div class="pointer"></div>
+  </div>
+
+  <button class="spin-btn" id="spinBtn" onclick="spin()">🎯 转动运势</button>
+
+  <div class="prize-list">
+    <h3>🎁 奖项设置</h3>
+    <div class="pl-item"><span class="pli-name">🥇 老六免费一卦</span><span class="pli-rate gold">3%</span></div>
+    <div class="pl-item"><span class="pli-name">大吉</span><span class="pli-rate">17%</span></div>
+    <div class="pl-item"><span class="pli-name">吉</span><span class="pli-rate">20%</span></div>
+    <div class="pl-item"><span class="pli-name">中吉</span><span class="pli-rate">20%</span></div>
+    <div class="pl-item"><span class="pli-name">小吉</span><span class="pli-rate">15%</span></div>
+    <div class="pl-item"><span class="pli-name">末吉</span><span class="pli-rate">15%</span></div>
+    <div class="pl-item"><span class="pli-name">下下签</span><span class="pli-rate">10%</span></div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box" id="modalBox">
+    <div class="mb-icon" id="modalIcon">🎉</div>
+    <h3 id="modalTitle">恭喜！</h3>
+    <div class="mb-result" id="modalResult">你抽到了</div>
+    <button class="mb-btn" onclick="closeModal()">再来一次</button>
+    <br><button class="mb-close" onclick="closeModal()">关闭</button>
+  </div>
+</div>
+
+<div class="footer">© 老六茶事 · 内容仅供娱乐参考</div>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+// ===== Segments (weight-based) =====
+const SEGMENTS = [
+  { label: '老六免费一卦', weight: 3,  color: '#FFD700', icon: '👑', desc: '恭喜获得老六免费一卦！添加微信号 laoliuchashi，老六亲自为你解卦一次。', special: true },
+  { label: '大吉',           weight: 17, color: '#e74c3c', icon: '🌟', desc: '大吉大利！今日万事顺遂，宜大胆行动。财运亨通，贵人相助。' },
+  { label: '吉',             weight: 20, color: '#e67e22', icon: '👍', desc: '运势不错！今日适合推进计划，与人沟通顺畅。注意把握良机。' },
+  { label: '中吉',           weight: 20, color: '#27ae60', icon: '✨', desc: '中吉之兆。今日宜稳中求进，不宜冒进。踏踏实实就有好结果。' },
+  { label: '小吉',           weight: 15, color: '#3498db', icon: '🍀', desc: '小有喜气。今天适合处理日常事务，可能会有小惊喜等着你。' },
+  { label: '末吉',           weight: 15, color: '#9b59b6', icon: '🎋', desc: '末吉，尚可。今天宜静不宜动，做好分内事即可。以退为进。' },
+  { label: '下下签',         weight: 10, color: '#7f8c8d', icon: '⚠️', desc: '今天运势略低，不宜做重大决定。建议低调做事，明日运势会好转。' }
+];
+
+const TOTAL_WEIGHT = SEGMENTS.reduce((s, seg) => s + seg.weight, 0);
+
+let isSpinning = false;
+let currentAngle = 0;
+
+function drawWheel() {
+  const canvas = document.getElementById('wheelCanvas');
+  const ctx = canvas.getContext('2d');
+  const cx = 300, cy = 300, r = 290;
+
+  ctx.clearRect(0, 0, 600, 600);
+
+  // Draw outer ring
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.strokeStyle = '#1a3c2a';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  // Draw segments
+  let startAngle = currentAngle;
+  SEGMENTS.forEach((seg, i) => {
+    const sliceAngle = (seg.weight / TOTAL_WEIGHT) * Math.PI * 2;
+    const endAngle = startAngle + sliceAngle;
+
+    // Fill
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startAngle, endAngle);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.fill();
+
+    // Border
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Text (label rotated)
+    const midAngle = startAngle + sliceAngle / 2;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(midAngle);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 16px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.shadowColor = 'rgba(0,0,0,0.3)';
+    ctx.shadowBlur = 3;
+    
+    // Icon
+    ctx.font = '22px sans-serif';
+    ctx.fillText(seg.icon, r - 15, 7);
+    
+    // Label
+    ctx.font = '14px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.fillText(seg.label, r - 48, 7);
+    
+    ctx.restore();
+
+    startAngle = endAngle;
+  });
+
+  // Center circle
+  ctx.beginPath();
+  ctx.arc(cx, cy, 40, 0, Math.PI * 2);
+  ctx.fillStyle = '#1a3c2a';
+  ctx.fill();
+  ctx.strokeStyle = '#d4af37';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Center text
+  ctx.fillStyle = '#d4af37';
+  ctx.font = 'bold 18px "PingFang SC", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('运势', cx, cy - 8);
+  ctx.font = '11px "PingFang SC", sans-serif';
+  ctx.fillText('LUCK', cx, cy + 14);
+}
+
+function getRandomSegment() {
+  const rand = Math.random() * TOTAL_WEIGHT;
+  let accum = 0;
+  for (let i = 0; i < SEGMENTS.length; i++) {
+    accum += SEGMENTS[i].weight;
+    if (rand < accum) return i;
+  }
+  return SEGMENTS.length - 1;
+}
+
+function spin() {
+  if (isSpinning) return;
+  isSpinning = true;
+  document.getElementById('spinBtn').disabled = true;
+
+  // Pick result
+  const winnerIdx = getRandomSegment();
+  
+  // Calculate target angle: land on the middle of the winning segment
+  // The pointer is at the top (12 o'clock position = -Math.PI/2 or 3*Math.PI/2)
+  // We need to rotate the wheel so the winning segment is under the pointer
+  
+  // Calculate the angle of each segment from start
+  let segStart = 0;
+  for (let i = 0; i < winnerIdx; i++) {
+    segStart += (SEGMENTS[i].weight / TOTAL_WEIGHT) * Math.PI * 2;
+  }
+  const segMid = segStart + ((SEGMENTS[winnerIdx].weight / TOTAL_WEIGHT) * Math.PI * 2) / 2;
+  
+  // The pointer is at top (angle = -Math.PI/2 in standard coords)
+  // We want the segment midpoint at the top
+  // So we need to rotate so that segMid aligns with top
+  // top = -PI/2, so targetAngle = -PI/2 - segMid
+  // Add random spins (5-8 full rotations)
+  const spins = 5 + Math.random() * 3;
+  const targetAngle = currentAngle + spins * Math.PI * 2 + (Math.PI * 2 - segMid + Math.PI * 0.5);
+  
+  // Animate
+  const startAngle = currentAngle;
+  const totalRotation = targetAngle - startAngle;
+  const duration = 4000; // 4 seconds
+  const startTime = performance.now();
+
+  function animate(time) {
+    const elapsed = time - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Easing: cubic ease-out
+    const eased = 1 - Math.pow(1 - progress, 3);
+    
+    currentAngle = startAngle + totalRotation * eased;
+    drawWheel();
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      // Done spinning
+      isSpinning = false;
+      document.getElementById('spinBtn').disabled = false;
+      showResult(winnerIdx);
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+function showResult(idx) {
+  const seg = SEGMENTS[idx];
+  const modal = document.getElementById('modal');
+  const box = document.getElementById('modalBox');
+  
+  document.getElementById('modalIcon').textContent = seg.icon;
+  document.getElementById('modalTitle').textContent = seg.special ? '🎉 恭喜获得特等奖！' : seg.label;
+  document.getElementById('modalResult').textContent = seg.desc;
+  
+  // Grand prize special styling
+  box.className = 'modal-box';
+  if (seg.special) {
+    box.classList.add('grand-box');
+    // Confetti for grand prize
+    launchConfetti();
+    
+    // Also update WeChat copy button
+    const btn = box.querySelector('.mb-btn');
+    btn.textContent = '📱 联系老六领奖';
+    btn.onclick = function() {
+      alert('微信号已复制：laoliuchashi\n请打开微信搜索添加，备注"免费一卦"');
+    };
+  } else {
+    const btn = box.querySelector('.mb-btn');
+    btn.textContent = '再来一次';
+    btn.onclick = closeModal;
+  }
+  
+  modal.classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+}
+
+// Confetti for grand prize
+function launchConfetti() {
+  const container = document.getElementById('confettiContainer');
+  const colors = ['#FFD700', '#e74c3c', '#27ae60', '#3498db', '#9b59b6', '#e67e22', '#FF6B6B'];
+  for (let i = 0; i < 80; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.width = (Math.random() * 8 + 4) + 'px';
+    piece.style.height = (Math.random() * 8 + 4) + 'px';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+    piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    piece.style.animationDelay = Math.random() * 0.5 + 's';
+    container.appendChild(piece);
+  }
+  setTimeout(() => { container.innerHTML = ''; }, 4000);
+}
+
+// ===== Init =====
+drawWheel();
+</script>
+</body>
+</html>

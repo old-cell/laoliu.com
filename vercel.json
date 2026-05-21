@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/tools/(.*)", "destination": "/tools/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [

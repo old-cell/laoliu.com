@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>梅花易数起卦器 - 老六茶事</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg-page: #efe4d0; --bg-card: #ffffff;
+  --green-deep: #1a3c2a; --green-mid: #2d5a3e;
+  --green-light: #e8f0e6;
+  --gold: #d4af37; --gold-light: #f5e6b8; --gold-pale: #faf3e0;
+  --text: #2c2c2c; --text-light: #888; --text-muted: #bbb;
+  --border: #e8e0d6;
+  --radius: 14px; --radius-sm: 10px;
+}
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Serif SC", serif;
+  background: var(--bg-page); color: var(--text); min-height: 100vh;
+}
+.header {
+  background: linear-gradient(135deg, var(--green-deep) 0%, #0f2b1e 100%);
+  padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100;
+}
+.header h1 {
+  font-size: 22px; font-weight: 700; letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--gold) 0%, #e8c840 50%, var(--gold) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.header .sub { font-size: 11px; color: rgba(212,175,55,0.6); margin-top: 3px; }
+.header .back-link {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--gold); font-size: 13px; text-decoration: none;
+  display: flex; align-items: center; gap: 4px;
+}
+.wrap { max-width: 640px; margin: 0 auto; padding: 16px; }
+
+/* Mode selection */
+.mode-btns { display: flex; gap: 10px; margin-bottom: 16px; }
+.mode-btn {
+  flex: 1; padding: 14px; border: 2px solid var(--border); border-radius: var(--radius);
+  background: var(--bg-card); cursor: pointer; text-align: center;
+  transition: all 0.2s; font-size: 15px; color: var(--text-light);
+}
+.mode-btn .mb-icon { font-size: 28px; display: block; margin-bottom: 4px; }
+.mode-btn.active {
+  border-color: var(--gold); background: var(--gold-pale);
+  color: var(--green-deep); font-weight: 600;
+}
+
+/* Input section */
+.input-section {
+  background: var(--bg-card); border-radius: var(--radius); padding: 20px;
+  box-shadow: 0 2px 12px rgba(26,60,42,0.08); margin-bottom: 16px;
+}
+.input-section h3 { font-size: 16px; color: var(--green-deep); margin-bottom: 14px; }
+.form-row { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.form-group { flex: 1; min-width: 80px; }
+.form-group label {
+  display: block; font-size: 12px; color: var(--text-light); margin-bottom: 4px;
+}
+.form-group select, .form-group input {
+  width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 15px; background: var(--bg-page);
+  color: var(--text); font-family: inherit;
+}
+.form-group select:focus, .form-group input:focus {
+  outline: none; border-color: var(--gold);
+}
+
+.btn-primary {
+  display: block; width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+  color: var(--gold); border: none; border-radius: var(--radius);
+  font-size: 17px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; letter-spacing: 2px;
+}
+.btn-primary:active { transform: scale(0.97); opacity: 0.9; }
+
+/* Result section */
+.result-section {
+  background: var(--bg-card); border-radius: var(--radius); padding: 24px 20px;
+  box-shadow: 0 2px 12px rgba(26,60,42,0.08); margin-bottom: 16px;
+  display: none;
+}
+.result-section.show { display: block; }
+
+.hexagram-display { text-align: center; padding: 20px 0; }
+.hexagram-name { font-size: 28px; color: var(--green-deep); font-weight: 700; margin-bottom: 6px; }
+.hexagram-sub { font-size: 14px; color: var(--text-light); margin-bottom: 16px; }
+
+/* Yao lines */
+.yao-container { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 16px; }
+.yao-line {
+  width: 140px; height: 10px; display: flex; align-items: center; justify-content: center;
+}
+.yao-line.yang { background: var(--green-deep); border-radius: 3px; }
+.yao-line.yin {
+  background: transparent;
+  background-image: linear-gradient(90deg, var(--green-deep) 0%, var(--green-deep) 42%, transparent 42%, transparent 58%, var(--green-deep) 58%, var(--green-deep) 100%);
+  height: 10px; border-radius: 3px;
+}
+.yao-label {
+  position: absolute; right: -40px; font-size: 11px; color: var(--text-muted);
+}
+
+.yao-row { display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 4px; }
+
+/* Info grid */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.info-item {
+  background: var(--green-light); border-radius: var(--radius-sm); padding: 12px;
+  text-align: center;
+}
+.info-item .ii-label { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+.info-item .ii-value { font-size: 18px; color: var(--green-deep); font-weight: 700; }
+.info-item .ii-sub { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+
+.judgment-box {
+  background: var(--gold-pale); border-left: 4px solid var(--gold);
+  border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;
+}
+.judgment-box .jb-label { font-size: 12px; color: var(--text-light); margin-bottom: 4px; }
+.judgment-box .jb-text { font-size: 14px; color: var(--text); line-height: 1.8; }
+
+.cta-box {
+  background: linear-gradient(135deg, var(--green-deep), #153322);
+  border-radius: var(--radius); padding: 18px; text-align: center;
+  margin-top: 16px;
+}
+.cta-box h4 { color: var(--gold); font-size: 16px; margin-bottom: 4px; }
+.cta-box p { color: rgba(255,255,255,0.6); font-size: 12px; line-height: 1.6; }
+.cta-box .cta-id {
+  display: inline-block; background: rgba(212,175,55,0.2);
+  color: var(--gold-light); font-size: 12px; padding: 3px 14px;
+  border-radius: 4px; margin-top: 6px;
+}
+.cta-box .cta-btn {
+  display: inline-block; margin-top: 10px; padding: 10px 28px;
+  background: var(--gold); color: var(--green-deep); border: none;
+  border-radius: var(--radius-sm); font-size: 14px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+}
+.cta-box .cta-btn:active { opacity: 0.8; }
+
+.footer { text-align: center; padding: 20px 16px; color: var(--text-light); font-size: 11px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="/" class="back-link">← 返回首页</a>
+  <h1>☯ 梅花易数起卦</h1>
+  <div class="sub">老六茶事 · 免费起卦</div>
+</div>
+
+<div class="wrap">
+
+  <!-- Mode Selection -->
+  <div class="mode-btns">
+    <div class="mode-btn active" id="modeTime" onclick="switchMode('time')">
+      <span class="mb-icon">⏰</span>时间起卦
+    </div>
+    <div class="mode-btn" id="modeNum" onclick="switchMode('number')">
+      <span class="mb-icon">🔢</span>报数起卦
+    </div>
+  </div>
+
+  <!-- Time Mode Input -->
+  <div class="input-section" id="timeInput">
+    <h3>选择日期与时辰</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>年份</label>
+        <select id="selYear"></select>
+      </div>
+      <div class="form-group">
+        <label>月份</label>
+        <select id="selMonth"></select>
+      </div>
+      <div class="form-group">
+        <label>日期</label>
+        <select id="selDay"></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>时辰</label>
+        <select id="selHour">
+          <option value="1">子时 23:00-00:59</option>
+          <option value="2">丑时 01:00-02:59</option>
+          <option value="3">寅时 03:00-04:59</option>
+          <option value="4">卯时 05:00-06:59</option>
+          <option value="5">辰时 07:00-08:59</option>
+          <option value="6">巳时 09:00-10:59</option>
+          <option value="7">午时 11:00-12:59</option>
+          <option value="8">未时 13:00-14:59</option>
+          <option value="9">申时 15:00-16:59</option>
+          <option value="10">酉时 17:00-18:59</option>
+          <option value="11">戌时 19:00-20:59</option>
+          <option value="12">亥时 21:00-22:59</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="divinateByTime()">起卦</button>
+  </div>
+
+  <!-- Number Mode Input -->
+  <div class="input-section" id="numInput" style="display:none">
+    <h3>任意报三个数（1或2位数）</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>第一个数（上卦）</label>
+        <input type="number" id="num1" min="1" max="99" placeholder="例：3">
+      </div>
+      <div class="form-group">
+        <label>第二个数（下卦）</label>
+        <input type="number" id="num2" min="1" max="99" placeholder="例：7">
+      </div>
+      <div class="form-group">
+        <label>第三个数（动爻）</label>
+        <input type="number" id="num3" min="1" max="99" placeholder="例：5">
+      </div>
+    </div>
+    <button class="btn-primary" onclick="divinateByNumber()">起卦</button>
+  </div>
+
+  <!-- Result -->
+  <div class="result-section" id="result">
+    <div class="hexagram-display">
+      <div class="hexagram-name" id="hexName"></div>
+      <div class="hexagram-sub" id="hexSub"></div>
+      <div class="yao-container" id="yaoContainer"></div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="ii-label">本卦</div>
+        <div class="ii-value" id="infoOriginal"></div>
+        <div class="ii-sub" id="infoOrigSub"></div>
+      </div>
+      <div class="info-item">
+        <div class="ii-label">变卦</div>
+        <div class="ii-value" id="infoChanged"></div>
+        <div class="ii-sub" id="infoChgSub"></div>
+      </div>
+      <div class="info-item">
+        <div class="ii-label">体卦</div>
+        <div class="ii-value" id="infoSelf"></div>
+      </div>
+      <div class="info-item">
+        <div class="ii-label">用卦</div>
+        <div class="ii-value" id="infoOther"></div>
+      </div>
+    </div>
+
+    <div class="judgment-box">
+      <div class="jb-label">体用生克</div>
+      <div class="jb-text" id="shengkeText"></div>
+    </div>
+
+    <div class="judgment-box">
+      <div class="jb-label">卦象解读</div>
+      <div class="jb-text" id="judgmentText"></div>
+    </div>
+
+    <div class="cta-box">
+      <h4>🏮 想深度解卦？</h4>
+      <p>起卦只是第一步，真正精妙的解读需要结合你的具体问题。</p>
+      <p>加老六查事微信，一对一咨询</p>
+      <span class="cta-id">微信号：laoliuchashi</span>
+      <div><a href="javascript:void(0)" class="cta-btn" onclick="alert('微信号已复制：laoliuchashi\n请打开微信搜索添加')">📱 复制微信号</a></div>
+    </div>
+  </div>
+
+  <div class="footer">© 老六茶事 · 内容仅供娱乐参考</div>
+</div>
+
+<script>
+// ===== 八卦定义 =====
+const TRIGRAMS = {
+  1: { name: '乾', symbol: '☰', element: '金', image: '天', attr: '健' },
+  2: { name: '兑', symbol: '☱', element: '金', image: '泽', attr: '悦' },
+  3: { name: '离', symbol: '☲', element: '火', image: '火', attr: '丽' },
+  4: { name: '震', symbol: '☳', element: '木', image: '雷', attr: '动' },
+  5: { name: '巽', symbol: '☴', element: '木', image: '风', attr: '入' },
+  6: { name: '坎', symbol: '☵', element: '水', image: '水', attr: '陷' },
+  7: { name: '艮', symbol: '☶', element: '土', image: '山', attr: '止' },
+  8: { name: '坤', symbol: '☷', element: '土', image: '地', attr: '顺' }
+};
+
+// ===== 64卦查询表 [上卦][下卦] =====
+const HEX_LOOKUP = [
+  [0],
+  [0, 1,43,14,34, 9, 5,26,11],
+  [0,10,58,38,54,61,60,41,19],
+  [0,13,49,30,55,37,63,22,36],
+  [0,25,17,21,51,42, 3,27,24],
+  [0,44,28,50,32,57,48,18,46],
+  [0, 6,47,64,40,59,29, 4, 7],
+  [0,33,31,56,62,53,39,52,15],
+  [0,12,45,35,16,20, 8,23, 2]
+];
+
+// ===== 64卦数据 =====
+const HEX_DATA = {
+   1:{n:'乾为天',j:'元亨利贞。乾为天，自强不息，君子以自强不息。',i:'龙行天下'},
+   2:{n:'坤为地',j:'元亨，利牝马之贞。坤厚载物，德合无疆。',i:'厚德载物'},
+   3:{n:'水雷屯',j:'屯，刚柔始交而难生。利建侯。',i:'万事开头难'},
+   4:{n:'山水蒙',j:'蒙，亨。匪我求童蒙，童蒙求我。',i:'启蒙开智'},
+   5:{n:'水天需',j:'需，有孚，光亨，贞吉。利涉大川。',i:'等待时机'},
+   6:{n:'天水讼',j:'讼，有孚窒惕，中吉，终凶。利见大人。',i:'慎争止讼'},
+   7:{n:'地水师',j:'师，贞，丈人吉，无咎。',i:'统率之道'},
+   8:{n:'水地比',j:'比，吉。原筮元永贞，无咎。',i:'亲附合作'},
+   9:{n:'风天小畜',j:'小畜，亨。密云不雨，自我西郊。',i:'小有积蓄'},
+  10:{n:'天泽履',j:'履，履虎尾，不咥人，亨。',i:'脚踏实地'},
+  11:{n:'地天泰',j:'泰，小往大来，吉亨。天地交而万物通。',i:'安泰通达'},
+  12:{n:'天地否',j:'否之匪人，不利君子贞，大往小来。',i:'闭塞守静'},
+  13:{n:'天火同人',j:'同人于野，亨。利涉大川，利君子贞。',i:'同心协力'},
+  14:{n:'火天大有',j:'大有，元亨。刚健而文明。',i:'丰盛拥有'},
+  15:{n:'地山谦',j:'谦，亨，君子有终。天道亏盈而益谦。',i:'谦虚受益'},
+  16:{n:'雷地豫',j:'豫，利建侯行师。',i:'愉悦安乐'},
+  17:{n:'泽雷随',j:'随，元亨利贞，无咎。',i:'随顺自然'},
+  18:{n:'山风蛊',j:'蛊，元亨。利涉大川，先甲三日，后甲三日。',i:'整治弊病'},
+  19:{n:'地泽临',j:'临，元亨利贞。至于八月有凶。',i:'临近监督'},
+  20:{n:'风地观',j:'观，盥而不荐，有孚颙若。',i:'观察审慎'},
+  21:{n:'火雷噬嗑',j:'噬嗑，亨。利用狱。',i:'破除障碍'},
+  22:{n:'山火贲',j:'贲，亨。小利有攸往。',i:'文饰美化'},
+  23:{n:'山地剥',j:'剥，不利有攸往。柔变刚也。',i:'剥落知止'},
+  24:{n:'地雷复',j:'复，亨。出入无疾，朋来无咎。',i:'回复重生'},
+  25:{n:'天雷无妄',j:'无妄，元亨利贞。其匪正有眚，不利有攸往。',i:'顺其自然'},
+  26:{n:'山天大畜',j:'大畜，利贞。不家食吉，利涉大川。',i:'蓄积力量'},
+  27:{n:'山雷颐',j:'颐，贞吉。观颐，自求口实。',i:'颐养身心'},
+  28:{n:'泽风大过',j:'大过，栋桡。利有攸往，亨。',i:'过犹不及'},
+  29:{n:'坎为水',j:'习坎，有孚，维心亨，行有尚。',i:'险中求进'},
+  30:{n:'离为火',j:'离，利贞，亨。畜牝牛，吉。',i:'光明依附'},
+  31:{n:'泽山咸',j:'咸，亨，利贞。取女吉。',i:'感应相通'},
+  32:{n:'雷风恒',j:'恒，亨，无咎，利贞。利有攸往。',i:'恒久坚持'},
+  33:{n:'天山遁',j:'遁，亨，小利贞。',i:'退避保存'},
+  34:{n:'雷天大壮',j:'大壮，利贞。刚以动故壮。',i:'壮大正固'},
+  35:{n:'火地晋',j:'晋，康侯用锡马蕃庶，昼日三接。',i:'前进上升'},
+  36:{n:'地火明夷',j:'明夷，利艰贞。内文明而外柔顺。',i:'韬光养晦'},
+  37:{n:'风火家人',j:'家人，利女贞。正家而天下定。',i:'家庭和睦'},
+  38:{n:'火泽睽',j:'睽，小事吉。二女同居，其志不同行。',i:'求同存异'},
+  39:{n:'水山蹇',j:'蹇，利西南，不利东北。利见大人，贞吉。',i:'艰难修德'},
+  40:{n:'雷水解',j:'解，利西南。无所往，其来复吉。有攸往，夙吉。',i:'解脱释放'},
+  41:{n:'山泽损',j:'损，有孚，元吉，无咎，可贞。利有攸往。',i:'损己益人'},
+  42:{n:'风雷益',j:'益，利有攸往，利涉大川。损上益下，民说无疆。',i:'增益有利'},
+  43:{n:'泽天夬',j:'夬，扬于王庭，孚号有厉。告自邑，不利即戎。',i:'决断果断'},
+  44:{n:'天风姤',j:'姤，女壮，勿用取女。天地相遇，品物咸章。',i:'邂逅相遇'},
+  45:{n:'泽地萃',j:'萃，亨。王假有庙。利见大人，亨，利贞。',i:'聚集荟萃'},
+  46:{n:'地风升',j:'升，元亨。用见大人，勿恤。南征吉。',i:'上升进取'},
+  47:{n:'泽水困',j:'困，亨，贞，大人吉，无咎。有言不信。',i:'困而求通'},
+  48:{n:'水风井',j:'井，改邑不改井，无丧无得。往来井井。',i:'守常不变'},
+  49:{n:'泽火革',j:'革，己日乃孚。元亨利贞，悔亡。',i:'变革创新'},
+  50:{n:'火风鼎',j:'鼎，元吉，亨。以木巽火，亨饪也。',i:'鼎立创新'},
+  51:{n:'震为雷',j:'震，亨。震来虩虩，笑言哑哑。震惊百里。',i:'临危不乱'},
+  52:{n:'艮为山',j:'艮其背，不获其身，行其庭，不见其人，无咎。',i:'适可而止'},
+  53:{n:'风山渐',j:'渐，女归吉，利贞。进得位，往有功也。',i:'循序渐进'},
+  54:{n:'雷泽归妹',j:'归妹，征凶，无攸利。女之终也。',i:'顺其自然'},
+  55:{n:'雷火丰',j:'丰，亨。王假之，勿忧，宜日中。',i:'丰盛盈满'},
+  56:{n:'火山旅',j:'旅，小亨。旅贞吉。柔得中乎外。',i:'旅居之道'},
+  57:{n:'巽为风',j:'巽，小亨。利有攸往，利见大人。',i:'顺势而为'},
+  58:{n:'兑为泽',j:'兑，亨，利贞。刚中而柔外。',i:'喜悦沟通'},
+  59:{n:'风水涣',j:'涣，亨。王假有庙。利涉大川，利贞。',i:'涣散重整'},
+  60:{n:'水泽节',j:'节，亨。苦节不可贞。天地节而四时成。',i:'节制适度'},
+  61:{n:'风泽中孚',j:'中孚，豚鱼吉。利涉大川，利贞。',i:'诚信感召'},
+  62:{n:'雷山小过',j:'小过，亨，利贞。可小事，不可大事。',i:'小有逾越'},
+  63:{n:'水火既济',j:'既济，亨小，利贞。初吉终乱。',i:'事成守成'},
+  64:{n:'火水未济',j:'未济，亨。小狐汔济，濡其尾，无攸利。',i:'事未成而可为'}
+};
+
+const ELEMENTS = ['','金','金','火','木','木','水','土','土'];
+
+// ===== 时辰地支数 =====
+const HOUR_NUM = [0,1,2,3,4,5,6,7,8,9,10,11,12]; // 子=1, 丑=2, ...
+
+// ===== Init =====
+(function init() {
+  const now = new Date();
+  const y = now.getFullYear();
+  
+  // Year select
+  const selY = document.getElementById('selYear');
+  for (let i = y - 5; i <= y + 1; i++) {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = i + '年';
+    if (i === y) o.selected = true;
+    selY.appendChild(o);
+  }
+  
+  // Month select
+  const selM = document.getElementById('selMonth');
+  for (let i = 1; i <= 12; i++) {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = i + '月';
+    if (i === now.getMonth() + 1) o.selected = true;
+    selM.appendChild(o);
+  }
+  
+  // Day select
+  const selD = document.getElementById('selDay');
+  for (let i = 1; i <= 31; i++) {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = i + '日';
+    if (i === now.getDate()) o.selected = true;
+    selD.appendChild(o);
+  }
+  
+  // Current hour auto-select
+  const h = now.getHours();
+  const hourIdx = Math.floor((h + 1) / 2) + 1;
+  document.getElementById('selHour').value = Math.min(hourIdx, 12);
+})();
+
+function switchMode(mode) {
+  document.getElementById('modeTime').classList.toggle('active', mode === 'time');
+  document.getElementById('modeNum').classList.toggle('active', mode === 'number');
+  document.getElementById('timeInput').style.display = mode === 'time' ? 'block' : 'none';
+  document.getElementById('numInput').style.display = mode === 'number' ? 'block' : 'none';
+  document.getElementById('result').classList.remove('show');
+}
+
+function getTrigramName(num) {
+  const n = ((num - 1) % 8) + 1;
+  return TRIGRAMS[n];
+}
+
+function getHexagram(upper, lower) {
+  const h = HEX_LOOKUP[upper][lower];
+  if (!h) return null;
+  return HEX_DATA[h];
+}
+
+function buildYaoLines(upperNum, lowerNum) {
+  // Upper trigram yin/yang: 3 lines (top to bottom: line 4,5,6)
+  // Lower trigram yin/yang: 3 lines (bottom to top: line 1,2,3)
+  // Yang = 1 (solid), Yin = 0 (broken)
+  const upperYao = [
+    (upperNum & 4) ? 1 : 0,
+    (upperNum & 2) ? 1 : 0,
+    (upperNum & 1) ? 1 : 0
+  ];
+  const lowerYao = [
+    (lowerNum & 4) ? 1 : 0,
+    (lowerNum & 2) ? 1 : 0,
+    (lowerNum & 1) ? 1 : 0
+  ];
+  // Full 6 lines: top to bottom = upper[0], upper[1], upper[2], lower[0], lower[1], lower[2]
+  return [...upperYao, ...lowerYao];
+}
+
+function renderYaoLines(lines, movingYin = -1) {
+  const container = document.getElementById('yaoContainer');
+  const yaoNames = ['初爻','二爻','三爻','四爻','五爻','上爻'];
+  container.innerHTML = lines.map((line, idx) => {
+    const isYang = line === 1;
+    const cls = isYang ? 'yang' : 'yin';
+    const moving = idx === movingYin ? ' ⚡' : '';
+    return `<div class="yao-row"><div class="yao-line ${cls}"></div><span style="font-size:11px;color:var(--text-light);margin-left:8px;">${yaoNames[5-idx]}${moving}</span></div>`;
+  }).join('');
+}
+
+function getShengKe(selfElem, otherElem) {
+  // 五行生克
+  const cycle = { '金': ['土','水'], '水': ['金','木'], '木': ['水','火'], '火': ['木','土'], '土': ['火','金'] };
+  // cycle[elem] = [生我者, 我生者]
+  const sheng = {
+    '金': { '土': '生', '水': '生' },
+    '水': { '金': '生', '木': '生' },
+    '木': { '水': '生', '火': '生' },
+    '火': { '木': '生', '土': '生' },
+    '土': { '火': '生', '金': '生' }
+  };
+  const ke = {
+    '金': { '木': '克' },
+    '木': { '土': '克' },
+    '土': { '水': '克' },
+    '水': { '火': '克' },
+    '火': { '金': '克' }
+  };
+  
+  // 体生用 / 用生体 / 体克用 / 用克体 / 体用比和
+  if (selfElem === otherElem) return '比和', '体用比和，五行相同，诸事顺遂。双方气场相合，宜合作共事。';
+  
+  // Check 生
+  if (sheng[selfElem] && sheng[selfElem][otherElem]) return '用生体', '用生体，吉。他人或外部环境对你有助益，事情进展顺利，宜乘势而为。';
+  if (sheng[otherElem] && sheng[otherElem][selfElem]) return '体生用', '体生用，先劳后逸。你需要付出较多，但最终会有收获，宜坚持努力。';
+  
+  // Check 克
+  if (ke[selfElem] && ke[selfElem][otherElem]) return '体克用', '体克用，吉中带劳。你能掌控局面，但过程辛苦，宜坚定信念。';
+  if (ke[otherElem] && ke[otherElem][selfElem]) return '用克体', '用克体，凶。外部环境压力较大，宜守不宜攻，谨慎决策。';
+  
+  return '平', '体用关系平和，无明显的生克影响，顺其自然即可。';
+}
+
+function getChangedTrigram(upperNum, lowerNum, movingYin) {
+  // movingYin: 0-5, 0=初爻(lowest bit of lower), 5=上爻(highest bit of upper)
+  // Flip the bit
+  let newUpper = upperNum;
+  let newLower = lowerNum;
+  if (movingYin >= 3) {
+    // Upper trigram: yao 3,4,5 = bits 4,2,1
+    const bit = [4,2,1][movingYin - 3];
+    newUpper = upperNum ^ bit;
+  } else {
+    // Lower trigram: yao 0,1,2 = bits 4,2,1
+    const bit = [4,2,1][movingYin];
+    newLower = lowerNum ^ bit;
+  }
+  return [newUpper, newLower];
+}
+
+function divinate(yy, mm, dd, hh, nums) {
+  // nums: [num1, num2, num3] for number mode
+  let upper, lower, moving;
+  
+  if (nums) {
+    // Number mode
+    upper = ((nums[0] - 1) % 8) + 1;
+    lower = ((nums[1] - 1) % 8) + 1;
+    moving = ((nums[2] - 1) % 6); // 0-5 = 初爻到上爻
+  } else {
+    // Time mode
+    const sum1 = yy + mm + dd;
+    const sum2 = yy + mm + dd + hh;
+    upper = ((sum1 - 1) % 8) + 1;
+    lower = ((sum2 - 1) % 8) + 1;
+    moving = ((sum2 - 1) % 6);
+  }
+  
+  const upperTri = TRIGRAMS[upper];
+  const lowerTri = TRIGRAMS[lower];
+  const hexagram = getHexagram(upper, lower);
+  if (!hexagram) return;
+  
+  // Changed trigram
+  const [newUpper, newLower] = getChangedTrigram(upper, lower, moving);
+  const changedHex = getHexagram(newUpper, newLower);
+  const newUpperTri = TRIGRAMS[newUpper];
+  const newLowerTri = TRIGRAMS[newLower];
+  
+  // 体用: 体卦=下卦(自己), 用卦=上卦(外部+动爻所在)
+  // 若动爻在上卦, 则上卦为用/下卦为体; 若动爻在下卦, 则下卦为用/上卦为体
+  let selfTri, otherTri;
+  if (moving >= 3) {
+    // 动爻在上卦 → 上卦为用
+    selfTri = lowerTri;
+    otherTri = upperTri;
+  } else {
+    // 动爻在下卦 → 下卦为用
+    selfTri = upperTri;
+    otherTri = lowerTri;
+  }
+  
+  const [skLabel, skText] = getShengKe(selfTri.element, otherTri.element);
+  
+  // Render
+  document.getElementById('hexName').textContent = hexagram.n;
+  document.getElementById('hexSub').textContent = `${upperTri.symbol}${lowerTri.symbol} ${upperTri.name}为${upperTri.image} · ${lowerTri.name}为${lowerTri.image}`;
+  
+  const lines = buildYaoLines(upper, lower);
+  renderYaoLines(lines, moving);
+  
+  document.getElementById('infoOriginal').textContent = hexagram.n;
+  document.getElementById('infoOrigSub').textContent = `${upperTri.name}(${upperTri.element}) · ${lowerTri.name}(${lowerTri.element})`;
+  if (changedHex) {
+    document.getElementById('infoChanged').textContent = changedHex.n;
+    document.getElementById('infoChgSub').textContent = `${newUpperTri.name}(${newUpperTri.element}) · ${newLowerTri.name}(${newLowerTri.element})`;
+  } else {
+    document.getElementById('infoChanged').textContent = '—';
+    document.getElementById('infoChgSub').textContent = '无变卦';
+  }
+  document.getElementById('infoSelf').textContent = `${selfTri.name}(${selfTri.element})`;
+  document.getElementById('infoOther').textContent = `${otherTri.name}(${otherTri.element})`;
+  
+  document.getElementById('shengkeText').textContent = `${skLabel}。${skText}`;
+  document.getElementById('judgmentText').textContent = `【${hexagram.n}】${hexagram.j}\n${hexagram.i}`;
+  
+  document.getElementById('result').classList.add('show');
+  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function divinateByTime() {
+  const yy = parseInt(document.getElementById('selYear').value);
+  const mm = parseInt(document.getElementById('selMonth').value);
+  const dd = parseInt(document.getElementById('selDay').value);
+  const hh = parseInt(document.getElementById('selHour').value);
+  
+  if (!yy || !mm || !dd || !hh) {
+    alert('请完整选择年月日及时辰');
+    return;
+  }
+  
+  divinate(yy, mm, dd, hh, null);
+}
+
+function divinateByNumber() {
+  const n1 = parseInt(document.getElementById('num1').value);
+  const n2 = parseInt(document.getElementById('num2').value);
+  const n3 = parseInt(document.getElementById('num3').value);
+  
+  if (!n1 || !n2 || !n3 || n1 < 1 || n2 < 1 || n3 < 1) {
+    alert('请填写三个正整数（1-99）');
+    return;
+  }
+  
+  divinate(null, null, null, null, [n1, n2, n3]);
+}
+</script>
+</body>
+</html>
