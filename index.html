@@ -197,25 +197,37 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* ===== Home: WeChat Follow Section ===== */
+/* ===== WeChat Follow Section ===== */
+.wechat-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 16px 0 6px;
+}
 .wechat-follow {
   background: linear-gradient(135deg, var(--green-deep), #153322);
   border-radius: var(--radius);
-  padding: 20px;
-  margin: 16px 0 6px;
+  padding: 16px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;
 }
+.wechat-follow.personal {
+  background: linear-gradient(135deg, #2c3e50, #1a2a38);
+}
 .wechat-follow::after {
   content: '🏮';
   position: absolute;
-  right: -10px;
-  bottom: -10px;
-  font-size: 80px;
+  right: -8px;
+  bottom: -8px;
+  font-size: 70px;
   opacity: 0.08;
+}
+.wechat-follow.personal::after {
+  content: '💬';
 }
 .wechat-qr {
   width: 80px;
@@ -460,14 +472,26 @@ a { text-decoration: none; color: inherit; }
     </div>
 
     <!-- WeChat Follow -->
-    <div class="wechat-follow">
-      <div class="wechat-qr">
-        <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+    <div class="wechat-section">
+      <div class="wechat-follow">
+        <div class="wechat-qr">
+          <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+        </div>
+        <div class="wechat-info">
+          <h4>📢 公众号：老六茶事</h4>
+          <p>每日运势早知道</p>
+          <span class="wc-id">🔍 微信搜索：老六茶事</span>
+        </div>
       </div>
-      <div class="wechat-info">
-        <h4>📢 关注「老六茶事」</h4>
-        <p>每日运势早知道 · 微信搜一搜</p>
-        <span class="wc-id">🔍 微信号：laoliuchashi</span>
+      <div class="wechat-follow personal">
+        <div class="wechat-qr">
+          <img src="/images/qrcode-wechat-personal.png" alt="老六茶室个人微信">
+        </div>
+        <div class="wechat-info">
+          <h4>💬 个人微信：老六茶室</h4>
+          <p>咨询交流 · 商务合作</p>
+          <span class="wc-id">微信号：laoliuchashi</span>
+        </div>
       </div>
     </div>
 
@@ -487,14 +511,26 @@ a { text-decoration: none; color: inherit; }
       <div class="sub">梅花易数 · <span id="count-huangli">0</span></div>
     </div>
     <div class="article-list" id="list-huangli"></div>
-    <div class="wechat-follow">
-      <div class="wechat-qr">
-        <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+    <div class="wechat-section">
+      <div class="wechat-follow">
+        <div class="wechat-qr">
+          <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+        </div>
+        <div class="wechat-info">
+          <h4>📢 公众号：老六茶事</h4>
+          <p>每日运势早知道</p>
+          <span class="wc-id">🔍 微信搜索：老六茶事</span>
+        </div>
       </div>
-      <div class="wechat-info">
-        <h4>📢 关注「老六茶事」</h4>
-        <p>每日运势早知道</p>
-        <span class="wc-id">🔍 微信号：laoliuchashi</span>
+      <div class="wechat-follow personal">
+        <div class="wechat-qr">
+          <img src="/images/qrcode-wechat-personal.png" alt="老六茶室个人微信">
+        </div>
+        <div class="wechat-info">
+          <h4>💬 个人微信：老六茶室</h4>
+          <p>咨询交流 · 商务合作</p>
+          <span class="wc-id">微信号：laoliuchashi</span>
+        </div>
       </div>
     </div>
     <div class="ad-placeholder">📢 广告位</div>
@@ -508,14 +544,26 @@ a { text-decoration: none; color: inherit; }
       <div class="sub">财神方位 · 牌运指南 · <span id="count-majiang">0</span></div>
     </div>
     <div class="article-list" id="list-majiang"></div>
-    <div class="wechat-follow">
-      <div class="wechat-qr">
-        <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+    <div class="wechat-section">
+      <div class="wechat-follow">
+        <div class="wechat-qr">
+          <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+        </div>
+        <div class="wechat-info">
+          <h4>📢 公众号：老六茶事</h4>
+          <p>每日运势早知道</p>
+          <span class="wc-id">🔍 微信搜索：老六茶事</span>
+        </div>
       </div>
-      <div class="wechat-info">
-        <h4>📢 关注「老六茶事」</h4>
-        <p>每日运势早知道</p>
-        <span class="wc-id">🔍 微信号：laoliuchashi</span>
+      <div class="wechat-follow personal">
+        <div class="wechat-qr">
+          <img src="/images/qrcode-wechat-personal.png" alt="老六茶室个人微信">
+        </div>
+        <div class="wechat-info">
+          <h4>💬 个人微信：老六茶室</h4>
+          <p>咨询交流 · 商务合作</p>
+          <span class="wc-id">微信号：laoliuchashi</span>
+        </div>
       </div>
     </div>
     <div class="ad-placeholder">📢 广告位</div>
@@ -529,14 +577,26 @@ a { text-decoration: none; color: inherit; }
       <div class="sub">传统文化 · <span id="count-zhishi">0</span></div>
     </div>
     <div class="article-list" id="list-zhishi"></div>
-    <div class="wechat-follow">
-      <div class="wechat-qr">
-        <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+    <div class="wechat-section">
+      <div class="wechat-follow">
+        <div class="wechat-qr">
+          <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+        </div>
+        <div class="wechat-info">
+          <h4>📢 公众号：老六茶事</h4>
+          <p>每日运势早知道</p>
+          <span class="wc-id">🔍 微信搜索：老六茶事</span>
+        </div>
       </div>
-      <div class="wechat-info">
-        <h4>📢 关注「老六茶事」</h4>
-        <p>每日运势早知道</p>
-        <span class="wc-id">🔍 微信号：laoliuchashi</span>
+      <div class="wechat-follow personal">
+        <div class="wechat-qr">
+          <img src="/images/qrcode-wechat-personal.png" alt="老六茶室个人微信">
+        </div>
+        <div class="wechat-info">
+          <h4>💬 个人微信：老六茶室</h4>
+          <p>咨询交流 · 商务合作</p>
+          <span class="wc-id">微信号：laoliuchashi</span>
+        </div>
       </div>
     </div>
     <div class="ad-placeholder">📢 广告位</div>
@@ -553,14 +613,26 @@ a { text-decoration: none; color: inherit; }
     <div class="article-list" id="list-jiaocheng-empty">
       <div class="empty-list">📚 教程陆续上线中，敬请期待 ✨</div>
     </div>
-    <div class="wechat-follow">
-      <div class="wechat-qr">
-        <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+    <div class="wechat-section">
+      <div class="wechat-follow">
+        <div class="wechat-qr">
+          <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+        </div>
+        <div class="wechat-info">
+          <h4>📢 公众号：老六茶事</h4>
+          <p>每日运势早知道</p>
+          <span class="wc-id">🔍 微信搜索：老六茶事</span>
+        </div>
       </div>
-      <div class="wechat-info">
-        <h4>📢 关注「老六茶事」</h4>
-        <p>每日运势早知道</p>
-        <span class="wc-id">🔍 微信号：laoliuchashi</span>
+      <div class="wechat-follow personal">
+        <div class="wechat-qr">
+          <img src="/images/qrcode-wechat-personal.png" alt="老六茶室个人微信">
+        </div>
+        <div class="wechat-info">
+          <h4>💬 个人微信：老六茶室</h4>
+          <p>咨询交流 · 商务合作</p>
+          <span class="wc-id">微信号：laoliuchashi</span>
+        </div>
       </div>
     </div>
     <div class="ad-placeholder">📢 广告位</div>
@@ -571,14 +643,26 @@ a { text-decoration: none; color: inherit; }
   <div class="page" id="page-article">
     <div class="back-btn" onclick="backToList()">← 返回</div>
     <div class="detail-wrap" id="article-body"></div>
-    <div class="wechat-follow">
-      <div class="wechat-qr">
-        <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+    <div class="wechat-section">
+      <div class="wechat-follow">
+        <div class="wechat-qr">
+          <img src="/images/qrcode-wechat.jpg" alt="老六茶事公众号二维码">
+        </div>
+        <div class="wechat-info">
+          <h4>📢 公众号：老六茶事</h4>
+          <p>每日运势早知道</p>
+          <span class="wc-id">🔍 微信搜索：老六茶事</span>
+        </div>
       </div>
-      <div class="wechat-info">
-        <h4>📢 关注「老六茶事」</h4>
-        <p>每日运势早知道</p>
-        <span class="wc-id">🔍 微信号：laoliuchashi</span>
+      <div class="wechat-follow personal">
+        <div class="wechat-qr">
+          <img src="/images/qrcode-wechat-personal.png" alt="老六茶室个人微信">
+        </div>
+        <div class="wechat-info">
+          <h4>💬 个人微信：老六茶室</h4>
+          <p>咨询交流 · 商务合作</p>
+          <span class="wc-id">微信号：laoliuchashi</span>
+        </div>
       </div>
     </div>
     <div class="ad-placeholder">📢 广告位</div>
