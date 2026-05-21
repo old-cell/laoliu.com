@@ -442,21 +442,21 @@ function getHexagram(upper, lower) {
 }
 
 function buildYaoLines(upperNum, lowerNum) {
-  // 先天数 → 二进制编码: 乾111(1), 兑110(2), 离101(3), 震100(4), 巽011(5), 坎010(6), 艮001(7), 坤000(8)
+  // 先天数 → 二进制编码 (从下往上: 初爻=bit0, 二爻=bit1, 三爻=bit2)
+  // 乾111(1), 兑110(2), 离101(3), 震100(4), 巽011(5), 坎010(6), 艮001(7), 坤000(8)
   // 转换公式: binary = 8 - xiantianNum
   const upperBits = 8 - upperNum;
   const lowerBits = 8 - lowerNum;
-  // Upper trigram: 3 lines (top=bit2, middle=bit1, bottom=bit0)
-  // Lower trigram: 3 lines (top=bit2, middle=bit1, bottom=bit0)
+  // 爻从上往下显示，所以bit0(LSB)=上爻, bit1=中爻, bit2=初爻
   const upperYao = [
-    (upperBits & 4) ? 1 : 0,
-    (upperBits & 2) ? 1 : 0,
-    (upperBits & 1) ? 1 : 0
+    (upperBits & 1) ? 1 : 0,  // LSB → 上爻 (top)
+    (upperBits & 2) ? 1 : 0,  // bit1 → 五爻 (middle)
+    (upperBits & 4) ? 1 : 0   // MSB → 四爻 (bottom of upper)
   ];
   const lowerYao = [
-    (lowerBits & 4) ? 1 : 0,
-    (lowerBits & 2) ? 1 : 0,
-    (lowerBits & 1) ? 1 : 0
+    (lowerBits & 1) ? 1 : 0,  // LSB → 三爻 (top of lower)
+    (lowerBits & 2) ? 1 : 0,  // bit1 → 二爻 (middle)
+    (lowerBits & 4) ? 1 : 0   // MSB → 初爻 (bottom)
   ];
   // Full 6 lines: top to bottom = upper[0], upper[1], upper[2], lower[0], lower[1], lower[2]
   return [...upperYao, ...lowerYao];
@@ -513,17 +513,17 @@ function getShengKe(selfElem, otherElem) {
 
 function getChangedTrigram(upperNum, lowerNum, movingYin) {
   // 先天数变二进制: binary = 8 - num
-  // 翻转动爻所在的位，再转回先天数
+  // bit0(LSB)=上爻, bit1=五/二爻, bit2(MSB)=四/初爻
   let upperBits = 8 - upperNum;
   let lowerBits = 8 - lowerNum;
   
   if (movingYin >= 3) {
-    // Upper trigram: 动爻0→bit2, 1→bit1, 2→bit0 (从下往上)
-    const bit = [4, 2, 1][movingYin - 3];
+    // Upper trigram: 上爻=bit0, 五爻=bit1, 四爻=bit2 (从下往上翻)
+    const bit = [1, 2, 4][movingYin - 3];
     upperBits = upperBits ^ bit;
   } else {
-    // Lower trigram
-    const bit = [4, 2, 1][movingYin];
+    // Lower trigram: 三爻=bit0, 二爻=bit1, 初爻=bit2
+    const bit = [1, 2, 4][movingYin];
     lowerBits = lowerBits ^ bit;
   }
   
