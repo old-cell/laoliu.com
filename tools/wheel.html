@@ -342,7 +342,7 @@ function spin() {
   // top = -PI/2, so targetAngle = -PI/2 - segMid
   // Add random spins (5-8 full rotations)
   const spins = 5 + Math.random() * 3;
-  const targetAngle = currentAngle + spins * Math.PI * 2 + (Math.PI * 2 - segMid + Math.PI * 0.5);
+  const targetAngle = currentAngle + spins * Math.PI * 2 + (Math.PI * 3 / 2 - segMid);
   
   // Animate
   const startAngle = currentAngle;
