@@ -709,17 +709,35 @@ function goCategory(cat) {
   showPage(cat);
 }
 
-function openArticle(id) {
+async function openArticle(id) {
   const a = allArticles.find(x => x.id === id);
   if (!a) return;
   lastCategory = a.category;
   navHistory = ['article', a.category];
   const el = document.getElementById('article-body');
-  el.innerHTML = `<h1>${a.title}</h1>
-    <div class="detail-meta"><span class="dl-tag">${CAT_LABELS[a.category] || a.category}</span> ${a.date}</div>
-    <p>${a.summary}</p>
-    <div class="dl-section">📖 全文</div>
-    <p class="placeholder-text">—— 完整内容陆续上线 ——</p>`;
+
+  if (a.has_content) {
+    try {
+      const resp = await fetch(`/articles/${id}.html`);
+      const html = await resp.text();
+      el.innerHTML = `<h1 style="font-size:22px;color:var(--green-deep);margin-bottom:6px;line-height:1.4;">${a.title}</h1>
+        <div class="detail-meta"><span class="dl-tag">${CAT_LABELS[a.category] || a.category}</span> ${a.date}</div>
+        ${html}
+        <div class="ad-placeholder">📢 广告位</div>`;
+    } catch(e) {
+      el.innerHTML = `<h1>${a.title}</h1>
+        <div class="detail-meta"><span class="dl-tag">${CAT_LABELS[a.category] || a.category}</span> ${a.date}</div>
+        <p>${a.summary}</p>
+        <p class="placeholder-text">—— 内容加载失败，请稍后再试 ——</p>`;
+    }
+  } else {
+    el.innerHTML = `<h1>${a.title}</h1>
+      <div class="detail-meta"><span class="dl-tag">${CAT_LABELS[a.category] || a.category}</span> ${a.date}</div>
+      <p>${a.summary}</p>
+      <div class="dl-section">📖 全文</div>
+      <p class="placeholder-text">—— 完整内容陆续上线 ——</p>`;
+  }
+
   showPage('article');
 }
 
