@@ -615,6 +615,13 @@ function launchConfetti() {
 // ===== Init =====
 drawWheel();
 updateSpinUI();
+
+// Test mode: ?test=prize forces grand prize demo
+if (window.location.search.includes('test=prize')) {
+  setTimeout(function() {
+    showResult(0); // Index 0 = 老六免费一卦
+  }, 500);
+}
 </script>
 </body>
 </html>
