@@ -863,6 +863,37 @@ function showPage(page) {
   }
 }
 
+// ===== Browser History (fix mobile swipe-back =====
+function pushAppState(type, data) {
+  // type: 'home', 'category', 'article'
+  // data: category name or {category, articleId}
+  const state = { type, data };
+  const title = type === 'home' ? '首页' : 
+    type === 'category' ? CAT_LABELS[data] || data :
+    (allArticles.find(a => a.id === data.articleId)?.title || '文章');
+  history.pushState(state, '', window.location.pathname + window.location.search);
+}
+
+window.addEventListener('popstate', function(e) {
+  const state = e.state;
+  if (!state) {
+    // No app state — go to home
+    navHistory = ['home'];
+    showPage('home');
+    return;
+  }
+  if (state.type === 'home') {
+    navHistory = ['home'];
+    showPage('home');
+  } else if (state.type === 'category') {
+    lastCategory = state.data;
+    navHistory = ['category', state.data];
+    showPage(state.data);
+  } else if (state.type === 'article') {
+    openArticle(state.data.articleId, true);
+  }
+});
+
 function getCurrentArticleId() {
   // Extract article id from the currently displayed content
   const el = document.getElementById('article-body');
@@ -906,10 +937,12 @@ function deskNav(page) {
   if (page === 'home') {
     navHistory = ['home'];
     showPage('home');
+    pushAppState('home', null);
   } else {
     lastCategory = page;
     navHistory = ['category', page];
     showPage(page);
+    pushAppState('category', page);
   }
 }
 
@@ -917,9 +950,10 @@ function goCategory(cat) {
   lastCategory = cat;
   navHistory = ['category', cat];
   showPage(cat);
+  pushAppState('category', cat);
 }
 
-async function openArticle(id) {
+async function openArticle(id, fromPopState) {
   const a = allArticles.find(x => x.id === id);
   if (!a) return;
   lastCategory = a.category;
@@ -949,6 +983,9 @@ async function openArticle(id) {
   }
 
   showPage('article');
+  if (!fromPopState) {
+    pushAppState('article', { category: a.category, articleId: id });
+  }
 }
 
 function backToList() {
@@ -966,10 +1003,12 @@ document.querySelectorAll('.nav-item').forEach(item => {
     if (page === 'home') {
       navHistory = ['home'];
       showPage('home');
+      pushAppState('home', null);
     } else {
       lastCategory = page;
       navHistory = ['category', page];
       showPage(page);
+      pushAppState('category', page);
     }
   });
 });
