@@ -612,10 +612,14 @@ function roundRect(ctx, x, y, w, h, r) {
 
 function downloadCert() {
   const canvas = document.getElementById('certCanvas');
-  const link = document.createElement('a');
-  link.download = '凭证_' + currentCertId + '.png';
-  link.href = canvas.toDataURL('image/png');
-  link.click();
+  canvas.toBlob(function(blob) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = '凭证_' + currentCertId + '.png';
+    link.href = url;
+    link.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  });
 }
 
 // Confetti for grand prize
