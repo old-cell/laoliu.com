@@ -228,6 +228,7 @@ body { padding-bottom: 64px; }
 
 /* Sidebar (mobile: hidden) */
 .sidebar { display: none; }
+.right-sidebar { display: none; }
 
 /* ================================================================
    DESKTOP (≥ 768px)
@@ -543,6 +544,14 @@ body { padding-bottom: 64px; }
 </div>
 
 <!-- ================================================================
+     RIGHT SIDEBAR (desktop only — article directory for current category)
+     ================================================================ -->
+<div class="right-sidebar" id="rightSidebar">
+  <div class="rs-title" id="rightDirTitle"></div>
+  <div id="rightDirList"></div>
+</div>
+
+<!-- ================================================================
      MOBILE TOP BAR (hidden on desktop)
      ================================================================ -->
 <div class="topbar">
@@ -656,14 +665,6 @@ body { padding-bottom: 64px; }
     </div>
 
   </div>
-</div>
-
-<!-- ================================================================
-     RIGHT SIDEBAR (desktop only — article directory for current category)
-     ================================================================ -->
-<div class="right-sidebar" id="rightSidebar">
-  <div class="rs-title" id="rightDirTitle"></div>
-  <div id="rightDirList"></div>
 </div>
 
 <!-- ================================================================
