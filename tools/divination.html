@@ -436,7 +436,7 @@ function getTrigramName(num) {
 }
 
 function getHexagram(upper, lower) {
-  const h = HEX_LOOKUP[upper][lower];
+  const h = HEX_LOOKUP[lower][upper];
   if (!h) return null;
   return HEX_DATA[h];
 }
