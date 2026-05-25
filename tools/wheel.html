@@ -41,20 +41,20 @@ body {
 }
 
 /* Wheel area */
-.wheel-area { position: relative; width: 300px; height: 300px; margin-bottom: 20px; }
-#wheelCanvas { width: 300px; height: 300px; border-radius: 50%; box-shadow: 0 4px 30px rgba(26,60,42,0.2); }
+.wheel-area { position: relative; width: 360px; height: 360px; margin-bottom: 20px; }
+#wheelCanvas { width: 360px; height: 360px; border-radius: 50%; box-shadow: 0 4px 30px rgba(26,60,42,0.2); }
 .pointer {
-  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
   width: 0; height: 0;
-  border-left: 16px solid transparent;
-  border-right: 16px solid transparent;
-  border-top: 28px solid var(--green-deep);
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-top: 32px solid var(--green-deep);
   z-index: 10;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 .pointer::after {
-  content: '▼'; position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
-  font-size: 10px; color: var(--gold);
+  content: '▼'; position: absolute; top: -34px; left: 50%; transform: translateX(-50%);
+  font-size: 12px; color: var(--gold);
 }
 
 /* Spin button */
@@ -70,7 +70,7 @@ body {
 .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* Spin info */
-.spin-info { text-align: center; font-size: 13px; color: var(--text-light); margin-bottom: 16px; }
+.spin-info { text-align: center; font-size: 14px; color: var(--text-light); margin-bottom: 16px; padding: 8px 16px; background: #fff; border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); width: 100%; max-width: 360px; }
 .spin-info #spinsLeft { color: var(--green-deep); font-weight: 700; font-size: 16px; }
 .spin-info.exhausted { color: var(--gold); font-weight: 600; }
 
@@ -102,6 +102,7 @@ body {
   padding: 28px 24px; max-width: 340px; width: 100%;
   text-align: center; box-shadow: 0 8px 40px rgba(0,0,0,0.2);
   animation: modalIn 0.3s ease;
+  max-height: 90vh; overflow-y: auto;
 }
 @keyframes modalIn {
   from { transform: scale(0.8); opacity: 0; }
@@ -157,88 +158,104 @@ body {
     <div class="pointer"></div>
   </div>
 
-  <button class="spin-btn" id="spinBtn" onclick="spin()">🎯 转动运势</button>
+  <div class="spin-info"><span id="spinsLeft">今日可转1次</span></div>
+
+  <button class="spin-btn" id="spinBtn" onclick="toggleSpin()">🎯 启动</button>
 
   <div class="prize-list">
-    <h3>🎁 每日3次 · 奖项设置</h3>
-    <div class="pl-item"><span class="pli-name">👑 老六免费一卦</span><span class="pli-rate gold">10%</span></div>
+    <h3>🎁 奖项设置</h3>
+    <div class="pl-item"><span class="pli-name">👑 免费一卦</span><span class="pli-rate gold">3%</span></div>
     <div class="pl-item"><span class="pli-name">🌟 大吉</span><span class="pli-rate">20%</span></div>
     <div class="pl-item"><span class="pli-name">🍀 小吉</span><span class="pli-rate">25%</span></div>
-    <div class="pl-item"><span class="pli-name">🤝 比助</span><span class="pli-rate">20%</span></div>
-    <div class="pl-item"><span class="pli-name">⚠️ 小凶</span><span class="pli-rate">15%</span></div>
-    <div class="pl-item"><span class="pli-name">💀 大凶</span><span class="pli-rate">10%</span></div>
+    <div class="pl-item"><span class="pli-name">🤝 比助</span><span class="pli-rate">19%</span></div>
+    <div class="pl-item"><span class="pli-name">⚠️ 小凶</span><span class="pli-rate">14%</span></div>
+    <div class="pl-item"><span class="pli-name">💀 大凶</span><span class="pli-rate">19%</span></div>
   </div>
-  <div class="spin-info" id="spinInfo">今日剩余 <span id="spinsLeft">3</span> 次</div>
 </div>
 
 <!-- Modal -->
 <div class="modal-overlay" id="modal">
   <div class="modal-box" id="modalBox">
-    <!-- Standard content -->
-    <div class="mb-icon" id="modalIcon">🎉</div>
-    <h3 id="modalTitle">恭喜！</h3>
-    <div class="mb-result" id="modalResult">你抽到了</div>
-    <button class="mb-btn" onclick="closeModal()">再来一次</button>
-    <br><button class="mb-close" onclick="closeModal()">关闭</button>
-    <!-- Grand prize content (shown when winning 免费一卦) -->
-    <div id="grandPrizeContent" style="display:none;">
-      <img id="certImage" style="width:100%;max-width:320px;border-radius:10px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,0.15);">
-      <div style="text-align:center;">
-        <button class="mb-btn" onclick="downloadCert()" style="display:inline-block;">📥 下载凭证</button>
-      </div>
-      <br><button class="mb-close" onclick="closeModal()" style="display:inline-block;">关闭</button>
-      <div style="margin-top:12px;font-size:12px;color:#888;line-height:1.6;background:#f5f0e8;padding:12px;border-radius:8px;">
-        💡 保存此凭证截图，加微信号 <strong style="color:#1a3c2a;">laoliuchashi</strong> 备注"免费一卦"即可兑奖
-      </div>
+    <img id="prizeImage" style="width:100%;max-width:300px;height:auto;border-radius:10px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,0.15);">
+    <div class="mb-result" id="modalResult"></div>
+    <div style="text-align:center;">
+      <button class="mb-btn" id="downloadPrizeBtn" onclick="downloadPrize()" style="display:inline-block;">📥 下载留个纪念</button>
+    </div>
+    <br><button class="mb-close" onclick="closeModal()" style="display:inline-block;">关闭</button>
+    <div id="prizeExtra" style="margin-top:12px;font-size:12px;color:#888;line-height:1.6;background:#f5f0e8;padding:12px;border-radius:8px;display:none;">
+      💡 保存此凭证截图，加微信号 <strong style="color:#1a3c2a;">laoliuchashi</strong> 备注"免费一卦"即可兑奖
     </div>
   </div>
 </div>
 
 <div class="footer">© 老六茶事 · 内容仅供娱乐参考</div>
 
+<audio id="daxiongSound" preload="auto">
+  <source src="/images/daxiong-sound.m4a" type="audio/mp4">
+</audio>
+
 <div class="confetti-container" id="confettiContainer"></div>
 
 <!-- Hidden canvas for certificate -->
-<canvas id="certCanvas" width="800" height="1120" style="display:none"></canvas>
+<canvas id="certCanvas" width="800" height="860" style="display:none"></canvas>
 
 <script>
-// ===== Segments (weight-based) =====
-const SEGMENTS = [
-  { label: '老六免费一卦', weight: 10, color: '#FFD700', icon: '👑', desc: '恭喜获得老六免费一卦！请加微信 laoliuchashi，老六亲自为你解卦一次。', special: true },
-  { label: '大吉',           weight: 20, color: '#e74c3c', icon: '🌟', desc: '大吉大利！今日万事顺遂，运势极佳，宜大胆行动，把握良机。' },
-  { label: '小吉',           weight: 25, color: '#27ae60', icon: '🍀', desc: '小吉之兆。今日虽有波折但整体向好，稳扎稳打必有收获。' },
-  { label: '比助',           weight: 20, color: '#3498db', icon: '🤝', desc: '比助之象。今日宜合作共赢，与人配合胜过单打独斗，顺势而为。' },
-  { label: '小凶',           weight: 15, color: '#9b59b6', icon: '⚠️', desc: '小凶，宜谨慎。今日不宜冒进，做好本职即可，冲动易招损失。' },
-  { label: '大凶',           weight: 10, color: '#7f8c8d', icon: '💀', desc: '大凶，宜守不宜攻。今天诸事不宜，建议低调蛰伏，以静制动。' }
+// ===== Slices: larger prizes split into pieces and interleaved =====
+const SLICES = [
+  { label: '免费一卦', weight: 3, color: '#FFD700', icon: '👑', desc: '恭喜获得老六免费一卦！请加微信 laoliuchashi，老六亲自为你解卦一次。', special: true },
+  { label: '大吉',   weight: 10, color: '#e74c3c', icon: '🌟', desc: '大吉大利！今日万事顺遂，运势极佳，宜大胆行动，把握良机。' },
+  { label: '小凶',   weight: 7,  color: '#9b59b6', icon: '⚠️', desc: '小凶，宜谨慎。今日不宜冒进，做好本职即可，冲动易招损失。' },
+  { label: '小吉',   weight: 10, color: '#27ae60', icon: '🍀', desc: '小吉之兆。今日虽有波折但整体向好，稳扎稳打必有收获。' },
+  { label: '大凶',   weight: 9,  color: '#7f8c8d', icon: '💀', desc: '大凶，宜守不宜攻。今天诸事不宜，建议低调蛰伏，以静制动。' },
+  { label: '比助',   weight: 9,  color: '#3498db', icon: '🤝', desc: '比助之象。今日宜合作共赢，与人配合胜过单打独斗，顺势而为。' },
+  { label: '大吉',   weight: 10, color: '#e74c3c', icon: '🌟', desc: '大吉大利！今日万事顺遂，运势极佳，宜大胆行动，把握良机。' },
+  { label: '小吉',   weight: 10, color: '#27ae60', icon: '🍀', desc: '小吉之兆。今日虽有波折但整体向好，稳扎稳打必有收获。' },
+  { label: '大凶',   weight: 10, color: '#7f8c8d', icon: '💀', desc: '大凶，宜守不宜攻。今天诸事不宜，建议低调蛰伏，以静制动。' },
+  { label: '比助',   weight: 10, color: '#3498db', icon: '🤝', desc: '比助之象。今日宜合作共赢，与人配合胜过单打独斗，顺势而为。' },
+  { label: '小凶',   weight: 7,  color: '#9b59b6', icon: '⚠️', desc: '小凶，宜谨慎。今日不宜冒进，做好本职即可，冲动易招损失。' },
+  { label: '小吉',   weight: 5,  color: '#27ae60', icon: '🍀', desc: '小吉之兆。今日虽有波折但整体向好，稳扎稳打必有收获。' },
 ];
+const TOTAL_WEIGHT = SLICES.reduce((s, seg) => s + seg.weight, 0);
+const POINTER_ANGLE = Math.PI * 3 / 2; // 12 o'clock (top of wheel)
 
-const TOTAL_WEIGHT = SEGMENTS.reduce((s, seg) => s + seg.weight, 0);
+// ===== State =====
+let currentAngle = Math.random() * Math.PI * 2; // 随机初始角度，确保每次不同
+let velocity = 0;
+let wheelState = 'IDLE'; // IDLE | SPINNING | STOPPING
+let animId = null;
+let spinFrames = 0;
+const START_VELOCITY = 0.35;
+const ACCEL_VELOCITY = 0.02; // initial velocity when starting
+const MIN_VELOCITY = 0.0002; // higher = stops faster
 
-let isSpinning = false;
-let currentAngle = 0;
-
-// ===== Daily Limit (3 spins per day) =====
-function getTodayKey() {
+// ===== Daily Limit =====
+const MAX_SPINS_PER_DAY = 1;
+function todayStr() {
   const d = new Date();
-  return 'wheel_spins_' + d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2);
+  return d.getFullYear() + '-' + ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2);
 }
-function getSpinsLeft() {
-  const count = parseInt(localStorage.getItem(getTodayKey()) || '0');
-  return Math.max(0, 3 - count);
+function checkDailyLimit() {
+  const last = localStorage.getItem('wheel_last_date');
+  const today = todayStr();
+  const el = document.getElementById('spinsLeft');
+  const btn = document.getElementById('spinBtn');
+  if (last === today) {
+    el.textContent = '今日已转，明天再来';
+    el.parentElement.className = 'spin-info exhausted';
+    btn.disabled = true;
+    return false;
+  } else {
+    el.textContent = '今日可转1次';
+    el.parentElement.className = 'spin-info';
+    btn.disabled = false;
+    return true;
+  }
 }
-function recordSpin() {
-  const key = getTodayKey();
-  localStorage.setItem(key, parseInt(localStorage.getItem(key) || '0') + 1);
-}
-function updateSpinUI() {
-  const left = getSpinsLeft();
-  document.getElementById('spinsLeft').textContent = left;
-  const info = document.getElementById('spinInfo');
-  info.classList.toggle('exhausted', left === 0);
-  document.getElementById('spinBtn').disabled = left === 0;
-  document.getElementById('spinBtn').textContent = left > 0 ? '🎯 转动运势（剩' + left + '次）' : '⏰ 今日已用完，明日再来';
+function markSpun() {
+  localStorage.setItem('wheel_last_date', todayStr());
 }
 
+// ===== Drawing =====
 function drawWheel() {
   const canvas = document.getElementById('wheelCanvas');
   const ctx = canvas.getContext('2d');
@@ -246,16 +263,21 @@ function drawWheel() {
 
   ctx.clearRect(0, 0, 600, 600);
 
-  // Draw outer ring
+  // Outer ring
   ctx.beginPath();
   ctx.arc(cx, cy, r, 0, Math.PI * 2);
   ctx.strokeStyle = '#1a3c2a';
   ctx.lineWidth = 4;
   ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.strokeStyle = '#d4af37';
+  ctx.lineWidth = 2;
+  ctx.stroke();
 
-  // Draw segments
+  // Segments
   let startAngle = currentAngle;
-  SEGMENTS.forEach((seg, i) => {
+  SLICES.forEach((seg, i) => {
     const sliceAngle = (seg.weight / TOTAL_WEIGHT) * Math.PI * 2;
     const endAngle = startAngle + sliceAngle;
 
@@ -272,25 +294,20 @@ function drawWheel() {
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    // Text (label rotated)
+    // Text
     const midAngle = startAngle + sliceAngle / 2;
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(midAngle);
     ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px "PingFang SC", "Microsoft YaHei", sans-serif';
-    ctx.shadowColor = 'rgba(0,0,0,0.3)';
-    ctx.shadowBlur = 3;
-    
-    // Icon
-    ctx.font = '22px sans-serif';
-    ctx.fillText(seg.icon, r - 15, 7);
-    
-    // Label
-    ctx.font = '14px "PingFang SC", "Microsoft YaHei", sans-serif';
-    ctx.fillText(seg.label, r - 48, 7);
-    
+    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+    ctx.shadowBlur = 4;
+    ctx.font = '56px sans-serif';
+    ctx.fillText(seg.icon, r - 14, -2);
+    ctx.font = 'bold 40px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.fillText(seg.label, r - 74, -2);
     ctx.restore();
 
     startAngle = endAngle;
@@ -298,7 +315,7 @@ function drawWheel() {
 
   // Center circle
   ctx.beginPath();
-  ctx.arc(cx, cy, 40, 0, Math.PI * 2);
+  ctx.arc(cx, cy, 44, 0, Math.PI * 2);
   ctx.fillStyle = '#1a3c2a';
   ctx.fill();
   ctx.strokeStyle = '#d4af37';
@@ -307,149 +324,126 @@ function drawWheel() {
 
   // Center text
   ctx.fillStyle = '#d4af37';
-  ctx.font = 'bold 18px "PingFang SC", sans-serif';
+  ctx.font = 'bold 26px "PingFang SC", sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('运势', cx, cy - 8);
-  ctx.font = '11px "PingFang SC", sans-serif';
-  ctx.fillText('LUCK', cx, cy + 14);
+  ctx.fillText('运势', cx, cy - 10);
+  ctx.font = '16px "PingFang SC", sans-serif';
+  ctx.fillText('LUCK', cx, cy + 16);
 }
 
-function getRandomSegment() {
-  const rand = Math.random() * TOTAL_WEIGHT;
+// ===== Get segment at pointer =====
+function getSegmentAtPointer() {
+  // The pointer is at POINTER_ANGLE (top, 12 o'clock).
+  // Segment 0 starts at currentAngle.
+  // Find which segment's arc contains POINTER_ANGLE.
+  const relAngle = ((POINTER_ANGLE - currentAngle) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
   let accum = 0;
-  for (let i = 0; i < SEGMENTS.length; i++) {
-    accum += SEGMENTS[i].weight;
-    if (rand < accum) return i;
+  for (let i = 0; i < SLICES.length; i++) {
+    accum += (SLICES[i].weight / TOTAL_WEIGHT) * Math.PI * 2;
+    if (relAngle < accum) return i;
   }
-  return SEGMENTS.length - 1;
+  return SLICES.length - 1;
 }
 
-function spin() {
-  if (isSpinning) return;
-  if (getSpinsLeft() <= 0) {
-    alert('今日抽奖次数已用完，明天再来吧！');
-    return;
-  }
-  isSpinning = true;
-  document.getElementById('spinBtn').disabled = true;
+// ===== Weighted Random Target =====
+let targetSegmentIdx = -1;
+let targetFinalAngle = 0;
 
-  // Pick result
-  const winnerIdx = getRandomSegment();
-  
-  // Record this spin
-  recordSpin();
-  
-  // Calculate target angle: land on the middle of the winning segment
-  // The pointer is at the top (12 o'clock position = -Math.PI/2 or 3*Math.PI/2)
-  // We need to rotate the wheel so the winning segment is under the pointer
-  
-  // Calculate the angle of each segment from start
+function pickTargetSegment() {
+  const rand = Math.random() * TOTAL_WEIGHT;
+  let cumulative = 0;
+  for (let i = 0; i < SLICES.length; i++) {
+    cumulative += SLICES[i].weight;
+    if (rand <= cumulative) return i;
+  }
+  return SLICES.length - 1;
+}
+
+function calcTargetAngle(idx) {
+  // Calculate center angle of the target segment
   let segStart = 0;
-  for (let i = 0; i < winnerIdx; i++) {
-    segStart += (SEGMENTS[i].weight / TOTAL_WEIGHT) * Math.PI * 2;
+  for (let i = 0; i < idx; i++) {
+    segStart += (SLICES[i].weight / TOTAL_WEIGHT) * Math.PI * 2;
   }
-  const segMid = segStart + ((SEGMENTS[winnerIdx].weight / TOTAL_WEIGHT) * Math.PI * 2) / 2;
+  const segWidth = (SLICES[idx].weight / TOTAL_WEIGHT) * Math.PI * 2;
+  const segCenter = segStart + segWidth * (0.2 + Math.random() * 0.6); // 落在扇区中部60%范围，不是边缘
   
-  // The pointer is at top (angle = -Math.PI/2 in standard coords)
-  // We want the segment midpoint at the top
-  // So we need to rotate so that segMid aligns with top
-  // top = -PI/2, so targetAngle = -PI/2 - segMid
-  // Add random spins (5-8 full rotations)
-  const spins = 5 + Math.random() * 3;
-  const targetAngle = currentAngle + spins * Math.PI * 2 + (Math.PI * 3 / 2 - segMid);
+  // Pointer at top (POINTER_ANGLE). For segment to be under pointer:
+  // finalAngle % 2π = POINTER_ANGLE - segCenter (mod 2π)
+  const offset = ((POINTER_ANGLE - segCenter) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
   
-  // Animate
-  const startAngle = currentAngle;
-  const totalRotation = targetAngle - startAngle;
-  const duration = 4000; // 4 seconds
-  const startTime = performance.now();
+  // 5-8 full rotations for visual drama
+  const rotations = 5 + Math.floor(Math.random() * 4);
+  return currentAngle + rotations * 2 * Math.PI + offset;
+}
 
-  function animate(time) {
-    const elapsed = time - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    
-    // Easing: cubic ease-out
-    const eased = 1 - Math.pow(1 - progress, 3);
-    
-    currentAngle = startAngle + totalRotation * eased;
-    drawWheel();
+// ===== Controls =====
+function toggleSpin() {
+  if (wheelState === 'IDLE') {
+    if (!checkDailyLimit()) return;
+    closeModal();
+    startSpin();
+  }
+}
 
-    if (progress < 1) {
-      requestAnimationFrame(animate);
-    } else {
-      // Done spinning
-      isSpinning = false;
-      updateSpinUI();
+function startSpin() {
+  // 先按权重随机选目标扇区
+  targetSegmentIdx = pickTargetSegment();
+  targetFinalAngle = calcTargetAngle(targetSegmentIdx);
+  
+  wheelState = 'SPINNING';
+  velocity = ACCEL_VELOCITY;
+  spinFrames = 0;
+  document.getElementById('spinBtn').disabled = true;
+  document.getElementById('spinBtn').textContent = '🌀 转动中';
+  animLoop();
+}
+
+// ===== Animation Loop =====
+function animLoop() {
+  // === SPINNING: acceleration then auto-stop ===
+  if (wheelState === 'SPINNING') {
+    spinFrames++;
+    if (velocity < START_VELOCITY) {
+      velocity += (START_VELOCITY - velocity) * 0.06;
+    }
+    currentAngle += velocity;
+    if (currentAngle >= targetFinalAngle) {
+      // 达到目标角度，立即急停
+      currentAngle = targetFinalAngle;
+      wheelState = 'STOPPING';
+      document.getElementById('spinBtn').textContent = '⏳ 等待';
+    }
+  
+  // === STOPPING: quick deceleration for visual polish ===
+  } else if (wheelState === 'STOPPING') {
+    spinFrames++;
+    velocity *= 0.85; // 快速衰减，保持停在目标位置
+    currentAngle += velocity;
+    
+    // 确保不越过目标太多，微调归位
+    if (velocity < MIN_VELOCITY || spinFrames > 20) {
+      currentAngle = targetFinalAngle;
+      wheelState = 'IDLE';
+      const winnerIdx = getSegmentAtPointer();
+      document.getElementById('spinBtn').disabled = false;
+      document.getElementById('spinBtn').textContent = '🎯 启动';
       showResult(winnerIdx);
+      drawWheel();
+      cancelAnimationFrame(animId);
+      return;
     }
   }
-
-  requestAnimationFrame(animate);
-}
-
-function showResult(idx) {
-  const seg = SEGMENTS[idx];
-  const modal = document.getElementById('modal');
-  const box = document.getElementById('modalBox');
   
-  if (seg.special) {
-    // Grand prize: show certificate instead of standard modal content
-    document.getElementById('modalIcon').style.display = 'none';
-    document.getElementById('modalTitle').style.display = 'none';
-    document.getElementById('modalResult').style.display = 'none';
-    // Hide standard buttons
-    const stdBtn = box.querySelector('.mb-btn:not([onclick*="downloadCert"])');
-    const stdClose = box.querySelector('.mb-close');
-    if (stdBtn) stdBtn.style.display = 'none';
-    if (stdClose) stdClose.style.display = 'none';
-    
-    box.className = 'modal-box';
-    box.style.padding = '16px';
-    box.style.maxWidth = '360px';
-    box.style.background = '#faf6ef';
-    
-    // Show certificate content
-    document.getElementById('grandPrizeContent').style.display = 'block';
-    generateCertificate();
-    
-    launchConfetti();
-  } else {
-    document.getElementById('modalIcon').style.display = 'block';
-    document.getElementById('modalTitle').style.display = 'block';
-    document.getElementById('modalResult').style.display = 'block';
-    document.getElementById('grandPrizeContent').style.display = 'none';
-    
-    document.getElementById('modalIcon').textContent = seg.icon;
-    document.getElementById('modalTitle').textContent = seg.label;
-    document.getElementById('modalResult').textContent = seg.desc;
-    
-    box.className = 'modal-box';
-    box.style.padding = '28px 24px';
-    box.style.maxWidth = '340px';
-    box.style.background = '#fff';
-    
-    const btn = box.querySelector('.mb-btn');
-    if (btn) {
-      btn.style.display = 'inline-block';
-      btn.textContent = '再来一次';
-      btn.onclick = closeModal;
-    }
-    const closeBtn = box.querySelector('.mb-close');
-    if (closeBtn) closeBtn.style.display = 'inline-block';
-  }
-  
-  modal.classList.add('show');
+  drawWheel();
+  animId = requestAnimationFrame(animLoop);
 }
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('show');
-  document.getElementById('grandPrizeContent').style.display = 'none';
-}
-
-// ===== Certificate Generation =====
-let currentCertId = '';
+let currentPrizeIdx = -1;
+let currentPrizeId = '';
 let currentVerifyCode = '';
+let storedCertId = '';
 
 // 生成验证码 (SHA-256哈希截取前6位)
 const CERT_SECRET = 'laoliu2026Cert@Secret!';
@@ -461,138 +455,464 @@ async function generateVerifyCode(certId) {
   return hex.substring(0, 6).toUpperCase();
 }
 
-async function generateCertificate() {
-  const canvas = document.getElementById('certCanvas');
-  const ctx = canvas.getContext('2d');
-  const W = 800, H = 1120;
+function showResult(idx) {
+  currentPrizeIdx = idx;
+  markSpun(); // 标记今日已转
+  const seg = SLICES[idx];
+  const modal = document.getElementById('modal');
+  const box = document.getElementById('modalBox');
   
-  // Generate unique certificate ID
+  // Generate unique ID
   const now = new Date();
   const dateStr = now.getFullYear() + ('0'+(now.getMonth()+1)).slice(-2) + ('0'+now.getDate()).slice(-2);
   const rand = Math.floor(1000 + Math.random() * 9000);
-  currentCertId = 'LLCS-' + dateStr + '-' + rand;
+  currentPrizeId = 'LLCS-' + dateStr + '-' + rand;
+  storedCertId = currentPrizeId;
   
-  // Generate verification code
-  currentVerifyCode = await generateVerifyCode(currentCertId);
+  // Generate verify code asynchronously
+  const genCode = async () => {
+    currentVerifyCode = await generateVerifyCode(currentPrizeId);
+    // Save to localStorage for verification page
+    const certs = JSON.parse(localStorage.getItem('wheel_certificates') || '[]');
+    certs.push({ id: currentPrizeId, code: currentVerifyCode, date: dateStr, claimed: false });
+    localStorage.setItem('wheel_certificates', JSON.stringify(certs));
+    // Re-draw cert with verify code
+    generatePrizeImage(idx);
+  };
+  genCode();
   
-  // Save to localStorage
-  const certs = JSON.parse(localStorage.getItem('wheel_certificates') || '[]');
-  certs.push({ id: currentCertId, code: currentVerifyCode, date: dateStr, claimed: false });
-  localStorage.setItem('wheel_certificates', JSON.stringify(certs));
+  // Generate the initial prize image (will be re-drawn after verify code is ready)
+  generatePrizeImage(idx);
   
-  // Draw certificate
+  // Show result text
+  document.getElementById('modalResult').textContent = seg.icon + ' ' + seg.label + ' — ' + seg.desc;
+  
+  // Show extra info for grand prize
+  const extra = document.getElementById('prizeExtra');
+  if (seg.special) {
+    extra.style.display = 'block';
+    launchConfetti();
+  } else {
+    extra.style.display = 'none';
+  }
+  
+  // Play sound for 大凶
+  if (seg.label === '大凶') {
+    const audio = document.getElementById('daxiongSound');
+    audio.currentTime = 0;
+    audio.play().catch(function() { /* auto-play may be blocked */ });
+  }
+  
+  box.className = 'modal-box';
+  box.style.padding = '16px';
+  box.style.maxWidth = '360px';
+  box.style.background = '#faf6ef';
+  
+  modal.classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+}
+
+// ===== Prize Image Generation =====
+const PRIZE_DESIGNS = {
+  '大吉': {
+    accent: '#e74c3c', gradient: ['#fff0ed', '#ffdad3'],
+    layout: 'radiant' // big star, celebration sparkles
+  },
+  '小吉': {
+    accent: '#27ae60', gradient: ['#e8f5ee', '#d4edd9'],
+    layout: 'nature' // leaf pattern, gentle curves
+  },
+  '比助': {
+    accent: '#3498db', gradient: ['#e8f0fa', '#d0e2f5'],
+    layout: 'shield' // symmetrical, paired icons
+  },
+  '小凶': {
+    accent: '#9b59b6', gradient: ['#f4ecf7', '#e8d5f0'],
+    layout: 'diamond' // angular, caution pattern
+  },
+  '大凶': {
+    accent: '#7f8c8d', gradient: ['#eef0f0', '#dddfe0'],
+    layout: 'zen' // minimalist circle, balanced
+  },
+  '免费一卦': {
+    accent: '#FFD700', gradient: ['#fff8e0', '#ffe68f'],
+    layout: 'ornate' // rich certificate style
+  }
+};
+
+function generatePrizeImage(idx) {
+  const canvas = document.getElementById('certCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = 800, H = 860;
+  const seg = SLICES[idx];
+  const design = PRIZE_DESIGNS[seg.label] || PRIZE_DESIGNS['大吉'];
+  const now = new Date();
+  const dateStr = now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日';
+  
   ctx.clearRect(0, 0, W, H);
   
-  // Background
-  ctx.fillStyle = '#faf6ef';
+  // Background gradient
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+  bgGrad.addColorStop(0, design.gradient[0]);
+  bgGrad.addColorStop(1, design.gradient[1]);
+  ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, W, H);
   
-  // Outer border
-  ctx.strokeStyle = '#1a3c2a';
-  ctx.lineWidth = 12;
-  ctx.strokeRect(30, 30, W-60, H-60);
+  // Draw unique layout per result type
+  if (design.layout === 'radiant') {
+    // == 大吉: radiant celebration ==
+    drawRadiantLayout(ctx, W, H, seg, design);
+  } else if (design.layout === 'nature') {
+    // == 小吉: gentle nature ==
+    drawNatureLayout(ctx, W, H, seg, design);
+  } else if (design.layout === 'shield') {
+    // == 比助: shield cooperation ==
+    drawShieldLayout(ctx, W, H, seg, design);
+  } else if (design.layout === 'diamond') {
+    // == 小凶: caution diamond ==
+    drawDiamondLayout(ctx, W, H, seg, design);
+  } else if (design.layout === 'zen') {
+    // == 大凶: zen minimal ==
+    drawZenLayout(ctx, W, H, seg, design);
+  } else {
+    // == 免费一卦: ornate certificate ==
+    drawOrnateLayout(ctx, W, H, seg, design);
+  }
   
-  // Inner gold border
-  ctx.strokeStyle = '#d4af37';
-  ctx.lineWidth = 4;
-  ctx.strokeRect(50, 50, W-100, H-100);
-  
-  // Corner decorations
-  const corners = [[60,60], [W-60,60], [60,H-60], [W-60,H-60]];
-  corners.forEach(([x,y]) => {
-    ctx.fillStyle = '#d4af37';
-    ctx.font = '40px sans-serif';
+  // Common bottom brand (skip for ornate which has its own full layout)
+  if (seg.label !== '免费一卦') {
+    ctx.fillStyle = '#1a3c2a';
+    ctx.font = 'bold 20px "PingFang SC", "Microsoft YaHei", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
+    ctx.fillText('老六茶事', W/2, 800);
+    ctx.fillStyle = '#bbb';
+    ctx.font = '16px "PingFang SC", sans-serif';
+    ctx.fillText(dateStr + ' · laoliuchashi.top', W/2, 840);
+    ctx.fillStyle = '#ccc';
+    ctx.font = '14px "PingFang SC", sans-serif';
+    ctx.fillText('内容仅供娱乐参考，请理性看待', W/2, 880);
+  }
+  
+  // Show in modal
+  const img = document.getElementById('prizeImage');
+  img.src = canvas.toDataURL('image/png');
+}
+
+// == Layout: Radiant (大吉) ==
+function drawRadiantLayout(ctx, W, H, seg, design) {
+  // Golden border
+  ctx.strokeStyle = '#d4af37';
+  ctx.lineWidth = 8;
+  ctx.strokeRect(20, 20, W-40, H-40);
+  // Sparkle decorations
+  ctx.fillStyle = design.accent + '40';
+  ctx.font = '24px sans-serif';
+  for (let i = 0; i < 12; i++) {
+    const angle = (i / 12) * Math.PI * 2;
+    const r = 180 + Math.sin(i * 3) * 20;
+    const px = W/2 + Math.cos(angle) * r;
+    const py = 280 + Math.sin(angle) * r;
+    ctx.fillText(['✦','★','✨','⭐'][i % 4], px, py);
+  }
+  // Big icon
+  ctx.font = '160px sans-serif';
+  ctx.fillStyle = design.accent;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = design.accent + '80';
+  ctx.shadowBlur = 30;
+  ctx.fillText('🌟', W/2, 300);
+  ctx.shadowBlur = 0;
+  // Label with golden glow
+  ctx.fillStyle = '#1a3c2a';
+  ctx.font = 'bold 56px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText('大吉', W/2, 430);
+  ctx.fillStyle = design.accent;
+  ctx.font = 'bold 22px "PingFang SC", sans-serif';
+  ctx.fillText('「大吉大利，万事顺遂」', W/2, 490);
+  // Description
+  ctx.fillStyle = '#888';
+  ctx.font = '18px "PingFang SC", sans-serif';
+  ctx.fillText('今日运势极佳，宜大胆行动，把握良机', W/2, 540);
+  // Prize ID
+  ctx.fillStyle = '#aaa';
+  ctx.font = '14px "PingFang SC", sans-serif';
+  ctx.fillText('编号：' + currentPrizeId, W/2, 630);
+}
+
+// == Layout: Nature (小吉) ==
+function drawNatureLayout(ctx, W, H, seg, design) {
+  // Green vine border
+  ctx.strokeStyle = design.accent;
+  ctx.lineWidth = 6;
+  ctx.strokeRect(30, 30, W-60, H-60);
+  ctx.strokeStyle = design.accent + '40';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([10, 8]);
+  ctx.strokeRect(50, 50, W-100, H-100);
+  ctx.setLineDash([]);
+  // Leaf corner decorations
+  const lcorners = [[50,50],[W-50,50],[50,H-50],[W-50,H-50]];
+  lcorners.forEach(([x,y]) => {
+    ctx.font = '32px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = design.accent;
+    ctx.fillText('🍃', x, y);
+  });
+  // Gentle icon
+  ctx.font = '130px sans-serif';
+  ctx.fillStyle = design.accent;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🍀', W/2, 300);
+  // Label
+  ctx.fillStyle = '#1a3c2a';
+  ctx.font = 'bold 48px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText('小吉', W/2, 430);
+  ctx.fillStyle = design.accent;
+  ctx.font = '20px "PingFang SC", sans-serif';
+  ctx.fillText('虽有波折，整体向好，稳扎稳打必有收获', W/2, 490);
+  // Clover decoration
+  ctx.font = '22px sans-serif';
+  for (let i = 0; i < 6; i++) {
+    const angle = (i / 6) * Math.PI * 2 + 0.3;
+    const px = W/2 + Math.cos(angle) * 120;
+    const py = 300 + Math.sin(angle) * 120;
+    ctx.fillStyle = design.accent + '30';
+    ctx.fillText('☘', px, py);
+  }
+  ctx.fillStyle = '#aaa';
+  ctx.font = '14px "PingFang SC", sans-serif';
+  ctx.fillText('编号：' + currentPrizeId, W/2, 630);
+}
+
+// == Layout: Shield (比助) ==
+function drawShieldLayout(ctx, W, H, seg, design) {
+  // Shield-like border
+  ctx.strokeStyle = design.accent + '60';
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.moveTo(40, 80);
+  ctx.lineTo(W-40, 80);
+  ctx.lineTo(W-40, H-80);
+  ctx.lineTo(40, H-80);
+  ctx.closePath();
+  ctx.stroke();
+  // Central icon
+  ctx.font = '120px sans-serif';
+  ctx.fillStyle = design.accent;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🤝', W/2, 300);
+  // Handshake decoration pattern
+  ctx.font = '24px sans-serif';
+  for (let i = 0; i < 6; i++) {
+    const x = 140 + i * 100;
+    ctx.fillStyle = design.accent + '25';
+    ctx.fillText('🔷', x, 180);
+    ctx.fillText('🔷', x, 440);
+  }
+  // Label
+  ctx.fillStyle = '#1a3c2a';
+  ctx.font = 'bold 48px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText('比助', W/2, 430);
+  ctx.fillStyle = design.accent;
+  ctx.font = '20px "PingFang SC", sans-serif';
+  ctx.fillText('宜合作共赢，与人配合胜过单打独斗', W/2, 490);
+  ctx.fillStyle = '#aaa';
+  ctx.font = '14px "PingFang SC", sans-serif';
+  ctx.fillText('编号：' + currentPrizeId, W/2, 630);
+}
+
+// == Layout: Diamond (小凶) ==
+function drawDiamondLayout(ctx, W, H, seg, design) {
+  // Diamond border
+  ctx.save();
+  ctx.translate(W/2, H/2);
+  ctx.rotate(Math.PI / 4);
+  ctx.strokeStyle = design.accent + '50';
+  ctx.lineWidth = 5;
+  ctx.strokeRect(-360, -460, 720, 920);
+  ctx.restore();
+  // Angular icon
+  ctx.font = '120px sans-serif';
+  ctx.fillStyle = design.accent;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('⚠️', W/2, 300);
+  // Caution pattern
+  ctx.font = '20px sans-serif';
+  for (let i = 0; i < 10; i++) {
+    const y = 180 + i * 30;
+    ctx.fillStyle = design.accent + (15 + i * 3).toString(16);
+    ctx.fillText('◆', 150, y);
+    ctx.fillText('◆', W-150, y);
+  }
+  // Label
+  ctx.fillStyle = '#1a3c2a';
+  ctx.font = 'bold 48px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText('小凶', W/2, 430);
+  ctx.fillStyle = design.accent;
+  ctx.font = '20px "PingFang SC", sans-serif';
+  ctx.fillText('今日不宜冒进，做好本职即可', W/2, 490);
+  ctx.fillStyle = '#aaa';
+  ctx.font = '14px "PingFang SC", sans-serif';
+  ctx.fillText('编号：' + currentPrizeId, W/2, 630);
+}
+
+// == Layout: Zen (大凶) ==
+function drawZenLayout(ctx, W, H, seg, design) {
+  // Circle border
+  ctx.strokeStyle = design.accent + '50';
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.arc(W/2, H/2, 420, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.strokeStyle = design.accent + '30';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(W/2, H/2, 390, 0, Math.PI * 2);
+  ctx.stroke();
+  // Yin-yang style icon
+  ctx.font = '140px sans-serif';
+  ctx.fillStyle = '#666';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('☯', W/2, 300);
+  // Subtle ring decoration
+  for (let i = 0; i < 8; i++) {
+    const angle = (i / 8) * Math.PI * 2;
+    const px = W/2 + Math.cos(angle) * 160;
+    const py = 300 + Math.sin(angle) * 160;
+    ctx.font = '18px sans-serif';
+    ctx.fillStyle = design.accent + '30';
+    ctx.fillText('○', px, py);
+  }
+  // Label
+  ctx.fillStyle = '#444';
+  ctx.font = 'bold 48px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText('大凶', W/2, 440);
+  ctx.fillStyle = '#999';
+  ctx.font = '20px "PingFang SC", sans-serif';
+  ctx.fillText('以静制动，否极泰来', W/2, 500);
+  ctx.fillStyle = '#bbb';
+  ctx.font = '14px "PingFang SC", sans-serif';
+  ctx.fillText('编号：' + currentPrizeId, W/2, 630);
+}
+
+// == Layout: Ornate (免费一卦) - Compact full-height design ==
+function drawOrnateLayout(ctx, W, H, seg, design) {
+  const now = new Date();
+  const dateStr = now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日';
+  
+  // Outer frame: dark green + gold
+  ctx.strokeStyle = '#1a3c2a';
+  ctx.lineWidth = 6;
+  ctx.strokeRect(15, 15, W-30, H-30);
+  ctx.strokeStyle = '#d4af37';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(28, 28, W-56, H-56);
+  
+  // Corner lanterns
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  [[45,45],[W-45,45],[45,H-45],[W-45,H-45]].forEach(([x,y]) => {
+    ctx.fillStyle = '#d4af37';
+    ctx.font = '28px sans-serif';
     ctx.fillText('🏮', x, y);
   });
   
-  // Title area - dark green banner
+  // Title banner
   ctx.fillStyle = '#1a3c2a';
-  roundRect(ctx, 100, 120, W-200, 80, 12);
-  
+  roundRect(ctx, 80, 65, W-160, 50, 10);
   ctx.fillStyle = '#d4af37';
-  ctx.font = 'bold 40px "PingFang SC", "Microsoft YaHei", sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('🎉 免费一卦 · 兑奖凭证', W/2, 160);
+  ctx.font = 'bold 26px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText('✨免费一卦 · 兑奖凭证', W/2, 90);
   
-  // Decorative line
+  // Dashed separator
   ctx.strokeStyle = '#d4af37';
-  ctx.lineWidth = 2;
-  ctx.setLineDash([8, 6]);
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([6, 5]);
   ctx.beginPath();
-  ctx.moveTo(120, 250);
-  ctx.lineTo(W-120, 250);
+  ctx.moveTo(100, 155);
+  ctx.lineTo(W-100, 155);
   ctx.stroke();
   ctx.setLineDash([]);
   
-  // Certificate ID
+  // ID + Verify code
   ctx.fillStyle = '#888';
-  ctx.font = '18px "PingFang SC", sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('编号：' + currentCertId, W/2, 290);
-  
-  // Verification code
+  ctx.font = '16px "PingFang SC", sans-serif';
+  ctx.fillText('编号：' + currentPrizeId, W/2, 195);
   ctx.fillStyle = '#d4af37';
-  ctx.font = 'bold 22px "PingFang SC", "Microsoft YaHei", sans-serif';
-  ctx.fillText('验证码：' + currentVerifyCode, W/2, 330);
-  
+  ctx.font = 'bold 20px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText('验证码：' + currentVerifyCode, W/2, 240);
   ctx.fillStyle = '#bbb';
   ctx.font = '12px "PingFang SC", sans-serif';
-  ctx.fillText('凭此验证码可在 laoliuchashi.top/tools/cert-verify 查验真伪', W/2, 358);
+  ctx.fillText('凭此验证码可在 laoliuchashi.top/tools/cert-verify 查验真伪', W/2, 270);
   
-  // Hexagram decoration
-  ctx.font = '80px sans-serif';
-  ctx.fillText('☯', W/2, 480);
+  // Yin-yang
+  ctx.font = '65px sans-serif';
+  ctx.fillStyle = '#aaa';
+  ctx.fillText('☯', W/2, 380);
   
-  // Prize description
+  // Prize text
   ctx.fillStyle = '#1a3c2a';
-  ctx.font = 'bold 28px "PingFang SC", "Microsoft YaHei", sans-serif';
-  ctx.fillText('老六免费一卦', W/2, 590);
-  
+  ctx.font = 'bold 24px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText('老六免费一卦', W/2, 465);
   ctx.fillStyle = '#666';
-  ctx.font = '20px "PingFang SC", sans-serif';
-  ctx.fillText('凭此凭证可找老六为你卜一卦', W/2, 635);
-  
-  // Date
-  ctx.fillStyle = '#999';
   ctx.font = '18px "PingFang SC", sans-serif';
-  ctx.fillText('发放日期：' + now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日', W/2, 700);
+  ctx.fillText('凭此凭证可找老六为你卜一卦', W/2, 510);
+  
+  // Issue date
+  ctx.fillStyle = '#888';
+  ctx.font = '16px "PingFang SC", sans-serif';
+  ctx.fillText('发放日期：' + dateStr, W/2, 560);
   
   // Separator
   ctx.strokeStyle = '#ddd';
   ctx.lineWidth = 1;
-  ctx.setLineDash([5, 5]);
+  ctx.setLineDash([4, 4]);
   ctx.beginPath();
-  ctx.moveTo(120, 750);
-  ctx.lineTo(W-120, 750);
+  ctx.moveTo(100, 600);
+  ctx.lineTo(W-100, 600);
   ctx.stroke();
   ctx.setLineDash([]);
   
-  // WeChat info
+  // Contact
   ctx.fillStyle = '#1a3c2a';
-  ctx.font = 'bold 22px "PingFang SC", sans-serif';
-  ctx.fillText('📱 联系兑奖', W/2, 810);
-  
+  ctx.font = 'bold 20px "PingFang SC", "Microsoft YaHei", sans-serif';
+  ctx.fillText('📱 联系兑奖', W/2, 650);
   ctx.fillStyle = '#555';
-  ctx.font = '18px "PingFang SC", sans-serif';
-  ctx.fillText('微信号：laoliuchashi', W/2, 855);
-  ctx.font = '16px "PingFang SC", sans-serif';
-  ctx.fillText('添加时备注"免费一卦"', W/2, 890);
+  ctx.font = '17px "PingFang SC", sans-serif';
+  ctx.fillText('微信号：laoliuchashi', W/2, 695);
+  ctx.font = '15px "PingFang SC", sans-serif';
+  ctx.fillText('添加时备注"免费一卦"', W/2, 730);
   
-  // Bottom branding
+  // Brand footer
   ctx.fillStyle = '#1a3c2a';
-  ctx.font = '16px "PingFang SC", sans-serif';
-  ctx.fillText('老六茶事 · laoliuchashi.top', W/2, 1000);
-  
+  ctx.font = '15px "PingFang SC", sans-serif';
+  ctx.fillText('老六茶事 · laoliuchashi.top', W/2, 800);
   ctx.fillStyle = '#bbb';
-  ctx.font = '14px "PingFang SC", sans-serif';
-  ctx.fillText('内容仅供娱乐参考，请理性看待', W/2, 1040);
-  
-  // Convert to image and show
-  const img = document.getElementById('certImage');
-  img.src = canvas.toDataURL('image/png');
+  ctx.font = '13px "PingFang SC", sans-serif';
+  ctx.fillText('内容仅供娱乐参考，请理性看待', W/2, 838);
+}
+
+function downloadPrize() {
+  const canvas = document.getElementById('certCanvas');
+  const seg = SLICES[currentPrizeIdx];
+  canvas.toBlob(function(blob) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = '转盘_' + seg.label + '_' + currentPrizeId + '.png';
+    link.href = url;
+    link.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  });
 }
 
 function roundRect(ctx, x, y, w, h, r) {
@@ -608,18 +928,6 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.quadraticCurveTo(x, y, x + r, y);
   ctx.closePath();
   ctx.fill();
-}
-
-function downloadCert() {
-  const canvas = document.getElementById('certCanvas');
-  canvas.toBlob(function(blob) {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.download = '凭证_' + currentCertId + '.png';
-    link.href = url;
-    link.click();
-    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
-  });
 }
 
 // Confetti for grand prize
@@ -643,7 +951,7 @@ function launchConfetti() {
 
 // ===== Init =====
 drawWheel();
-updateSpinUI();
+checkDailyLimit();
 
 // Test mode: ?test=prize forces grand prize demo
 if (window.location.search.includes('test=prize')) {

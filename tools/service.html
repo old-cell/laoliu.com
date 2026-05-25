@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>梅花易数咨询 - 老六茶事</title>
+<meta name="description" content="梅花易数一事一卦，专注人事解惑。感情复合、婚姻归宿、考试学业、事业抉择、择期择吉。">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg-page: #efe4d0;
+  --bg-card: #ffffff;
+  --green-deep: #1a3c2a;
+  --green-mid: #2d5a3e;
+  --gold: #d4af37;
+  --gold-light: #f5e6b8;
+  --gold-pale: #faf3e0;
+  --text: #2c2c2c;
+  --text-light: #888;
+  --border: #e8e0d6;
+  --shadow: 0 2px 12px rgba(26,60,42,0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
+}
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Serif SC", serif;
+  background: var(--bg-page);
+  color: var(--text);
+  min-height: 100vh;
+}
+a { text-decoration: none; color: inherit; }
+.container { max-width: 640px; margin: 0 auto; padding: 16px; }
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--green-deep) 0%, #0f2b1e 100%);
+  padding: 18px 16px; text-align: center; position: sticky; top: 0; z-index: 100;
+}
+.header h1 {
+  font-size: 22px; font-weight: 700; letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--gold) 0%, #e8c840 50%, var(--gold) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.header .sub { font-size: 11px; color: rgba(212,175,55,0.6); margin-top: 3px; }
+.header .back-link {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--gold); font-size: 13px; text-decoration: none;
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* Hero */
+.hero {
+  text-align: center; padding: 36px 20px 32px;
+  background: linear-gradient(135deg, #1a3c2a 0%, #2d5a3e 40%, #4a2c5a 100%);
+  border-radius: var(--radius);
+  position: relative; overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 32px rgba(26,60,42,0.25);
+}
+.hero::before {
+  content: '☯'; position: absolute; font-size: 140px;
+  opacity: 0.06; top: -30px; right: -20px;
+  transform: rotate(15deg);
+}
+.hero-icon { font-size: 52px; position: relative; z-index: 1; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.hero h2 {
+  font-size: 24px; color: var(--gold); margin: 10px 0 6px;
+  letter-spacing: 3px; position: relative; z-index: 1;
+}
+.hero .subtitle {
+  font-size: 13px; color: rgba(212,175,55,0.7);
+  letter-spacing: 4px; position: relative; z-index: 1;
+}
+.hero .desc {
+  font-size: 14px; color: rgba(255,255,255,0.6);
+  margin-top: 12px; line-height: 1.8; position: relative; z-index: 1;
+  max-width: 450px; margin-left: auto; margin-right: auto;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 17px; font-weight: 700; color: var(--green-deep);
+  text-align: center; margin: 24px 0 16px; letter-spacing: 2px;
+}
+.section-title::after {
+  content: ''; display: block; width: 40px; height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--green-deep));
+  margin: 8px auto 0; border-radius: 2px;
+}
+
+/* Cards */
+.card-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 10px; }
+.card {
+  background: linear-gradient(135deg, #fff, #faf3e0);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--gold);
+  transition: all 0.3s ease;
+  cursor: default;
+  position: relative; overflow: hidden;
+}
+.card .icon { font-size: 28px; margin-bottom: 4px; }
+.card .q { font-size: 15px; font-weight: 600; color: var(--green-deep); margin-bottom: 4px; }
+.card .a {
+  font-size: 13px; color: var(--text-light); line-height: 1.6;
+  font-style: italic;
+}
+
+/* Steps */
+.steps { display: flex; flex-direction: column; gap: 10px; margin: 8px 0 16px; }
+.step {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--bg-card); border-radius: var(--radius-sm);
+  padding: 14px 16px; box-shadow: var(--shadow);
+}
+.step-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+  color: var(--gold); display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px; flex-shrink: 0;
+}
+.step-text { font-size: 14px; color: var(--text); line-height: 1.5; }
+
+/* Date Selection */
+.date-section {
+  background: linear-gradient(135deg, #f5eff8, #f0eaf5);
+  border-radius: var(--radius); padding: 20px;
+  margin: 10px 0 16px; text-align: center;
+  border: 1px solid rgba(107,76,138,0.15);
+}
+.date-section h3 { font-size: 16px; color: #6b4c8a; margin-bottom: 6px; }
+.date-section p { font-size: 13px; color: var(--text-light); line-height: 1.7; }
+.date-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px; }
+.date-tag {
+  background: #fff; border: 1px solid rgba(107,76,138,0.2);
+  border-radius: 6px; padding: 5px 12px; font-size: 12px;
+  color: #6b4c8a;
+}
+
+/* CTA */
+.cta {
+  text-align: center; padding: 28px 20px;
+  background: linear-gradient(135deg, var(--green-deep), #153322);
+  border-radius: var(--radius); margin: 20px 0;
+  position: relative; overflow: hidden;
+}
+.cta h3 { font-size: 18px; color: var(--gold); margin-bottom: 12px; letter-spacing: 2px; }
+.cta p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 12px; }
+.cta .qr {
+  width: 110px; height: 110px; margin: 0 auto 12px;
+  background: #fff; border-radius: 10px; padding: 6px;
+  display: flex; align-items: center; justify-content: center;
+}
+.cta .qr img { width: 100%; height: 100%; }
+.cta .wxid {
+  display: inline-block;
+  background: rgba(212,175,55,0.15); color: var(--gold-light);
+  padding: 5px 20px; border-radius: 4px; font-size: 13px;
+  letter-spacing: 2px;
+}
+
+/* Footer & Disclaimer */
+.footer {
+  text-align: center; padding: 24px 16px 20px; color: #888; font-size: 11px;
+}
+.disclaimer {
+  font-size: 11px; color: var(--text-light); text-align: center;
+  padding: 16px 10px; line-height: 1.7; border-top: 1px solid var(--border);
+  margin-top: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="/" class="back-link">← 返回</a>
+  <h1>老六茶事</h1>
+  <div class="sub">梅花易数 · 易学咨询</div>
+</div>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-icon">🔮</div>
+    <h2>梅花易数 · 人生解惑</h2>
+    <div class="subtitle">— 一事一卦 · 专注人事 —</div>
+    <div class="desc">
+      以《周易》梅花易数为根基，通过卦象变化<br>
+      探寻事物发展的方向与内在规律<br>
+      为你的人生抉择提供传统智慧参考
+    </div>
+  </div>
+
+  <!-- Popular Questions -->
+  <div class="section-title">✨ 大家最关心的问题</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="icon">💔</div>
+      <div class="q">「我们还能回到从前吗？」</div>
+      <div class="a">感情复合 · TA对我还有感觉吗？ · 这段关系还有转机吗</div>
+    </div>
+    <div class="card">
+      <div class="icon">❤️</div>
+      <div class="q">「TA到底爱不爱我？」</div>
+      <div class="a">真心判断 · TA的真实想法 · 对方是否另有所属</div>
+    </div>
+    <div class="card">
+      <div class="icon">💍</div>
+      <div class="q">「我什么时候能结婚？」</div>
+      <div class="a">正缘归宿 · 何时遇到对的人 · 这段感情能走到最后吗</div>
+    </div>
+    <div class="card">
+      <div class="icon">📚</div>
+      <div class="q">「这次考试能上岸吗？」</div>
+      <div class="a">学业前程 · 考研考公运势 · 什么时候考最顺利</div>
+    </div>
+    <div class="card">
+      <div class="icon">💼</div>
+      <div class="q">「该不该跳槽 / 创业？」</div>
+      <div class="a">事业抉择 · 跳槽时机 · 创业方向 · 与谁合作能成</div>
+    </div>
+    <div class="card">
+      <div class="icon">🏠</div>
+      <div class="q">「搬家 / 装修选哪天？」</div>
+      <div class="a">择日择吉 · 搬家动土择期 · 重要事项的最佳时机</div>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <div class="section-title">🔮 咨询流程</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">添加老六微信 · <strong>说明来意 + 报数起卦</strong></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">一事一卦 · <strong>专注你的核心问题</strong></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">卦象解读 · <strong>传统智慧仅供参考</strong></div>
+    </div>
+  </div>
+
+  <!-- Date Selection -->
+  <div class="date-section">
+    <h3>📅 择期服务</h3>
+    <p>婚嫁择吉 · 搬家动土 · 开业择日 · 装修起工<br>用梅花易数为你的重要日子挑选最合适的时机</p>
+    <div class="date-tags">
+      <span class="date-tag">💒 结婚择期</span>
+      <span class="date-tag">🏠 搬家择日</span>
+      <span class="date-tag">🏪 开业择吉</span>
+      <span class="date-tag">🔨 动土择时</span>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h3>📩 扫码咨询</h3>
+    <p>添加老六微信，说明你的问题<br>一事一卦，为你的困惑找到传统智慧的参考方向</p>
+    <div class="qr">
+      <img src="/images/qrcode-wechat.jpg" alt="老六查事">
+    </div>
+    <div class="wxid">微信号：laoliuchashi</div>
+    <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:10px;">
+      加微信请备注「易学咨询」以便快速沟通
+    </p>
+  </div>
+
+  <div class="disclaimer">
+    ⚠️ 梅花易数作为传统文化中的一种智慧方法，其分析结果仅作为参考和思考方向的辅助。<br>
+    人生重大决定请结合自身实际情况理性判断，切勿过度依赖传统咨询内容。
+  </div>
+
+</div>
+
+<div class="footer">© 老六茶事 · 内容仅供娱乐参考 · 切勿过度依赖</div>
+
+</body>
+</html>
