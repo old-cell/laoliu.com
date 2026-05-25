@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+<title>京氏易传 - 老六茶事藏书阁</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --green-deep: #1a3c2a; --green-mid: #2d5a3e; --gold: #d4af37; --gold-light: #f5e6b8; --bg: #efe4d0; --card: #ffffff; --text: #2c2c2c; --text-light: #666; --sidebar-w: 300px; }
+body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Serif SC", serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+.sidebar { width: var(--sidebar-w); min-width: var(--sidebar-w); background: linear-gradient(180deg, var(--green-deep) 0%, #0f2b1e 100%); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow: hidden; }
+.sidebar-header { padding: 28px 20px; text-align: center; border-bottom: 1px solid rgba(212,175,55,0.2); }
+.sidebar-header h2 { font-size: 22px; font-weight: 700; letter-spacing: 4px; background: linear-gradient(135deg, var(--gold), #e8c840, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.sidebar-header .sub { font-size: 12px; color: rgba(212,175,55,0.5); margin-top: 4px; letter-spacing: 2px; }
+.back-link { display: block; padding: 12px 20px; color: var(--gold); font-size: 14px; text-decoration: none; cursor: pointer; border-bottom: 1px solid rgba(212,175,55,0.1); }
+.back-link:hover { background: rgba(212,175,55,0.12); }
+.chapter-list { flex: 1; overflow-y: auto; padding: 8px 0; }
+.chapter-list::-webkit-scrollbar { width: 4px; }
+.chapter-list::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+.chapter-item { padding: 7px 20px 7px 28px; cursor: pointer; font-size: 13px; color: rgba(255,255,255,0.7); transition: all 0.25s; display: flex; align-items: center; gap: 8px; }
+.chapter-item:hover { background: rgba(212,175,55,0.1); color: var(--gold); padding-left: 32px; }
+.chapter-item.active { background: rgba(212,175,55,0.15); color: var(--gold); font-weight: 600; border-left: 3px solid var(--gold); }
+.chapter-item .ci-num { font-size: 10px; color: rgba(212,175,55,0.4); min-width: 22px; }
+.content { flex: 1; overflow-y: auto; height: 100vh; }
+.content::-webkit-scrollbar { width: 6px; }
+.content::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 6px; }
+.book-header { text-align: center; padding: 40px 20px 24px; border-bottom: 2px solid var(--gold); margin: 0 40px; }
+.book-header h1 { font-size: 28px; color: var(--green-deep); letter-spacing: 4px; margin-bottom: 6px; }
+.book-header .book-sub { font-size: 13px; color: var(--text-light); letter-spacing: 2px; }
+.book-header .book-author { font-size: 14px; color: var(--green-mid); margin-top: 8px; }
+.chapter-content { padding: 30px 40px 60px; max-width: 820px; margin: 0 auto; display: none; }
+.chapter-content.active { display: block; }
+.chapter-content .main-title { font-size: 22px; font-weight: 700; color: var(--green-deep); text-align: center; margin-bottom: 16px; letter-spacing: 2px; }
+.chapter-content p { font-size: 16px; line-height: 2; text-indent: 2em; margin-bottom: 8px; color: #444; }
+.chapter-content .no-indent { text-indent: 0; }
+.mobile-chapter-nav { display: none; }
+@media (max-width: 767px) {
+  .sidebar { display: none; }
+  .chapter-content { padding: 16px; }
+  .book-header { margin: 0 16px; }
+  .book-header h1 { font-size: 22px; }
+  .mobile-chapter-nav { display: block; margin: 0 16px 16px; }
+  .mc-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 16px; background: var(--green-deep); color: var(--gold); border: none; border-radius: 8px; font-size: 15px; cursor: pointer; font-weight: 600; }
+  .mc-list { display: none; max-height: 50vh; overflow-y: auto; background: #fff; border-radius: 0 0 8px 8px; border: 1px solid #e0d8cc; }
+  .mc-list.open { display: block; }
+  .mc-item { padding: 10px 16px; font-size: 14px; color: var(--text); border-bottom: 1px solid #f0ebe3; cursor: pointer; }
+  .mc-item:hover { background: #faf3e0; }
+  .mc-item.active { background: #faf3e0; color: var(--green-deep); font-weight: 600; border-left: 3px solid var(--gold); }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h2>京氏易传</h2>
+    <div class="sub">西汉易学卦气经典</div>
+    <div class="sub" style="font-size:11px;">汉·京房</div>
+  </div>
+  <div class="back-link" onclick="window.location.href='/'">🏠 返回首页</div>
+  <div class="chapter-list" id="chapterList">
+    <div class="chapter-item" onclick="showChapter(0)" data-chapter="0"><span class="ci-num">1</span>前言</div>
+    <div class="chapter-item" onclick="showChapter(1)" data-chapter="1"><span class="ci-num">2</span>乾上乾下</div>
+    <div class="chapter-item" onclick="showChapter(2)" data-chapter="2"><span class="ci-num">3</span>巽下乾上</div>
+    <div class="chapter-item" onclick="showChapter(3)" data-chapter="3"><span class="ci-num">4</span>艮下乾上</div>
+    <div class="chapter-item" onclick="showChapter(4)" data-chapter="4"><span class="ci-num">5</span>坤下乾上</div>
+    <div class="chapter-item" onclick="showChapter(5)" data-chapter="5"><span class="ci-num">6</span>坤下巽上</div>
+    <div class="chapter-item" onclick="showChapter(6)" data-chapter="6"><span class="ci-num">7</span>坤下艮上</div>
+    <div class="chapter-item" onclick="showChapter(7)" data-chapter="7"><span class="ci-num">8</span>坤下离上</div>
+    <div class="chapter-item" onclick="showChapter(8)" data-chapter="8"><span class="ci-num">9</span>乾下离上</div>
+    <div class="chapter-item" onclick="showChapter(9)" data-chapter="9"><span class="ci-num">10</span>震上震下</div>
+    <div class="chapter-item" onclick="showChapter(10)" data-chapter="10"><span class="ci-num">11</span>坤下震上</div>
+    <div class="chapter-item" onclick="showChapter(11)" data-chapter="11"><span class="ci-num">12</span>坎下震上</div>
+    <div class="chapter-item" onclick="showChapter(12)" data-chapter="12"><span class="ci-num">13</span>巽下震上</div>
+    <div class="chapter-item" onclick="showChapter(13)" data-chapter="13"><span class="ci-num">14</span>巽下坤上</div>
+    <div class="chapter-item" onclick="showChapter(14)" data-chapter="14"><span class="ci-num">15</span>巽下坎上</div>
+    <div class="chapter-item" onclick="showChapter(15)" data-chapter="15"><span class="ci-num">16</span>巽下兑上</div>
+    <div class="chapter-item" onclick="showChapter(16)" data-chapter="16"><span class="ci-num">17</span>震下兑上</div>
+    <div class="chapter-item" onclick="showChapter(17)" data-chapter="17"><span class="ci-num">18</span>坎上坎下</div>
+    <div class="chapter-item" onclick="showChapter(18)" data-chapter="18"><span class="ci-num">19</span>兑下坎上</div>
+    <div class="chapter-item" onclick="showChapter(19)" data-chapter="19"><span class="ci-num">20</span>离下坤上</div>
+    <div class="chapter-item" onclick="showChapter(20)" data-chapter="20"><span class="ci-num">21</span>坎下坤上</div>
+    <div class="chapter-item" onclick="showChapter(21)" data-chapter="21"><span class="ci-num">22</span>艮下艮上</div>
+    <div class="chapter-item" onclick="showChapter(22)" data-chapter="22"><span class="ci-num">23</span>离下艮上</div>
+    <div class="chapter-item" onclick="showChapter(23)" data-chapter="23"><span class="ci-num">24</span>乾下艮上</div>
+    <div class="chapter-item" onclick="showChapter(24)" data-chapter="24"><span class="ci-num">25</span>兑下艮上</div>
+    <div class="chapter-item" onclick="showChapter(25)" data-chapter="25"><span class="ci-num">26</span>兑下离上</div>
+    <div class="chapter-item" onclick="showChapter(26)" data-chapter="26"><span class="ci-num">27</span>兑下乾上</div>
+    <div class="chapter-item" onclick="showChapter(27)" data-chapter="27"><span class="ci-num">28</span>兑下巽上</div>
+    <div class="chapter-item" onclick="showChapter(28)" data-chapter="28"><span class="ci-num">29</span>艮下巽上</div>
+    <div class="chapter-item" onclick="showChapter(29)" data-chapter="29"><span class="ci-num">30</span>坤下坤上（卷中）</div>
+    <div class="chapter-item" onclick="showChapter(30)" data-chapter="30"><span class="ci-num">31</span>震下坤上</div>
+    <div class="chapter-item" onclick="showChapter(31)" data-chapter="31"><span class="ci-num">32</span>兑下坤上</div>
+    <div class="chapter-item" onclick="showChapter(32)" data-chapter="32"><span class="ci-num">33</span>坎下艮上</div>
+    <div class="chapter-item" onclick="showChapter(33)" data-chapter="33"><span class="ci-num">34</span>坎下巽上</div>
+    <div class="chapter-item" onclick="showChapter(34)" data-chapter="34"><span class="ci-num">35</span>坎下乾上</div>
+    <div class="chapter-item" onclick="showChapter(35)" data-chapter="35"><span class="ci-num">36</span>离下乾上</div>
+    <div class="chapter-item" onclick="showChapter(36)" data-chapter="36"><span class="ci-num">37</span>兑下兑上</div>
+    <div class="chapter-item" onclick="showChapter(37)" data-chapter="37"><span class="ci-num">38</span>坎下兑上</div>
+    <div class="chapter-item" onclick="showChapter(38)" data-chapter="38"><span class="ci-num">39</span>坤下兑上</div>
+    <div class="chapter-item" onclick="showChapter(39)" data-chapter="39"><span class="ci-num">40</span>艮下兑上</div>
+    <div class="chapter-item" onclick="showChapter(40)" data-chapter="40"><span class="ci-num">41</span>艮下坎上</div>
+  </div>
+</div>
+<div class="content">
+  <div class="book-header">
+    <h1>京氏易传</h1>
+    <div class="book-author">汉·京房</div>
+    <div class="book-sub">西汉易学卦气经典</div>
+  </div>
+  <div class="mobile-chapter-nav">
+    <button class="mc-toggle" onclick="var m=document.getElementById('mcList');m.classList.toggle('open');this.classList.toggle('open')">
+      <span id="mcCurrent">目录</span> <span class="mc-arrow">▼</span>
+    </button>
+    <div class="mc-list" id="mcList">
+      <div class="mc-item" onclick="showChapter(0)">前言</div>
+      <div class="mc-item" onclick="showChapter(1)">乾上乾下</div>
+      <div class="mc-item" onclick="showChapter(2)">巽下乾上</div>
+      <div class="mc-item" onclick="showChapter(3)">艮下乾上</div>
+      <div class="mc-item" onclick="showChapter(4)">坤下乾上</div>
+      <div class="mc-item" onclick="showChapter(5)">坤下巽上</div>
+      <div class="mc-item" onclick="showChapter(6)">坤下艮上</div>
+      <div class="mc-item" onclick="showChapter(7)">坤下离上</div>
+      <div class="mc-item" onclick="showChapter(8)">乾下离上</div>
+      <div class="mc-item" onclick="showChapter(9)">震上震下</div>
+      <div class="mc-item" onclick="showChapter(10)">坤下震上</div>
+      <div class="mc-item" onclick="showChapter(11)">坎下震上</div>
+      <div class="mc-item" onclick="showChapter(12)">巽下震上</div>
+      <div class="mc-item" onclick="showChapter(13)">巽下坤上</div>
+      <div class="mc-item" onclick="showChapter(14)">巽下坎上</div>
+      <div class="mc-item" onclick="showChapter(15)">巽下兑上</div>
+      <div class="mc-item" onclick="showChapter(16)">震下兑上</div>
+      <div class="mc-item" onclick="showChapter(17)">坎上坎下</div>
+      <div class="mc-item" onclick="showChapter(18)">兑下坎上</div>
+      <div class="mc-item" onclick="showChapter(19)">离下坤上</div>
+      <div class="mc-item" onclick="showChapter(20)">坎下坤上</div>
+      <div class="mc-item" onclick="showChapter(21)">艮下艮上</div>
+      <div class="mc-item" onclick="showChapter(22)">离下艮上</div>
+      <div class="mc-item" onclick="showChapter(23)">乾下艮上</div>
+      <div class="mc-item" onclick="showChapter(24)">兑下艮上</div>
+      <div class="mc-item" onclick="showChapter(25)">兑下离上</div>
+      <div class="mc-item" onclick="showChapter(26)">兑下乾上</div>
+      <div class="mc-item" onclick="showChapter(27)">兑下巽上</div>
+      <div class="mc-item" onclick="showChapter(28)">艮下巽上</div>
+      <div class="mc-item" onclick="showChapter(29)">坤下坤上（卷中）</div>
+      <div class="mc-item" onclick="showChapter(30)">震下坤上</div>
+      <div class="mc-item" onclick="showChapter(31)">兑下坤上</div>
+      <div class="mc-item" onclick="showChapter(32)">坎下艮上</div>
+      <div class="mc-item" onclick="showChapter(33)">坎下巽上</div>
+      <div class="mc-item" onclick="showChapter(34)">坎下乾上</div>
+      <div class="mc-item" onclick="showChapter(35)">离下乾上</div>
+      <div class="mc-item" onclick="showChapter(36)">兑下兑上</div>
+      <div class="mc-item" onclick="showChapter(37)">坎下兑上</div>
+      <div class="mc-item" onclick="showChapter(38)">坤下兑上</div>
+      <div class="mc-item" onclick="showChapter(39)">艮下兑上</div>
+      <div class="mc-item" onclick="showChapter(40)">艮下坎上</div>
+    </div>
+  </div>
+  <div class="chapter-content" id="ch0">
+    <div class="main-title">前言</div>
+<p class="no-indent verse" style="text-align:center;font-weight:bold;margin-bottom:20px;">钦定四库全书</p>
+<p class="no-indent verse" style="text-align:center;">京氏易传　汉   京房   撰</p>  </div>
+  <div class="chapter-content" id="ch1">
+    <div class="main-title">乾上乾下</div>
+<p class="no-indent verse">乾上乾下</p>
+<p class="no-indent verse">纯阳用事。象配天，属金。与坤为飞伏，居世。【壬戌土，癸酉金。】《易》云：“用九，见群龙无首，吉”。【纯阳，用九之德。】九三，三公为应，肖乾乾、夕惕之忧。</p>
+<p class="no-indent verse">甲壬配外内二象，【乾为天地之首，分甲壬入乾位。】积算起己巳火，至戊辰土，周而复始。【吉凶之兆，积年起月，积日起时，积时起卦入本宫。】</p>
+<p class="no-indent verse">五星从位起镇星，【土星入西方，丽西北，居壬戌为伏位。】参宿从位起壬戌，【壬戌在世，居宗庙。】建子起潜龙，【十一月冬至，一阳生。】建巳至极，主亢位。【四月龙见于辰，阳极阴来，吉去凶生，用九吉。】</p>
+<p class="no-indent verse">配于人事：为首，【乾为首也。】为君父。【乾象坚刚，天地之尊，故为君父。】于类：为马，为龙。【天行运转不息。】</p>
+<p class="no-indent verse">降五行，颁六位。【十二辰分六位升降，以时消息吉凶。】居西北之分野，阴阳相战之地。《易》云：“战于乾。”【乾为阳，西北阴，阳入阴，二气盛必战。】</p>
+<p class="no-indent verse">天六位，地六气。六象，六包（虎易注：广西版《易占解读》为六色。两字都不可解，存疑。），四象分万物。阴阳无差，升降有等。【阴阳二十四候，律吕调矣。】人事吉凶，见乎其象，造化分乎有无。【故云：变动不居，周流六虚。】</p>
+<p class="no-indent verse">六位纯阳，阴象在中。【阳中阴，阴中阳。】阳为君，阴为臣；阳为民，阴为事。阳实阴虚，明暗之象，阴阳可知。【三五为阳，二四为阴，初上潜亢。】</p>
+<p class="no-indent verse">水配位为褔德，【甲子水是乾之子孙。】木入金乡居宝贝，【甲寅木是乾之财。】土临内象为父母，【甲辰土是乾之父母。】火来四上嫌相敌，【壬午火是乾之官鬼。】金入金乡木渐微。【壬申金同位伤木。】宗庙上建戌亥，乾本位。【戌亥乾之位。】</p>
+<p class="no-indent verse">阳极阴生。【降入姤卦。】八卦例诸。</p>  </div>
+  <div class="chapter-content" id="ch2">
+    <div class="main-title">巽下乾上</div>
+<p class="no-indent verse">巽下乾上   姤：</p>
+<p class="no-indent verse">阴爻用事。金木互体，天下风行曰姤。姤，遇也。《易》曰：“阴遇阳。”【一阴初生，阳气犹盛，阴未为敌。】与巽为飞伏，元士居世。【辛丑土，甲子水。】尊就卑，【子孙与父母相代位。】定吉凶，只取一爻之象。【多以少为贵。】九四诸侯坚刚在上，阴气处下。《易》云：“系于金柅。”</p>
+<p class="no-indent verse">巽积阴入阳，辛壬降内外象，建庚午至乙亥。【芒种，小雪。】积算起乙亥水，至丙戌土，（虎易注：丙戌土疑为甲戌土之误。）周而复始。【灾福之兆，生乎五行升降也。】</p>
+<p class="no-indent verse">五星从位起太白，【太白在西，居金位。】井宿从位入辛丑，【辛丑入土，元土临母也。】（虎易注：元土当为元士之误。）</p>
+<p class="no-indent verse">建午起坤宫初六爻。《易》云：“履霜坚冰至。”建亥，龙战于野。【戌亥是乾之位。乾伏本位必战，积阴之地犹盛，故战。】</p>
+<p class="no-indent verse">配于人事：为腹，为母，【坤顺，容于物。】于类为马。《易》云：“行地无疆。”【此释一爻配坤象，本体是乾巽，今赞一爻起阴，假坤象言之。】</p>
+<p class="no-indent verse">内巽为风，乾为天；天下有风行，君子以号令告四方。【巽，入也。风入于坤，皆动也。故知天下有风动其物也。】</p>
+<p class="no-indent verse">天风气象三十六候。【三十六候节气，降大风象。】木入金为始，【金纳木也。】阴不能制于阳，附于金柅。《易》之“柔道牵”也。</p>
+<p class="no-indent verse">五行升降，以时消息，阴荡降入遁。【天山遁卦。】</p>  </div>
+  <div class="chapter-content" id="ch3">
+    <div class="main-title">艮下乾上</div>
+<p class="no-indent verse">艮下乾上   遁：</p>
+<p class="no-indent verse">阴爻用事。阴荡阳，遁。金土见象，山在天下为遁。【遁，退也。】阴来阳退也。小人君子污隆，契斯义也。《易>云：“遁世无闷。”与艮为飞伏，大夫居世。建辛未为月。【丙午火，丙寅木。】（虎易注：丙寅木当为甲寅木之误。）六二得应，与君位遇建焉，臣事君，全身远害。【遁，候时也。】</p>
+<p class="no-indent verse">建辛未至丙子，阴阳遁去，终而伏位。【从六月至十一月也。】积算起丙子至乙亥，周而复始。【火土同宫，天与山遁。】阳消阴长，无专于败。《系》云：能消者息，必专者败。（虎易注：考此句，不是出于《系辞》，而是出于《易纬、乾凿度》。）</p>
+<p class="no-indent verse">五星从位起太阴，鬼宿入位降丙辰。【丙辰临元土。】（虎易注：元土当为元士之误。）</p>
+<p class="no-indent verse">配于人事：为背，为手。【艮为背、手。】于类为狗，为山石。</p>
+<p class="no-indent verse">内外升降，阴阳分数二十八候。【分阴阳进退。】</p>
+<p class="no-indent verse">土入金为缓，积阳为天，积阴为地。山所地高峻，逼通于天。是阴长阳消，降入否。【阴逼阳去，入天地否卦。】</p>  </div>
+  <div class="chapter-content" id="ch4">
+    <div class="main-title">坤下乾上</div>
+<p class="no-indent verse">坤下乾上   否：</p>
+<p class="no-indent verse">内象阴长，【纯用阴事】天气上腾，地气下降，二象分离，万物不交也。小人道长，君子道消。【阴小人，阳君子。】《易》云：“否之匪人。”与坤为飞伏，三公居世。【乙卯木，甲辰土。】上九宗庙为应。君子以俟时，小人为灾。【乙卯泰来。】</p>
+<p class="no-indent verse">建壬申至丁丑，阴气浸长。【七月立秋，至十二月大寒。】积算起丁丑至丙子，周而复始。【金、丑土同宫，吉凶见矣。】</p>
+<p class="no-indent verse">五星从位起岁星，【木星入卦用事。】柳宿从位降乙卯。【乙卯临三公。】气分气候三十六。【六六三十六，积算吉凶。】阴阳升降，阳道消铄，阴气凝结，君臣父子各不迨及。【阴荡阳来道行矣。】</p>
+<p class="no-indent verse">《易》曰：“其亡其亡，系于苞桑。”【苞桑则丛桑也。】天地清浊，阴薄【音：博】阳消，天地盈虚，与时消息。危难之世，势不可久。</p>
+<p class="no-indent verse">五位既分，四时行矣。【君子当危难世，独志，难不可久；立特处不改其操，将及泰来。】上九云：“否终则顷，何可长也。”【否及则泰来。】阴长降入于观。【九四被阴逼入观卦。】</p>  </div>
+  <div class="chapter-content" id="ch5">
+    <div class="main-title">坤下巽上</div>
+<p class="no-indent verse">坤下巽上   观：</p>
+<p class="no-indent verse">内象阴道已成，威权在臣。虽大观在上，而阴道浸长。与巽为飞伏。诸侯临世，【辛未土，壬午火。】反应元士而奉九五。【君位也。】《易》云：“观国之光，利用宾于王。”【臣道出于六四爻也。】</p>
+<p class="no-indent verse">建癸酉至戊寅，阴阳交伏。【秋分至立春。】积算起戊寅至丁丑，周而复始。【用金为首。】金火土互为体。</p>
+<p class="no-indent verse">五星从位起荧惑，【火星入卦用事吉凶。】星宿从位降辛未。【星宿入诸侯宫，木星同位。】土木分气二十八。【积算分配六位，吉凶爻定数。】阴阳升降，定吉凶成败。取六四至于九五，成卦之终也。</p>
+<p class="no-indent verse">《易》云：“观我生。”【我生即道也。】又云：“风行地上。”</p>
+<p class="no-indent verse">列象分爻，以定阴阳进退之道，吉凶见矣。地上见巽，积阴凝盛，降入于剥。【九五退阴入剥卦。】</p>  </div>
+  <div class="chapter-content" id="ch6">
+    <div class="main-title">坤下艮上</div>
+<p class="no-indent verse">坤下艮上   剥：</p>
+<p class="no-indent verse">柔长刚减，天地盈虚。【建戌至建亥。】体象金为本，随时运变，水土用事。成剥之义，出于上九。《易》云：“硕果不食，君子得舆，小人剥庐。”【君子全得剥道，安其位，小人终不可安也。】与艮为飞伏。【丙子水，壬申金。】天子治世，反应大夫。</p>
+<p class="no-indent verse">建甲戌至己卯，阴阳定候。【寒露至春分。】积算起己卯木至戊寅木，周而复始。【吉凶之兆见于有象。】纯土配金用事。</p>
+<p class="no-indent verse">五星从位起镇星，【土星入卦。】张宿从位降丙子。【张宿入天子宫。】金土分气三十六。【积算六位起吉凶，天地盈虚气候。】</p>
+<p class="no-indent verse">《易、象》云：“山附于地。剥。”君子俟时，不可苟变，存身避害，与时消息。春夏始生，天气盛大；秋冬严杀，天气消灭。</p>
+<p class="no-indent verse">故当剥道已成，阴盛不可逆，阳息阴专。升降六爻，反为游魂，荡入晋。【积阴反入晋卦。】</p>  </div>
+  <div class="chapter-content" id="ch7">
+    <div class="main-title">坤下离上</div>
+<p class="no-indent verse">坤下离上   晋：</p>
+<p class="no-indent verse">阴阳返复，进退不居，精粹气纯，是为游魂。【为阴极剥尽，阳道不可尽灭，故返阳道。道不复本位，为游魂例入卦。】金方以火、土运用事，与离为飞伏。（虎易注：此处“与离为飞伏”。当为“与艮为飞伏”之误。）【己酉金，丙戌土。】诸侯居世，反应元士。</p>
+<p class="no-indent verse">建己卯至甲申，阴阳继候。【春分至立秋。】积算起甲申金至癸未土，周而复始。【游魂取象，配于正位，吉凶同矣。】</p>
+<p class="no-indent verse">五星从位起太白，【卦配金星入用。】翼宿从位降己酉金。【翼宿北方，入晋卦行事。】二象分候二十八运，配金土积算。气候无差于晷刻，吉凶列陈，象在其中矣；天地运转，气在其中矣；乾道变化，万物通矣。【乾分八卦，至大有复卦。】</p>
+<p class="no-indent verse">六爻交通，至于六卦，阴阳相资、相返、相克、相生，至游魂，复归本位为大有。故曰：“火在天上。”</p>
+<p class="no-indent verse">大有为归魂卦。定吉凶，配人事，五行。象乾为指归地。【凡八卦分为八宫，每宫八卦，八八六十四卦。定吉凶，配人事。天地、山泽、草木、日月、昆虫，包含气候，足矣。】</p>  </div>
+  <div class="chapter-content" id="ch8">
+    <div class="main-title">乾下离上</div>
+<p class="no-indent verse">乾下离上   大有：</p>
+<p class="no-indent verse">卦复本宫曰大有。内象见乾是本位。【八卦本从乾宫起，至大有为归魂。】纯金用事，与坤为飞伏。【甲辰土，乙卯木。】三公临世，应上九为宗庙。</p>
+<p class="no-indent verse">建戊寅至癸未，【立春正月至大暑时也。】积算起癸未土至壬午火，周而复始。【吉凶与乾卦同用。】</p>
+<p class="no-indent verse">五星从位起太阴，【太阴水星入卦用事。】轸宿从位降甲辰。【二十八宿分轸星入大有卦用事，行度吉凶可见。】金土分象三十六候，配阴阳升降。六位相荡，返复其道。【复归本位也。】吉凶度数与乾卦同分。</p>
+<p class="no-indent verse">六五阴柔，为日，照于四方，象天行健。【六龙御天。】少者为多之所宗，六五为尊也。【柔处尊位，以柔履刚，以阴处阳，能柔顺于物，万物归附，故曰：照于四方。】</p>
+<p class="no-indent verse">《易》曰：“火在天上，大有。”【离为火、为日，故曰大有。】阴阳交错，万物通焉。阴退阳伏，返本也。乾象分荡八卦，入大有终也。</p>
+<p class="no-indent verse">乾生三男，次入震宫八卦。【乾生三男，坤生三女。阳以阳，阴以阴，求奇耦定数于象也。】</p>  </div>
+  <div class="chapter-content" id="ch9">
+    <div class="main-title">震上震下</div>
+<p class="no-indent verse">震上震下   震：</p>
+<p class="no-indent verse">分阴阳，交互用事。属于木德，取象为雷，出自东方。震有声，故曰雷。雷能警于万物，为发生之始，故取东也。为动之主，为生之本。《易、系》云：“帝出乎震。”（虎易注：考此句，不是出于《易、系》，而是出于《易、说卦》。）【安为动主，静为躁君。】与巽为飞伏。【庚戌土，辛卯木。】宗庙处上六。【阴为阳之主，震动。动须由阴阳交互，震动也。】</p>
+<p class="no-indent verse">运数入丙子至辛巳，【大雪至小满。】积算起辛巳至庚辰土宫，配吉凶，周而复始。【吉凶配木官，以土用事。】</p>
+<p class="no-indent verse">五星从位起岁星，【木星入卦用事。】角宿从位降庚戌土。【庚戌入震用事，临上六爻，庚戌土位为元首。】内外木土二象，俱震。</p>
+<p class="no-indent verse">《易》曰：“震惊百里。”又云：“畏邻戒也。”【震为雷，声惊于百里，春发秋收，顺天行也。取象定吉凶。】取象为阳，配爻属阴，故曰：阴阳交错而为震。</p>
+<p class="no-indent verse">气候分数三十六。定吉凶于顷刻，毫厘之末，无不通也，无不备也。【定阴阳数，考人之休咎，起于积算，终于六位也。】</p>
+<p class="no-indent verse">阴阳交互，阳为阴，阴为阳，阴阳二气荡而为象，故初九三阴为豫。【入豫卦。】</p>  </div>
+  <div class="chapter-content" id="ch10">
+    <div class="main-title">坤下震上</div>
+<p class="no-indent verse">坤下震上   豫：</p>
+<p class="no-indent verse">卦配水火木，以为阳用事。《易》云：“利建侯行师。”又云：“天地以顺动，故日月不过，四时不忒。（虎易注：此处脱漏“而”字，原句为“而四时不忒。”）【坤顺震动。】圣人以顺动，则刑罚清而民服。”与坤为飞伏。【乙未土，庚子水。】世立元士为地，易奉九四为正正。</p>
+<p class="no-indent verse">建丁丑至壬午，【大寒至芒种。】积算起壬午至辛巳，以六爻定吉凶，周而复始。【火土算休咎。】</p>
+<p class="no-indent verse">五星从位起荧惑，【荧惑火星入卦用事。】亢宿从位降乙未土，【亢宿配乙未土。】上木下见土，内顺外动，故为悦豫。</p>
+<p class="no-indent verse">时有屯夷，事非一揆，爻象适时，有凶有吉。人之生世，亦复如斯。或逢治世，或逢乱时，出处存亡，其道皆系。《易》云：“大矣哉。”</p>
+<p class="no-indent verse">阴阳升降，分数二十八，极大小之数，以定吉凶之道。【积算壬午入乙未推吉凶。】</p>
+<p class="no-indent verse">豫以阳适阴为内顺，成卦之义，在于九四一爻。以阳荡阴，君子之道，变之于解。【豫卦以阴入阳，成九四之德。变入解卦，阳入阴，成解之德。】</p>  </div>
+  <div class="chapter-content" id="ch11">
+    <div class="main-title">坎下震上</div>
+<p class="no-indent verse">坎下震上   解：</p>
+<p class="no-indent verse">阴阳积气，聚散以时，内险外动，必散。《易》云：“解者，散也。”（虎易注：《易》无此句。考《易、序卦》曰：“解者，缓也。”《易、杂卦》曰：“解，缓也。”）解也，品汇甲拆，（虎易注：“拆”字当为“坼”字之误。）雷雨交作，【震雷坎雨。】积气运动，天地剖判。成卦之义在于九二，与坎为飞伏。【戊辰土，庚寅木。】立大夫于世为人，而六五降应，委权命于庶品。</p>
+<p class="no-indent verse">建戊寅至癸未，【立春至大暑。】推吉凶于阴阳，定运数于岁时。积算起癸未至壬午，周而复始。【土火入数起宫。】</p>
+<p class="no-indent verse">五星从位起镇星，【镇星土位。】氐宿从位降戊辰。【氐宿入戊辰。】木下见水，动而险。阴阳会散，万物通焉。</p>
+<p class="no-indent verse">升降属阳荡阴，以阳为尊。尊者高而卑者低。变六三为九三恒卦。分气候定数，极位于三十六。【金水入数，合卦成数，定日月时。】</p>
+<p class="no-indent verse">变坎入巽，居内象为雷风，运动鼓吹万物，谓之恒。【入恒卦。】</p>  </div>
+  <div class="chapter-content" id="ch12">
+    <div class="main-title">巽下震上</div>
+<p class="no-indent verse">巽下震上   恒：</p>
+<p class="no-indent verse">久于其道，立于天地；雷与风行，阴阳相得；尊卑定矣。号令发，而万物生焉。【万物得其道也，生者。道，一作进也。】雷风行，而四方齐也。【齐者整齐。】与巽为飞伏。【辛酉金，庚辰土。】三公治世，应于上六宗庙。【宗庙爻。】</p>
+<p class="no-indent verse">建己卯至甲申，【春分至立秋。】金木起度数，积算起甲申至癸未，周而复始。【金木入宫。】</p>
+<p class="no-indent verse">五星从位起太白，【太白金星入卦用事。】房宿从位降辛酉。【房宿入卦，立秋用。】上下二象见木，分阴阳于内外。【内巽阴，外震阳。】气候分数三十八。【金木入卦分节候。】九三至于阳屯之位，不顺所履，无定其位。【恒者，常也。而九三以阳居位，立于阴阳交互之上，是知不久为[缺]所然[缺]。】（虎易注：[   ]为我所加，原注小字“缺”，此处缺了两个字。现据原文之义试补入为：“是知不久为[道]，所然[也]。”）</p>
+<p class="no-indent verse">《易》云：“不恒其德，或承之羞。”阴阳升降，反于阴。君道渐进，臣下争权，运及于升。【次降入升卦。】</p>  </div>
+  <div class="chapter-content" id="ch13">
+    <div class="main-title">巽下坤上</div>
+<p class="no-indent verse">巽下坤上   升：</p>
+<p class="no-indent verse">阳升阴，而阴道凝盛，未可便进，渐之。曰升。升者，进也。卦虽阴，而取象于阳，故曰：以阳用事。【内巽阴木阳也。】与坤为飞伏。【癸丑土，庚午火。】诸侯在世，元士为应侯。</p>
+<p class="no-indent verse">建庚辰至乙酉，【清明至秋分。】积算起乙酉至甲申，周而复始。【金水合木官见象定吉凶。】</p>
+<p class="no-indent verse">五星从位起太阴，【太阴水星，入卦取象。】心宿入位降癸丑。【心宿入卦配土位。】土下见木，内外俱顺。动阴阳而长岁时，人事配吉凶，发乎动。【占岁时、人事吉凶之兆，见乎动。】《易、系》云：“吉凶悔吝，生乎动。”（虎易注：原句为“吉凶悔吝者，生乎动者也。”）气候配象，数位三十六。【分阴爻数，分阳爻数。】</p>
+<p class="no-indent verse">自下升高，以至于极。至极而反，以修善道，而成其体。【合抱之木，始于毫末。】阴道革入阳，为坎水与风，见井。【入井卦。】</p>  </div>
+  <div class="chapter-content" id="ch14">
+    <div class="main-title">巽下坎上</div>
+<p class="no-indent verse">巽下坎上   井：</p>
+<p class="no-indent verse">阴阳通变，不可革者，井也。井道以澄清不竭之象，而成于井之德也。《易》云：“井者，德之基。”（虎易注：《易、系下》曰：井，德之地也。）又云：“往来井井，见功也。改邑不改井，德不可渝也。”（虎易注：此句“见功也。”“德不可渝也。”非《易》原文。读者可参见原文。）【井道以澄清见用，为功也。井象德不可渝变也。】与坎为飞伏。【戊戌土，庚申金。】九五处至尊，应用见本象。</p>
+<p class="no-indent verse">建辛巳至丙戌，【小满至寒露。】积算起丙戌至乙酉，周而复始。【火土入卦起算数。】</p>
+<p class="no-indent verse">五星从位起岁星，【木星入卦，东方用事。】尾宿从位降戊戌。【尾宿配戊戌入卦宫。】坎下见风，险于前；内外相资，益于君。【井以德立，君正民信，德以其道也。】贤人有位，君子不孤。《传》曰：“德不孤，必有邻。”（虎易注：此句《传》中未考，不知道出于何处。）【六爻各处其务，反复阴阳变化，各得其道也。】气候所象，定数于二十八。【爻配阴阳，分人事，吉凶其见矣。】</p>
+<p class="no-indent verse">天地之数，分于人事；【近取诸身，远取诸物。】吉凶之兆，定于阴阳。阴生阳消，阳生阴灭，二气交互，万物生焉。</p>
+<p class="no-indent verse">震至于井，阴阳代位，至极则反，与巽为终，退复于本。故曰游魂，为大过。【降入大过卦。】</p>  </div>
+  <div class="chapter-content" id="ch15">
+    <div class="main-title">巽下兑上</div>
+<p class="no-indent verse">巽下兑上   大过：</p>
+<p class="no-indent verse">阴阳代谢，至于游魂。《系》云：“精气为物，游魂为变，是故知鬼神之情状。”互体象乾，以金土定吉凶。去本末，取二五为过之功。【大者相过。】与坎为飞伏。【丁亥水，戊申金。】降诸侯，立元首，元士居应上。</p>
+<p class="no-indent verse">建丙戌至辛卯，【起元气从丙戌至辛卯为卦建，建者，则所生之位。今立建起至辛卯，取阴阳至位极处也。寒露至秋分。】积算起辛卯至庚寅，周而复始。【土木入卦用事。】</p>
+<p class="no-indent verse">五星从位起荧惑，【荧惑火星入卦。】箕宿从位降丁亥。【箕宿配丁亥水，合卦宫也。】阴阳相荡，至极则反，反本及末于游魂。分气候三十六。【六爻极阴阳之数三十六，五行分配，定吉凶于积算。】</p>
+<p class="no-indent verse">阳入阴，阴阳交互，反归于本，曰归魂。降随卦。【入泽雷随卦。】</p>  </div>
+  <div class="chapter-content" id="ch16">
+    <div class="main-title">震下兑上</div>
+<p class="no-indent verse">震下兑上   随：</p>
+<p class="no-indent verse">震象复本曰随。【内见震也。】内象见震曰本。【从震起至随为归魂。】纯木用事，与巽为飞伏。【庚辰土，辛酉金。】世立三公，应宗庙。</p>
+<p class="no-indent verse">建乙酉至庚寅，【秋分至立春。】积算起庚寅至己丑，【土木入卦气算。】周而复始。【吉凶定于算数为准。】</p>
+<p class="no-indent verse">五星从位起镇星，计都从位降庚辰。（虎易注：计都，即为斗宿。）【计都配庚辰土，入卦分吉凶。】气候分数二十八。【定数于六位。】</p>
+<p class="no-indent verse">六位虽殊吉凶，象震，进退随时。各处其位。无差咎刻。内外二象悦而动，随附于物，系失在于六爻。【《易》云：系丈夫，失小子。又云：系小子，失丈夫。此之谓也。】吉凶定于起算之端，进退见乎随时之义。</p>
+<p class="no-indent verse">金木交刑，水火相敌；休废于时，吉凶生焉。震以一君二民，动得其宜。【震一阳二阴，阳君阴民，得其正也。】本于乾而生乎震，故曰长男。阴阳升降为八卦，至随为定体。资于始而成乎终。坎降中男，而曰坎。互阳爻居中，为坎卦。</p>  </div>
+  <div class="chapter-content" id="ch17">
+    <div class="main-title">坎上坎下</div>
+<p class="no-indent verse">坎上坎下   坎：</p>
+<p class="no-indent verse">积阴，以阳处中。柔顺，不能履重刚之险。故以刚克柔而履险。而曰阳，是以坎为属中男。分北方之卦也，与离为飞伏。【戊子水，己巳火。】世立宗庙，居于阴位。比近九五，全于坎道，远于祸害。三公居应，亦为阴暗。成坎之德，在于九五、九二也。【内外居坎，阳处中而为坎。主纯阴得阳，为明臣得君，而安其居也。一作君得臣，而显其道也。】</p>
+<p class="no-indent verse">建起戊寅至癸未，【大暑至大雪。】积算起癸未至壬午，周而复始。【金水入卦本同宫，气候起算时日岁月吉凶。】</p>
+<p class="no-indent verse">五星从位起太白，【太白金星入水宫。】牛宿从位降戊子。【二十八宿，从位八卦，周而复始。】岁候运数三十六。【配六位，分阴阳；三百五十六，（虎易注：疑为三百六十五之误。）余日四分之一。分五行，配运气，吉凶见矣。】</p>
+<p class="no-indent verse">内外俱坎，是重刚之位。《易》曰：“坎，陷也。”【坎水能深陷于物；处坎之险，不可不习。故曰：习坎。便习之习后，可得履于险而不陷没者。不以刚履柔，不能成坎之道也。】</p>
+<p class="no-indent verse">震以阳居初，能震动于物，能为动主。【乾生震，一阳居于初，震为长男。】坎以阳居中，为重刚之主，故以坎为险。阳变阴，成于阴道。今以阴变阳，止于为节。【次入于节卦。】</p>  </div>
+  <div class="chapter-content" id="ch18">
+    <div class="main-title">兑下坎上</div>
+<p class="no-indent verse">兑下坎上   节：</p>
+<p class="no-indent verse">水居泽上，泽能积水。阳止于阴，故为节。节者，止也。阳荡阴而积实，居中悦内，而险于前。阴阳进退，金水交运，与兑为飞伏。【丁巳火，戊寅木。】元士立元首，见应诸侯。【金火受其气，纳到内。】</p>
+<p class="no-indent verse">建起甲申至己丑，【为本身节气，立秋大寒。】积算起己丑至戊子，周而复始。【金水坎，火运入卦，杂定吉凶。】</p>
+<p class="no-indent verse">五星从位起太阴，【太阴属水，入卦用事。】女宿从位降丁巳。【配象入积算。】金上见水，本位相资，二气交争，失节则嗟。《易》云：“不节若，则嗟若。”分气候二十八。【积算起数二十八。】</p>
+<p class="no-indent verse">雷火交动，刚柔散气，积则暗，动乃明。《易》云：“丰其屋，蔀其家，窥其户，阒其无人，三岁不觌，凶。”【上六积暗而动，凶之于上反下，见阴之兆。】火木分象，配于积阴，与震为飞伏。【庚申金，戊戌土。】阴处至尊为世，大夫见应。君臣相暗，世则可知；臣强君弱，为乱世之始。</p>
+<p class="no-indent verse">建生戊子至癸巳，【大雪至小满。】雷与火震动曰丰。宜日中。夏至积阴生丰，当正应，吉凶见矣。【日中也。】积算起癸巳至壬辰，周而复始。【火土起算。】</p>
+<p class="no-indent verse">五星从位起太白，【太白金星入卦。】壁宿从位降庚申，【壁宿入坎至丰，庚申入土。】分气候二十八。【积算定六位，起数二十八。】</p>
+<p class="no-indent verse">上木下火，气禀纯阳；阴生于内，阳气杂正，性溃乱极，乃反为游魂，入积阴。【震入坤也。】阴阳升降，反归于本。变体于有无。吉凶之兆，或见于有，或见于无。阴阳之体，不可执一。为定象于八卦，阳荡阴，阴荡阳，二气相感而成体，或隐或显。故《系》云：“一阴一阳之谓道。”【一者，道也。】外卦震降阴，入明夷。【次入明夷卦。】</p>  </div>
+  <div class="chapter-content" id="ch19">
+    <div class="main-title">离下坤上</div>
+<p class="no-indent verse">离下坤上   明夷：</p>
+<p class="no-indent verse">积阴荡阳，六位相伤；外顺而隔于明，处暗不分；【一作明】伤于正道，曰明夷。【夷者，伤也。】五行升降，八卦相荡，变阳入纯阴。【春夏之秋冬也。】阴道危，阳道安，故与震为飞伏。【癸丑土，庚午火。】伤于明而动乃见志，【震，动也。】退位入六四。诸侯在世，元士为应。君暗臣明不可止。【箕子与纣也。】</p>
+<p class="no-indent verse">建起六四癸巳至戊戌，【游魂及六四爻数起，小满至寒露。】积算起戊戌至丁酉，周而复始。【土金入卦起算数。】</p>
+<p class="no-indent verse">五星从位起太阴，【太阴水星入卦。】奎宿从位降癸丑，【奎宿入明夷，配六四癸丑土上。】分气候三十六。【三十六数入卦，起算推吉凶。】</p>
+<p class="no-indent verse">地有火，明于内，暗于外。当世出处，为众疑之所及，反伤于明。《易》曰：“三日不食，主人有言。”</p>
+<p class="no-indent verse">阴阳进退，金水见火，气不相合。六位相荡，四时运动，静乃复本，故曰游魂。【以本宫八卦，相荡六位推迁也。】次降归魂入师卦。</p>  </div>
+  <div class="chapter-content" id="ch20">
+    <div class="main-title">坎下坤上</div>
+<p class="no-indent verse">坎下坤上   师：</p>
+<p class="no-indent verse">变离入阴，伤于正道；复本归坎，阳在其中矣。【内卦坎为本宫。】处下卦之中，为阴之主，利于行师。《易》云：“师者，众也。”众阴而宗于一阳，得其贞正也。与离为飞伏。【离入坎也。】阴阳相薄，刚柔迁位。【戊午火，己亥水。】世主三公，应为宗庙。</p>
+<p class="no-indent verse">建始壬辰至丁酉，【清明至秋分。】积算起丁酉至丙申，周而复始。【金火入卦起算。】</p>
+<p class="no-indent verse">五星从位起岁星，【岁星木入卦。】娄宿从位降戊午，【娄宿入坎卦归魂六三爻。】分气候二十八。【起算入卦吉凶。】</p>
+<p class="no-indent verse">地下有水复本位，六五居阴处阳位；九二贞正，能为众之主，不溃于众。《易》云：“师，贞丈人吉。”</p>
+<p class="no-indent verse">入卦始于坎，阴阳相荡；反至于极，则归本，坎中男。【阳居九二，称中男。】升降得失，吉凶悔吝，策于六爻；六爻之设，出于蓍；蓍之得象而卦生。积算起于五行，五行正则吉，极则凶。吉凶之象，显于天地人事、日月岁时。</p>
+<p class="no-indent verse">坎之变于艮，艮为少男。少男处卦之末，为极也。【震一阳居初爻，坎二阳处中，艮三阳处卦之末。故曰阳极为少男，又云止也。】次入艮卦。</p>  </div>
+  <div class="chapter-content" id="ch21">
+    <div class="main-title">艮下艮上</div>
+<p class="no-indent verse">艮下艮上   艮：</p>
+<p class="no-indent verse">乾分三阳，为长中少，至艮为少男。本体属阳，阳极则止，反生阴象。《易》云：“艮，止也。”于人为手、为背。取象为山、为石、为门、为狗。上艮下艮二象，土木分气候，与兑为飞伏。【丙寅木，丁未土。为少男取少女相配。】世上见宗庙，三公为应。阴阳迁次，长幼分形。【乾，三生男；将至艮，极少；长分形，长中分之为建也。】</p>
+<p class="no-indent verse">庚寅至乙未，【立春至大暑。】阴长阳极，升降六位，进退顺时，消息盈虚。积算起庚寅至己丑，周而复始。【木土入卦】</p>
+<p class="no-indent verse">五星从位起荧惑，【荧惑火星入卦。】胃宿从位降丙寅，【胃宿入卦分位。】分数位三十六。【配位六卦分吉凶。】</p>
+<p class="no-indent verse">金木相敌，升降以时。艮止于物，背于物。《易》云：“时止则止，时行则行。”刚极阳反阴长，积气止于九三。</p>
+<p class="no-indent verse">初六变阳，取其虚中，文明在内，成于贲。次降入贲卦。</p>  </div>
+  <div class="chapter-content" id="ch22">
+    <div class="main-title">离下艮上</div>
+<p class="no-indent verse">离下艮上   贲：</p>
+<p class="no-indent verse">泰取象上六，柔来反刚。九二刚，上文柔。成贲之体，止于文明。贲者，饰也。五色不成谓之贲，文彩杂也。山下有火，取象文明，火土分象，与离为飞伏。【己卯木，丙辰土。】世立元士，六四诸侯在应。阴柔居尊，文柔当世，素尚居高，侯王无累。《易》云：“贲于丘园，束帛戋戋。”</p>
+<p class="no-indent verse">建始辛卯至丙申，【春分至立秋。】积算起丙申至乙未，周而复始。【金土入卦起算。】</p>
+<p class="no-indent verse">五星从位起镇星，【镇星入卦。】昴宿从位降己卯，【昴宿配贲卦初九阳位起算。】分气候二十八。【起六位五行算吉凶。】</p>
+<p class="no-indent verse">土火木分阴阳，相应为敌体；上九积阳，素尚全身远害，贵其正道。起于潜，至于用九。【假乾初上为喻也。】阴阳升降，通变随时。</p>
+<p class="no-indent verse">离入乾，将之大畜。次降六二中虚为三连。入大畜卦。【阴消阳长。】</p>  </div>
+  <div class="chapter-content" id="ch23">
+    <div class="main-title">乾下艮上</div>
+<p class="no-indent verse">乾下艮上   大畜：</p>
+<p class="no-indent verse">阳长阴消，积气凝盛，外止内健，二阴犹盛，成于畜义。《易》云：“既雨既处。”（虎易注：此句是《小畜》卦上九爻词，作者引用有误。）畜消时行，阳未可进。取于下卦，全其健道，君子以时顺其吉凶。与乾为飞伏。【甲寅木，丙午火。】</p>
+<p class="no-indent verse">建始壬辰至丁酉，【清明至秋分。】积算起丁酉至丙申，周而复始。【金土入卦分吉凶起算。】</p>
+<p class="no-indent verse">五星从位起太白，【太白金星入卦推吉凶。】毕宿从位降甲寅。【毕宿入大畜九二甲寅上。】九二大夫应世，应六五为至尊，阴阳相应，以柔居尊。（缺）为畜之主。分气候二十八。【极阴阳之象，定吉凶之兆。】</p>
+<p class="no-indent verse">山下有乾，金土相资。阳进阴止，积雨润下，畜道光也。乾象内进，君道行也。吉凶升降，阴阳得位，二气相应，阳上薄阴，阴道凝结。上于阳长，为雨反下，九居高位，极于畜道。反阳为阴，入于兑象。六三应上九，上有阳九，反应六三，成于损道。次降损卦。【乾入兑九三之变六二。】</p>  </div>
+  <div class="chapter-content" id="ch24">
+    <div class="main-title">兑下艮上</div>
+<p class="no-indent verse">兑下艮上   损：</p>
+<p class="no-indent verse">泽在山下，卑险于山；山高处上，损泽益山。成高之义，在于六三。在臣之道，奉君立诚。《易》云：“损下益上。”【乾九三变六三阴柔，益上九，臣奉君之义。】与兑为飞伏。【丁丑土，丙申金。】三公居世，宗庙为应。【六三，上九。】</p>
+<p class="no-indent verse">建始癸巳至戊戌，【小满至寒露。】积算起戊戌至丁酉，周而复始。【土火入宫起积算。】</p>
+<p class="no-indent verse">五星从位起太阴，【太阴水星入卦用事。】觜宿从位降丁丑，【二十八宿配觜宿入损卦，六三爻起算岁月日时。】土星入卦配吉凶，阴阳相荡位不居。【土金入损卦起算，阴阳相生，六位变动不居也。】六爻有吉凶，四时变更，不可执一以为规。【六爻吉凶，随时更变。或春或夏，或秋或冬，岁时运动。】分气候二十八。【二十八起数，算吉凶入卦。】</p>
+<p class="no-indent verse">阴阳升降，次艮入离，见睽之象。损益六爻，刚长阴。次入火泽睽卦。</p>  </div>
+  <div class="chapter-content" id="ch25">
+    <div class="main-title">兑下离上</div>
+<p class="no-indent verse">兑下离上   睽：</p>
+<p class="no-indent verse">火泽二象，气运【一作转。】非合。阴消阳长，取象何比。惟阳是从。阴阳动静，刚柔分焉。先睽后合，其消通也。文明上照，幽暗分矣。【兑处下，为积阴暗之象也；离在上，为明照于下。】《易》云：“见豕负涂，载鬼一车，先张之弧，后说之弧，往遇雨则吉。群疑亡也。”【先疑，暗也；后说，明也。】与离为飞伏。【己酉金，丙戌土。】诸侯立九四为世，初元士为应。</p>
+<p class="no-indent verse">建始甲午至己亥，【芒种至小雪。】积算起己亥至戊戌。【水土入卦。】</p>
+<p class="no-indent verse">五星从位起岁星，【岁木星入卦。】参宿从位降己酉，【二十八宿配参宿，入卦己酉土。】分气候三十六。【起数积算。】</p>
+<p class="no-indent verse">金火二运合土宫，配吉凶于岁时。六五阴柔处文明，九二四得立权臣。（虎易注：“九二四得立权臣”。疑为：“九四世得立权臣”之误。）</p>
+<p class="no-indent verse">阴阳相荡，六位逆迁，变离入乾。健于外象，坎入履。（虎易注：“坎入履。”疑为“变入履”或“降入履”之误。）【阴阳推迁，变化六爻。吉凶之兆，着于要之爻。如臣事君，近多忧也。】次降入天泽履卦。</p>  </div>
+  <div class="chapter-content" id="ch26">
+    <div class="main-title">兑下乾上</div>
+<p class="no-indent verse">兑下乾上   履：</p>
+<p class="no-indent verse">天下有泽曰履。【履者，礼也。】得位吉，失位凶，【当履之时。】素尚吉。《易》云：“视履考祥，其旋元吉。”与乾为飞伏。【壬申金，丙子水。】六丙属八卦，【艮六丙也。】九五得位为世身，九二大夫合（虎易注：“合”字疑为“为”字之误。）应象。</p>
+<p class="no-indent verse">建始乙未至庚子，【大暑至大雪。】积算起己亥至庚子。【金水入卦，配六位，算吉凶。】</p>
+<p class="no-indent verse">五星从位起荧惑，【荧惑火星入卦。】井宿从位降壬申，【二十八宿入卦，井宿入壬申。】分气候，金火入卦，起于极数二十八。【二十八数，起丙辰，推吉凶。】</p>
+<p class="no-indent verse">阳多阴少，宗少为贵。得其所履则贵，失其所履则贱。《易》云：“眇能视，跛能履。”【此履非其位六三也。】吉凶取此文为准。六位推迁，积欠起算数，休王相破，资益可定吉凶也。</p>
+<p class="no-indent verse">升降反位，归复止于六四，入阴，为游魂中孚卦。【次入中孚卦。】</p>  </div>
+  <div class="chapter-content" id="ch27">
+    <div class="main-title">兑下巽上</div>
+<p class="no-indent verse">兑下巽上   中孚：</p>
+<p class="no-indent verse">阴阳变动，六位周匝，反及游魂之卦。【金木合上运入卦象。】互体见艮，止于信义。【中孚，信也。】与乾为飞伏。【辛未土，壬午火。】艮道革变，升降，各禀正性。六四诸侯立世，应初九元士。九五履信，九二反应，气候相合，内外相敌。【阴胜阳，阳胜阴，刚柔相薄，六爻反应，柔顺相合，吉凶见矣。】</p>
+<p class="no-indent verse">建始庚子至乙巳，【大雪至小满。】积算起乙巳至甲辰，周而复始。【火土入卦起积算。】</p>
+<p class="no-indent verse">五星从位起镇星，【镇星，土星。】鬼宿从位降辛未，【二十八宿，配鬼宿入卦推吉凶。】分气候三十六，【配卦算吉凶之位。】</p>
+<p class="no-indent verse">风与泽，二气相合；巽而说，信及于物。物亦【一作必。】顺焉。《易》云：“信及豚鱼。”【豚鱼，幽微之物，信尚及之，何况于人乎。】</p>
+<p class="no-indent verse">兑入艮，六三入阳，内二阳归阴。阴阳交互，复本曰归魂，次降归魂风山渐卦。【内见艮。】</p>  </div>
+  <div class="chapter-content" id="ch28">
+    <div class="main-title">艮下巽上</div>
+<p class="no-indent verse">艮下巽上   渐：</p>
+<p class="no-indent verse">阴阳升降，复本曰归魂之象。巽下见艮，阴长阳消，柔道将进，【艮变八卦终于渐，渐终降纯阴入坤，分长女，三阴之兆也，柔道行也。】与兑为飞伏。【丙申金，丁丑土。】九三三公居世，宗庙为应。</p>
+<p class="no-indent verse">建始己亥至甲辰，【小雪至清明。】积算起甲辰至癸卯，周而复始。【土木见运入卦，算吉凶。】</p>
+<p class="no-indent verse">五星从位起太白，【太白，西方之卦，定吉凶。】柳宿从位降丙申，【二十八宿，柳宿入卦定吉凶。】分气候二十八。【定数配吉凶，入卦起算。】</p>
+<p class="no-indent verse">上木下土，风入艮象，渐退之象也。互体见离，主中文明。九五传位，得进道明也。【九五处互体卦之上，进文明也。】六二阴柔得位，应至尊。《易》云：“鸿渐于磐，饮食衎衎。”【贤人进位也。】阴阳升降，八卦将尽；六十四爻，阴阳相杂，顺道进退，次于时也。少男之位，分于八卦，终极阳道也。阳极则阴生，柔道进也，降入坤宫八卦。【阳卦三十二宫为阳，乾、震、坎、艮也。】</p>  </div>
+  <div class="chapter-content" id="ch29">
+    <div class="main-title">坤下坤上（卷中）</div>
+<p class="no-indent verse">京房易传   卷 中</p>
+<p class="no-indent verse">汉   京房   撰</p>
+<p class="no-indent verse">坤下坤上   坤：</p>
+<p class="no-indent verse">纯阴用事，象配地，属土。柔道光也，阴凝感，与乾相纳，臣奉君也。《易》云：“黄裳，元吉”。六二，内卦阴处中</p>
+<p class="no-indent verse">，臣道正也。与乾为飞伏，【癸酉金，壬戌土。】宗庙居世，三公为应。未免龙战之灾，无成有终。【阴臣阳君，臣不敢为</p>
+<p class="no-indent verse">物之始。阳唱阴和，君命臣终其事也。】初六起履霜，至于坚冰。阴虽柔顺，气亦坚刚，为无邪气也。</p>
+<p class="no-indent verse">建始甲午至己亥，【芒种，小满。】积算起己亥至戊戌，周而复始。【纯土用事，入积算，定吉凶。】</p>
+<p class="no-indent verse">五星从位起太阴，【太阴水星入卦】西南方之卦。【镇星入卦配坤，西南。】星宿从位降癸酉金。【二十八宿，八卦星</p>
+<p class="no-indent verse">宿，降坤上六癸酉金。】分气候三十六。【起积为数三十六。】</p>
+<p class="no-indent verse">阴中有阳，气积万象，故曰阴中阴。阴阳二气，天地相接，人事吉凶，见乎其象。六位适变，八卦分焉。【六位变动，八</p>
+<p class="no-indent verse">卦显著。】阴虽虚纳，于阳位称实。【六五，六三之类也。】</p>
+<p class="no-indent verse">升降反复，不能久处，千变万化，故称乎易。易者，变也。阴极则阳来，阴消则阳长，衰则退，盛则战。《易》云：“上</p>
+<p class="no-indent verse">六，龙战于野，其血玄黄”。阳属。【乾配西北积阴之的地，阴盛故战，乾坤并处，天地之气杂，称玄黄也。】</p>
+<p class="no-indent verse">阳来荡阴，坤内卦初六适变入阳，曰震。阴盛阳微，渐来之义，故称复。次降阳，入地雷复卦。</p>  </div>
+  <div class="chapter-content" id="ch30">
+    <div class="main-title">震下坤上</div>
+<p class="no-indent verse">震下坤上   复：</p>
+<p class="no-indent verse">阴极则反，阳道行【一作正】也。《易》云：“君子道长，小人道消”。又曰：“七日来复”。【七日，阳之称也。七</p>
+<p class="no-indent verse">九称阳之数也。谓坤上六，阴极阳战之地，阴虽不能胜阳，然正当盛，阳不可轻犯。六阳涉六阴反下，七爻在初，故称七日。</p>
+<p class="no-indent verse">日亦阳也。】六爻反复之称。【注在前。】《易》云：“初九，不远复，无祗悔”。【反至初九，阳来阴复，去远也。】（虎易注：此字因为模糊，无法辨认，我是根据“不远复”之意，暂时一用，待以后有机会再确定。）六爻盛，卦之体总称也。</p>
+<p class="no-indent verse">曰一阳为一卦之主，与震为飞伏。【庚子水，乙未土。】初九元士之世，六四诸侯见应。</p>
+<p class="no-indent verse">建始乙未至庚子，【大暑大雪见候，起坤，六月至十一月，戊子为正朔，见复之兆。】积算起庚子至己亥，【积算起庚</p>
+<p class="no-indent verse">子至己亥，十月至十一月，年亦然。】周而复始。土水见候。</p>
+<p class="no-indent verse">五星从位起岁星，【岁星木星入复卦，合水土，配吉凶。】张宿从位降庚子，【二十八宿分张宿，入复卦庚子水上。】</p>
+<p class="no-indent verse">分气候二十八。【积算起数二十八，定吉凶六爻。】</p>
+<p class="no-indent verse">坤上震下，动而顺，是阳来荡阴，阴柔反去，刚阳复位，君子进，小人退。《易》云：“休复，元吉”。</p>
+<p class="no-indent verse">阳升阴降，变六二入兑象，次併临，二阳将进，内为悦。阴来阳去，气渐隆，【阴不敢拒阳，奉命而已。】次降入地泽临卦。</p>  </div>
+  <div class="chapter-content" id="ch31">
+    <div class="main-title">兑下坤上</div>
+<p class="no-indent verse">兑下坤上   临：</p>
+<p class="no-indent verse">阳长阴消悦而顺，金土应候刚柔分。震入兑，二阳刚，本体阴柔降入临。临者，大也。阳爻健顺，阳交退散。《易》曰：“君子之道”。《易》云：“至于八月有凶”。（虎易注：此处脱漏有字。）【建丑至未也。】阳长，六爻反复，吉凶之道可见矣。【至于八月入遁。】与兑为飞伏，【丁卯木，乙巳火。】九二大夫立世，六五至尊应上位。</p>
+<p class="no-indent verse">建始丙申至辛丑，【立秋，大寒。】七月积气至六月，吉凶随爻考汙隆。【旺则隆，衰则汙。】积算起辛丑至庚子。【积算起金土入卦，推休咎于六爻。】</p>
+<p class="no-indent verse">水火二象，坎离相纳，受性本异，立位见隔，睽于上下，吉凶生也。【子午之位。】受刑见害，气不合也。</p>
+<p class="no-indent verse">阴阳升降，入于外卦，适离为艮，上著于象。【艮上著离也。】天地盈虚，与时消息，其大也。次降入山水蒙卦。</p>  </div>
+  <div class="chapter-content" id="ch32">
+    <div class="main-title">坎下艮上</div>
+<p class="no-indent verse">坎下艮上   蒙：</p>
+<p class="no-indent verse">积阳居阴，止于坎陷。养纯正素，居中得位。《易》云：“山下出泉，蒙”。（虎易注：此句出象辞。）二象摽正，天下通也。击暗释疑，阳道行也；内实外正，暗得明，阴附于阳，稚道亨也。故曰：“蒙养正”。与艮为飞伏。【丙戌土，乙酉金。】（虎易注：乙酉金当为己酉金之误。）诸位立世，（虎易注：诸位当是诸侯之误。）元士为应。【六四，初六。】</p>
+<p class="no-indent verse">建始壬子至丁巳，【大雪，小满。】积算起丁巳至丙辰，周而复始。火土入艮坎。【火土二象入卦同算。】</p>
+<p class="no-indent verse">五星从位起太阴，【水星北方，入宫起算。】胃宿从位降丙戌土，【二十八宿，分胃宿入蒙卦六四丙戌土上。】分气候三十六。【起数二十八，从六位推算。】（虎易注：二十八当为三十六之误。）</p>
+<p class="no-indent verse">山下见水，畜聚居中，分流万派，六位不居，吉凶适变，水土分也。【五行入卦算吉凶，逐四时行囚废王，吉则王，凶则废。】【虎易注：王通旺之义。】阴阳进退，岁时物也。六五阳中积阴，入巽见阴中阳，二气相荡，不可盈望。次降入风水涣卦。【六五变入九五，阳中阴入阳中阳，适变往于他宫，位不出本宫。】</p>  </div>
+  <div class="chapter-content" id="ch33">
+    <div class="main-title">坎下巽上</div>
+<p class="no-indent verse">坎下巽上   涣：</p>
+<p class="no-indent verse">水上见木，涣然而合，【涣者，散也。】内外健而顺，纳实居中正，互见动而上，（虎易注：上疑为止之误。）【虚舟行也。】阴阳二象，资而益也。风行水上，处险非溺也。【木浮于水也。】九五履正思顺，非偪也。（偪通逼，音义同。）与巽为飞伏。【辛巳火，己未土。】九五居尊，大夫应。【九二爻也。】</p>
+<p class="no-indent verse">建始癸丑至戊午，【大寒，芒种。】积算起戊午至丁巳，周而复始。火土入坎巽。【火土二象入坎巽，配火宫涣卦起算。】</p>
+<p class="no-indent verse">五星从位起岁星，【木星入火宫本象。】昴宿从位降辛巳火，【二十八宿，分昴宿入涣九五辛巳火位上。】分气候其数二十八。【起算从二十八位上推六爻吉凶，岁月日时为候。】</p>
+<p class="no-indent verse">内卦坎中满，一阳居中，积实于内，风在外行，虚声外顺。吉凶之位，考乎四序，盛衰之道，在乎机要。阴阳死于位，生于时；死于时，生于位。进退不可诘，正盛则衰来，正衰则盛来。《易》曰：“积善之家必有余庆，积不善之家必有余殃”。</p>
+<p class="no-indent verse">八卦始终，六虚反复，游魂生巽入乾，为天水讼卦。</p>  </div>
+  <div class="chapter-content" id="ch34">
+    <div class="main-title">坎下乾上</div>
+<p class="no-indent verse">坎下乾上   讼：</p>
+<p class="no-indent verse">生生不绝之谓道。六位不居，返为游魂。离宫八卦以讼为反四，【五至四也。】天与水违，曰讼。【天道西行，水东流，其路背也。外象乾，西北方之卦；内坎水，正北方之卦，其流东也。二气不交，曰讼。】五行所占六位定吉凶，非所背，顺为正。金与水，二气相资，父子之谓。健与险，内外相激，家国之义。出象故以则，斯可验矣。与巽为飞伏。【壬午火，辛未土。】诸侯居世，元士见应。【九四，初六。】</p>
+<p class="no-indent verse">建始戊午至癸亥，【芒种，小雪。】积算起癸亥至壬戌，周而复始。火水入卦。【火水二象入离宫，配六位积算，推日月岁时。】</p>
+<p class="no-indent verse">五星从位起荧惑，【火星入火宫，同起积算。】毕宿从位降壬午火，【二十八宿，分毕宿东方宿，入离游魂天水讼卦九四壬午火上也。】分气候三十六。【起宫从三十六位算吉凶。】</p>
+<p class="no-indent verse">天下见水，阴阳相背，二气不交，物何由生。吉凶宗于上九，进退见于九四，二居中履正，得其宜也。</p>
+<p class="no-indent verse">阴阳升降，复归内象。【阴去阳来复本位，内见离，同人。】次降天火同人卦。【次本阳上下，二爻阴，适变从离也。】</p>  </div>
+  <div class="chapter-content" id="ch35">
+    <div class="main-title">离下乾上</div>
+<p class="no-indent verse">离下乾上   同人：</p>
+<p class="no-indent verse">二气同进，健而炎上，【乾务上，离务下。】同途异致，性则合也。《易》曰：“出门同人，又谁咎也”。（虎易注：初九象辞。）九二得位居中，六三积阴待应。（虎易注:此两句疑为有误。）《易》曰：“先号咷而后笑”。（虎易注：九五爻辞。）【隔于阳位，不能决胜，先故曰号咷；后获合方喜也，故曰后笑也。】八卦复位，六爻迁次，周而复始。上下不停，生生之义，易道祖也。天与火，明而健；阳道正，阴气和也。【六二居内卦中，能奉于阳。】吉凶故象，五行昭然。【金木水火土，配六位相生。】与坎为飞伏。【己亥水，戊午火。】归魂立三公为世，上九宗庙为应候。</p>
+<p class="no-indent verse">建始丁巳至壬戌，【小满，寒露。】积算起壬戌至辛酉，周而复始。火土入乾离。【火土二象入乾离，配六宫起积算。】</p>
+<p class="no-indent verse">五星从位起镇星，【土星入卦，定其吉凶。】觜宿从位降己亥水，【二十八宿，分觜宿入离归魂，配天火同人九三己亥水上。】分气候二十八。【起积算二十八位数，巡六爻有吉凶入何位。】</p>
+<p class="no-indent verse">火上见金，二气虽同，五行相悖。六爻定位，吉凶之兆在乎五二，得时则顺，失时则逆。阴阳升降，岁月分焉，爻象相荡，内外适变，八卦巡迴，归魂复本。本静则象生，故适离为兑入少女，分八卦于兑象。【坎入兑宫八卦。】（虎易注：坎字应为降，迁字之误。）</p>  </div>
+  <div class="chapter-content" id="ch36">
+    <div class="main-title">兑下兑上</div>
+<p class="no-indent verse">兑下兑上   兑：</p>
+<p class="no-indent verse">积阴为泽，纯金用体，畜水凝霜，阴道同也。上六阴生，与艮为合。【兑下六阴凝，艮土于阳健，纳兑为妻，二气合也。】土木入兑，水火应之，二阴合体，积于西郊。【秋王。】冲艮入乾，气类阴也；配象为羊，物类同也。与艮为飞伏。【丁未土，丙寅木。】上六宗庙在世，六三三公为应。</p>
+<p class="no-indent verse">建始乙卯至庚申，【春分，立秋。】积算起庚申至己未，周而复始。金土入兑宫。【金土入兑宫起积算。】</p>
+<p class="no-indent verse">五星从位起太白，【太白金星入卦。】参宿从位降丁未土，【二十八宿，分参宿入兑上六丁未土上。】分气候三十六。【起宫算从三十六数，起定吉凶。】</p>
+<p class="no-indent verse">内卦互体见离巽，配火木入金宫，分贵贱于强弱，【火强木弱。】吉凶随爻算，岁月运气逐休王。</p>
+<p class="no-indent verse">阴阳升降，变初九入初六，阳入阴，为坎象。正体见阳位，刚柔分，吉凶见也。适变内象入坎，为困卦。【兑内卦初九变入坎。】</p>  </div>
+  <div class="chapter-content" id="ch37">
+    <div class="main-title">坎下兑上</div>
+<p class="no-indent verse">坎下兑上   困：</p>
+<p class="no-indent verse">泽入坎险，水不通，困。外禀内刚，阴道长也，阴阳不顺，吉凶生也。《易》云：“困于石，据于蒺藜，入于其宫，不见其妻，凶”。（虎易注：六三爻辞。）上下不应，阴阳不交，二气不合。【困卦上下无应，阴阳不交。六三阴，上六亦阴，无匹。入九五求阳，阳亦无纳也。】五行配六位，生悔吝，四时休王。金木交争，万物之情在乎几微。与坎为飞伏。【戊寅木，丁巳火。】初六元士为世，九四诸侯在应。</p>
+<p class="no-indent verse">建始丙辰至辛酉，【清明，秋分。】积算起辛酉至庚申，周而复始。土金入坎兑。【分土金入坎兑，配金宫起算。】</p>
+<p class="no-indent verse">五星从位起太阴，【水宿入兑卦起算。】井宿从位降戊寅，【二十八宿，分井宿入困卦初六戊寅木。】分气候其数二十八。【二十八起宫入积算，定吉凶。】</p>
+<p class="no-indent verse">坎象互见离火入兑，金水见运，配吉凶。阴阳升降，坎入坤，阴气凝盛，降入萃。【变通入萃卦。】</p>  </div>
+  <div class="chapter-content" id="ch38">
+    <div class="main-title">坤下兑上</div>
+<p class="no-indent verse">坤下兑上   萃：</p>
+<p class="no-indent verse">金火分气候，土木入兑宫升降，阴气盛，刚柔相应，合九五，定群阴，二气悦而顺。【萃卦丁酉金，乙巳火，二象刑而合也。】（虎易注：此注疑为有误。）泽上于地，积阴成萃。《易》曰：“萃者，聚也”。（虎易注：彖辞。）吉凶生，阳气合而悦。【凡聚众，必慎防闲假。阳为主，成萃之义，伏戎必豫备，众聚去疑心。】与坤为飞伏。【乙巳火，丁卯木。】六二大夫居世，九五至尊见应。</p>
+<p class="no-indent verse">建始戊寅至癸未，【立春，大暑。】积算起癸未至壬午，周而复始。土木入坤兑。【分土木入兑宫起算。】</p>
+<p class="no-indent verse">五星从位起荧惑，【火星入金水宫推吉凶也。】（虎易注：荧惑当为岁星之误。其注也误也。）翼宿从位降乙巳，【二十八宿，分翼宿入萃六二位上。】分气候二十八。【积算起二十八数，六爻见吉凶。】</p>
+<p class="no-indent verse">泽下见坤，二气顺，土木入宫有爱恶。【木恶土爱也。】阴阳升降，阳气来，止于坤象，互见艮。【艮为阳。】</p>
+<p class="no-indent verse">兑象纳艮，阴气强，【男下女。】次降泽山咸卦。</p>  </div>
+  <div class="chapter-content" id="ch39">
+    <div class="main-title">艮下兑上</div>
+<p class="no-indent verse">艮下兑上   咸：</p>
+<p class="no-indent verse">山下有泽，（虎易注：下字当为上字之误。《咸》象曰：山上有泽，咸；君子以虚受人。）虚已畜物，阳中积阴，感于物也。阳下于阴，男女之道，内外相应，感类于象也。六二待聘，九五见召，二气交感，夫妇之道，体斯合也。《易》曰：“咸，感也，利取吉女。”（虎易注：此处错句。《咸》彖曰：咸，感也。柔上而刚下，二气感应以相与，止而说，男下女，是以亨利贞，取女吉也。）【艮少男，兑少女，男下于女，取妇之象。】与艮为飞伏。【丙申金，丁丑土。】九三三宫居世，上六宗庙为应。</p>
+<p class="no-indent verse">建始戊午之癸亥，【芒种，小雪。】积算起癸亥至壬戌，周而复始。火土入艮兑。【分火土象入艮兑也。】</p>
+<p class="no-indent verse">五星从位起荧惑，【火星南方入金宫。】柳宿从位降丙申，【二十八宿，分柳宿入咸九三丙申金爻上。】分气候三十六。【积算起数，分三十六位起吉凶。】</p>
+<p class="no-indent verse">土上见金，母子气和，阴阳相应，刚柔定位。吉凶随爻，受气出则吉，刑则凶。阴阳等降入外险，止于内象，为山水蹇卦。（虎易注：当为水山蹇卦之误。）【九四爻之入阴中刚。】</p>  </div>
+  <div class="chapter-content" id="ch40">
+    <div class="main-title">艮下坎上</div>
+<p class="no-indent verse">艮下坎上   蹇：</p>
+<p class="no-indent verse">利于西南，民道通也。水在山上，蹇险难进，阴阳二气否也。阴待于阳，柔道牵也，险而逆止，阳固阴长。处能竭至诚，于物为合，蹇道，亨也。《易》曰：“王臣蹇蹇，匪躬之故”。【六二。】（ 六二：王臣蹇蹇，匪躬之故。）与坎为飞伏。【戊申金，丁亥水。】六四诸侯居世，初六元士在应。</p>
+<p class="no-indent verse">建始己未至甲子，【大暑，大寒。】积算起甲子至癸亥，周而复始。土水入坎艮。【水土二象入艮，配金宫起算。】</p>
+<p class="no-indent verse">五星从位起镇星，【土星入金宫。】星宿从位降戊申，【二十八宿，分星宿入蹇六四戊申金上。】分气候其数三十六。【积算起数三十六，从六位五行。】</p>  </div>
+</div>
+<script>
+var chapters = ["前言", "乾上乾下", "巽下乾上", "艮下乾上", "坤下乾上", "坤下巽上", "坤下艮上", "坤下离上", "乾下离上", "震上震下", "坤下震上", "坎下震上", "巽下震上", "巽下坤上", "巽下坎上", "巽下兑上", "震下兑上", "坎上坎下", "兑下坎上", "离下坤上", "坎下坤上", "艮下艮上", "离下艮上", "乾下艮上", "兑下艮上", "兑下离上", "兑下乾上", "兑下巽上", "艮下巽上", "坤下坤上（卷中）", "震下坤上", "兑下坤上", "坎下艮上", "坎下巽上", "坎下乾上", "离下乾上", "兑下兑上", "坎下兑上", "坤下兑上", "艮下兑上", "艮下坎上"];
+function showChapter(idx) {
+  document.querySelectorAll('.chapter-content').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.chapter-item').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.mc-item').forEach(function(el) { el.classList.remove('active'); });
+  var ch = document.getElementById('ch' + idx);
+  if (ch) { ch.classList.add('active'); ch.scrollIntoView({behavior:'smooth'}); }
+  var item = document.querySelector('[data-chapter="' + idx + '"]');
+  if (item) { item.classList.add('active'); item.scrollIntoView({behavior:'smooth',block:'center'}); }
+  var mcItems = document.querySelectorAll('.mc-item');
+  if (mcItems[idx]) mcItems[idx].classList.add('active');
+  document.getElementById('mcCurrent').textContent = chapters[idx] || '目录';
+}
+window.onload = function() {
+  for (var i = 0; i < chapters.length; i++) {
+    var item = document.querySelector('[data-chapter="' + i + '"]');
+    if (item) { showChapter(i); break; }
+  }
+};
+</script>
+</body>
+</html>
