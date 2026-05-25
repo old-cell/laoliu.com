@@ -34,6 +34,13 @@
       ]
     },
     {
+      "source": "/books/pdfs/(.*)",
+      "headers": [
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
       "source": "/books/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600" },
