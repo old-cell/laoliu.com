@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>梅花易数小白入门自编 - 老六茶事藏书阁</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --green-deep: #1a3c2a; --green-mid: #2d5a3e;
+  --gold: #d4af37; --gold-light: #f5e6b8; --gold-pale: #faf3e0;
+  --bg: #efe4d0; --card: #ffffff;
+  --text: #2c2c2c; --text-light: #666;
+  --sidebar-w: 300px;
+}
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", "Noto Serif SC", serif;
+  background: var(--bg); color: var(--text);
+  display: flex; min-height: 100vh;
+}
+.sidebar {
+  width: var(--sidebar-w); min-width: var(--sidebar-w);
+  background: linear-gradient(180deg, var(--green-deep) 0%, #0f2b1e 100%);
+  display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow: hidden;
+}
+.sidebar-header { padding: 28px 20px; text-align: center; border-bottom: 1px solid rgba(212,175,55,0.2); }
+.sidebar-header h2 {
+  font-size: 22px; font-weight: 700; letter-spacing: 4px;
+  background: linear-gradient(135deg, var(--gold), #e8c840, var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.sidebar-header .sub { font-size: 12px; color: rgba(212,175,55,0.5); margin-top: 4px; letter-spacing: 2px; }
+.back-link { display: block; padding: 12px 20px; color: var(--gold); font-size: 14px; text-decoration: none; cursor: pointer; border-bottom: 1px solid rgba(212,175,55,0.1); }
+.back-link:hover { background: rgba(212,175,55,0.12); }
+/* Mobile chapter nav - hidden on desktop */
+.mobile-chapter-nav { display: none; }
+.chapter-list { flex: 1; overflow-y: auto; padding: 8px 0; }
+.chapter-list::-webkit-scrollbar { width: 4px; }
+.chapter-list::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+.chapter-item {
+  padding: 9px 20px 9px 28px; cursor: pointer; font-size: 14px;
+  color: rgba(255,255,255,0.7); transition: all 0.25s; display: flex; align-items: center; gap: 8px;
+}
+.chapter-item:hover { background: rgba(212,175,55,0.1); color: var(--gold); padding-left: 32px; }
+.chapter-item.active { background: rgba(212,175,55,0.15); color: var(--gold); font-weight: 600; border-left: 3px solid var(--gold); }
+.content { flex: 1; padding: 0; overflow-y: auto; height: 100vh; }
+.content::-webkit-scrollbar { width: 6px; }
+.content::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 6px; }
+.book-header { text-align: center; padding: 40px 20px 24px; border-bottom: 2px solid var(--gold); margin: 0 40px; }
+.book-header h1 { font-size: 28px; color: var(--green-deep); letter-spacing: 4px; margin-bottom: 6px; font-weight: 700; }
+.book-header .book-sub { font-size: 13px; color: var(--text-light); letter-spacing: 2px; }
+
+.chapter-content { padding: 30px 40px 60px; max-width: 820px; margin: 0 auto; }
+.chapter-content .main-title { font-size: 22px; font-weight: 700; color: var(--green-deep); text-align: center; margin-bottom: 16px; letter-spacing: 2px; }
+.chapter-content .sub-title { font-size: 18px; color: var(--green-mid); text-align: center; margin-bottom: 20px; }
+.chapter-content .article-title { font-size: 20px; font-weight: 700; color: var(--green-deep); text-align: center; margin-bottom: 8px; }
+.chapter-content .article-sub { font-size: 16px; color: var(--text-light); text-align: center; margin-bottom: 16px; }
+.chapter-content h2 { font-size: 19px; color: var(--green-deep); margin: 24px 0 12px; border-left: 3px solid var(--gold); padding-left: 12px; }
+.chapter-content p { font-size: 16px; line-height: 2; text-indent: 2em; margin-bottom: 10px; color: #444; }
+.chapter-content img { max-width: 100%; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin: 12px 0; }
+.chapter-content .keyword { color: #c0392b; font-weight: 600; }
+.chapter-content .highlight-box { background: #f5efe4; border-radius: 8px; padding: 14px 18px; margin: 14px 0; font-size: 15px; line-height: 1.8; border-left: 3px solid var(--gold); }
+.chapter-content .divider { text-align: center; color: var(--gold); font-size: 14px; margin: 20px 0; letter-spacing: 6px; }
+.chapter-content .next-preview { background: #f8f4ee; border-radius: 8px; padding: 14px 18px; margin: 16px 0; font-size: 14px; line-height: 1.7; }
+.chapter-content .next-preview .label { color: var(--gold); font-weight: 600; margin-bottom: 4px; }
+.chapter-content .example-box { background: #f0f7ec; border-radius: 8px; padding: 14px 18px; margin: 14px 0; border-left: 3px solid var(--green-mid); }
+.chapter-content table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+.chapter-content th, .chapter-content td { border: 1px solid #ddd; padding: 8px 12px; text-align: center; }
+.chapter-content th { background: var(--green-deep); color: var(--gold); font-weight: 600; }
+.chapter-content .strong { font-weight: 700; color: var(--green-deep); }
+
+/* Mobile */
+@media (max-width: 767px) {
+  .sidebar { display: none; }
+  .chapter-content { padding: 16px; }
+  .book-header { margin: 0 16px; }
+  .book-header h1 { font-size: 22px; }
+
+  /* Mobile chapter nav */
+  .mobile-chapter-nav { display: block; margin: 0 16px 16px; }
+  .mc-toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: 12px 16px;
+    background: var(--green-deep); color: var(--gold);
+    border: none; border-radius: 8px; font-size: 15px;
+    cursor: pointer; font-weight: 600; letter-spacing: 1px;
+  }
+  .mc-toggle .mc-arrow { transition: transform 0.3s; font-size: 12px; }
+  .mc-toggle.open .mc-arrow { transform: rotate(180deg); }
+  .mc-list { display: none; max-height: 50vh; overflow-y: auto; background: #fff; border-radius: 0 0 8px 8px; border: 1px solid #e0d8cc; border-top: none; }
+  .mc-list.open { display: block; }
+  .mc-item {
+    padding: 10px 16px; font-size: 14px; color: var(--text);
+    border-bottom: 1px solid #f0ebe3; cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .mc-item:last-child { border-bottom: none; }
+  .mc-item:hover { background: #faf3e0; }
+  .mc-item.active { background: #faf3e0; color: var(--green-deep); font-weight: 600; border-left: 3px solid var(--gold); }
+  .mc-item .mi-num { font-size: 12px; color: var(--text-light); min-width: 28px; }
+}
+
+/* 4K */
+@media (min-width: 2560px) {
+  :root { --sidebar-w: 500px; }
+  .sidebar-header h2 { font-size: 32px; }
+  .sidebar-header .sub { font-size: 18px; }
+  .chapter-item { font-size: 22px; padding: 14px 28px 14px 40px; }
+  .chapter-group-title { font-size: 18px; padding: 12px 28px; }
+  .back-link { font-size: 20px; padding: 16px 28px; }
+  .book-header h1 { font-size: 40px; }
+  .book-header .book-sub { font-size: 18px; }
+  .chapter-content { max-width: 1200px; padding: 50px 60px; }
+  .chapter-content p { font-size: 22px; line-height: 2.2; }
+  .chapter-content h2 { font-size: 28px; }
+  .chapter-content .main-title { font-size: 32px; }
+  .chapter-content .sub-title { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-header"><h2>📚 梅花易数入门</h2><div class="sub">小白自编教程</div></div>
+  <div class="back-link" onclick="sessionStorage.setItem('returnTo','library');window.location.href='/'">← 返回藏书阁</div>
+  <div class="chapter-list" id="chapterList"></div>
+</div>
+<div class="content">
+  <div class="book-header"><h1>梅花易数小白入门自编</h1><div class="book-sub">八节课 · 零基础入门</div></div>
+  <!-- Mobile chapter nav (hidden on desktop) -->
+  <div class="mobile-chapter-nav">
+    <button class="mc-toggle" onclick="this.classList.toggle('open');document.getElementById('mcList').classList.toggle('open')">
+      📖 章节目录 <span class="mc-arrow">▾</span>
+    </button>
+    <div class="mc-list" id="mcList"></div>
+  </div>
+  <div id="bookBody"></div>
+</div>
+<script>
+const CHAPTERS = [
+  {title: '小白整体认识梅花易数', content: `<div class="main-title">《梅花易数》小白快速入门教程一</div>
+    <div style="text-align:center;margin:16px 0;"><img src="/images/jc-01-01-认识梅花易数.jpg" alt="认识梅花易数的文章配图：梅花枝头绽放，象征梅花易数的名号" style="max-width:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></div>
+    <div class="sub-title">简单整体认识梅花易数</div>
+
+    <p>发现很多朋友对《梅花易数》特别感兴趣，但普遍反馈「书看不懂」「网上资料又乱又散」，踩了不少入门坑。所以今天小编就把自己学习《梅花易数》的全过程、真实感悟，还有遇到的疑问，一次性分享给大家——既是我个人的学习总结，也希望能帮到想入门的小白，少走弯路。</p>
+
+    <p>本系列专为《梅花易数》入门小白打造，内容接地气、不晦涩，小白友好度直接拉满。</p>
+
+    <p>这一篇，咱们先搞定最基础的——<span class="keyword">小白对《梅花易数》的核心认知</span>，顺便避开入门第一个误区。</p>
+
+    <div class="divider">· · ·</div>
+
+    <h2>学梅花，到底该看什么书？</h2>
+
+    <p>聊《梅花易数》，首先绕不开它的核心载体——<strong>《梅花易数》这本书</strong>。很多小白入门最常问的就是："学梅花需要买什么书？"</p>
+
+    <p>答案很简单：<strong>只需要这一本就够了。</strong></p>
+
+    <p>它是学习、了解、深究《梅花易数》的唯一核心书籍。不用贪多求全，先把这一本书啃明白，比乱翻十份网上的零散资料都有用。</p>
+
+    <p>当然，等你入门之后想进一步深入研究，也可以搭配其他书籍做辅助，比如邵雍的《皇极经世书》——这本书是邵雍亲自所著，而《梅花易数》的思想根源，就来自邵雍的"心易"体系。想搞懂梅花易数的源头，看这本书准没错。</p>
+
+    <div class="divider">· · ·</div>
+
+    <h2>一个越早知道越好的真相</h2>
+
+    <p>这里特意提一下《皇极经世书》的作者，是因为有个关键疑问——<span class="keyword">《梅花易数》的真实作者，其实经不起仔细推敲</span>。这件事，小白入门越早知道越好。</p>
+
+    <p>很多小白第一次读《梅花易数》，都会有一个共同的困惑：<strong>前半部分内容特别琐碎。</strong></p>
+
+    <p>从目录上看，明明是层层深入的学习逻辑，但具体到每一部分，都写得三言两语、点到即止。最关键的是——没有一个明确的核心内容。这就导致很多人看完前半部分，试着自己起卦、解卦时，总觉得"不得其法"，越算越乱；回头再看原文，又说不上来到底缺了什么。</p>
+
+    <p>其实你感觉到的这种"缺失"，就是《梅花易数》最核心的内容——也是这本书最大的"bug"。</p>
+
+    <div class="divider">· · ·</div>
+
+    <h2>这本书更像是一份学习笔记</h2>
+
+    <p>再仔细推敲书里的案例，比如「断占买香占」，你会发现案例的时代背景，和标注的"邵雍所处时代"根本对不上。结合这些细节，小编大胆推断：</p>
+
+    <div class="highlight-box">
+        <strong>《梅花易数》这本书，更像是后人整理的学习笔记</strong>——有人学习了邵雍的"心易"思想后，把自己的学习心得、关键细节记了下来，整理成册后，署名邵雍而已。
+    </div>
+
+    <p>大家都知道，笔记的特点就是"挑重点记"：只记录自己觉得关键、容易忘的细节，而那些自己认为广为人知、不用特意强调的核心知识点，<strong>往往会省略</strong>。</p>
+
+    <p>这就是为什么你读完《梅花易数》，总觉得"少点什么"——少的，就是被笔记整理者省略掉的、梅花易数的核心逻辑和完整体系。</p>
+
+    <div class="divider">· · ·</div>
+
+    <h2>核心内容到底是什么？</h2>
+
+    <p>问题来了——既然原书缺了核心，那小白入门最需要搞清楚的东西：<strong>《梅花易数》的核心内容，到底是什么？</strong></p>
+
+    <p>咱们下一篇，专门来拆解这个谜题，帮大家补上这个最关键的入门缺口。</p>
+
+    <div class="next-preview">
+        <div class="label">📖 下一篇预告</div>
+        <strong>《梅花易数》小白快速入门教程二：核心内容大揭秘</strong><br>
+        原书到底少了什么？梅花易数的完整体系长什么样？<br>
+        下一篇一一讲清楚，敬请期待！
+    </div>
+
+</div>`},
+  {title: '书的结构与解字', content: `<div class="article-title">梅花易数小白快速入门教程（二）</div>
+    <div style="text-align:center;margin:16px 0;"><img src="/images/jc-02-02-书的结构与解字.jpg" alt="书的结构与解字的文章配图" style="max-width:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></div>
+    <div class="article-sub">简单认识《梅花易数》这本书的结构与解字</div>
+
+    <p>上一期我们聊了《梅花易数》这本书的概况。今天咱们来说说这本书的结构，特别是一个很多人都会忽略的问题——为什么前半本讲起卦解卦，后半本突然画风一变，开始讲起了"解字"？</p>
+
+    <!-- ==================== 第一部分 ==================== -->
+
+    <h2>一、这本书，只看前半本就够了？</h2>
+
+    <p>说实话，很多前辈包括小编自己，初学梅花的时候都是只盯着前半本看，后边翻都懒得翻。因为前半部分已经把起卦、卦象、解卦这些核心内容讲得清清楚楚了，乍一看，后半部分完全是另一个东西，好像跟占卜没什么关系。</p>
+
+    <p>那后半部分是什么呢？四个字——<strong>拆字解字</strong>。</p>
+
+    <p>你没看错。前半本讲八卦、讲起卦、讲万物类象，后半本突然变成了一本"汉字拆解手册"。这两部分内容可以说八竿子打不着，却硬生生被塞进了同一本书里。</p>
+
+    <p>这就引出了一个问题：<strong>到底是后人把两种内容拼到一起的，还是成书的时候就这个结构？</strong></p>
+
+    <p>如果是后人加的，那就当个"附录"看，无所谓。但如果成书时就长这样——那就有意思了。一部完整的著作，内容一定是层层递进的，不会无缘无故塞一堆不相关的东西进去。所以，解字这部分既然被放进来了，说明它跟梅花易数一定有内在联系，甚至可能就是前辈们秘而不宣的<strong>"隐藏秘籍"</strong>。</p>
+
+    <!-- ==================== 第二部分 ==================== -->
+
+    <h2>二、邵雍的老本行——解字大师</h2>
+
+    <p>咱们来看看《梅花易数》的"代言人"——<strong>邵雍</strong>（邵康节）这个人。</p>
+
+    <p>如果你去翻翻邵雍的履历就会发现，人家可不是半路出家的江湖先生。邵雍早年师从李之才，学的就是正统的象数易学，而且他本人还有一个非常牛的看家本领——<strong>拆字解字</strong>。换句话说，人家在易学圈子里混，最早就是靠解字吃饭的。</p>
+
+    <p>这么一琢磨，事情就串起来了：</p>
+
+    <div class="highlight-box">
+        <p>一个解字大师写了一本易学书，书里一半讲卦，一半讲字——你说这两半是巧合，谁信？</p>
+    </div>
+
+    <p>所以，解字这部分根本不是凑数的，它就是梅花易数这门学问里非常重要的一环。</p>
+
+    <!-- ==================== 第三部分 ==================== -->
+
+    <h2>三、从"梅花占"看解字与起卦的关系</h2>
+
+    <p>说完书的结构，咱们再来聊一个经典案例——<strong>梅花占</strong>。（这可是整本书名字的由来啊！）</p>
+
+    <p>如果你看过这个案例就知道，故事是这样的：邵雍某天在花园里看到两只麻雀争枝，掉到地上，于是起了一卦，推断第二天会有少女来折花，园丁追赶，少女受惊摔倒，伤了大腿。</p>
+
+    <p>结果——全中。</p>
+
+    <p>但是问题来了：<strong>他怎么知道"兑卦"就一定代表"少女"？</strong></p>
+
+    <p>你可能觉得这有什么好问的，卦书上不写了吗？兑为少女啊！但你细想一下：兑卦的意象非常多，可以是泽、是口、是羊、是缺、是毁折……为什么偏偏在"梅花占"这个案例里，就选"少女"这个意象？</p>
+
+    <p>这就是争论的焦点了。</p>
+
+    <p>有一种说法很有意思，咱们一起来看看——</p>
+
+    <p>梅花占是从"观两雀相争坠地"起的卦，那"雀"字是什么意思？拆开来看，"雀"字上面一个"小"，下面一个"隹"（短尾鸟）。但你要是往深了拆解，"雀"可以看作"少"+"佳"——<strong>"少"就是年少，"佳"就是佳人</strong>。连起来就是"少女佳人"的意思。</p>
+
+    <p>所以你明白了没？</p>
+
+    <p>邵雍在看到两只麻雀的那一刻，可能不光是看见了"鸟"，他脑子里不自觉地就在<strong>解这个"雀"字</strong>，从而锁定了"兑卦"对应的意象是"少女"，而不是别的什么东西。</p>
+
+    <div class="callout">
+        <p>💡 <strong>小结一下：</strong>梅花占表面上是个起卦案例，但背后很可能藏着一层"解字"的逻辑。这也就解释了为什么书里要花一半篇幅讲解字——因为<strong>解字本身就是起卦和解卦的一把钥匙</strong>。</p>
+    </div>
+
+    <p>同时，这也是为什么《梅花易数》里的案例有些经不起细推敲，但"梅花占"和"牡丹占"这几个核心案例却很少有人质疑——因为它们很可能就是邵雍本人的手笔，不是后人胡编的。</p>
+
+    <!-- ==================== 第四部分 ==================== -->
+
+    <h2>四、梅花易数本来可能并不是一门"单独的学问"</h2>
+
+    <p>综合上面的分析，小编斗胆做个猜测：</p>
+
+    <p>在邵雍那个年代，梅花易数可能根本就不是一个独立的占卜门派。它更像是<strong>多个学科交叉出来的一个简便方法</strong>——把解字、卦象、时间、五行这些东西揉在一起，灵活运用。</p>
+
+    <p>但因为邵雍对这套方法披露得不多，别人看到的也只是一些表面的案例，没法完整地学到里面的精髓。后来越传越广，大家就以讹传讹，慢慢把它包装成了一门"独立的占卜方法"。</p>
+
+    <p>说白了，<strong>如果没有师傅系统地带你入门，学来学去都只能在表面打转</strong>。这也是为什么市面上很多人学了好几年梅花，卦也起了一大堆，但解起卦来总感觉差那么点意思。</p>
+
+    <!-- ==================== 第五部分 ==================== -->
+
+    <h2>五、学梅花，你需要先储备哪些知识点？</h2>
+
+    <p>好了，前面铺垫了这么多，其实就是为了告诉你一件事：</p>
+
+    <p>学梅花易数不能死记硬背，你得先打好基础，把几个核心的知识点吃透了，后面自然就能灵活运用。</p>
+
+    <p>接下来，咱们这个系列就会按照下面这条路线，一步步带你入门：</p>
+
+    <div class="list-wrap">
+        <ol>
+            <li><strong>八卦的排序、由来、符号、根本意象及易理内容</strong>——这是地基中的地基</li>
+            <li><strong>干支时间的对应与排序，如何对应到手节方便记忆</strong>——时间体系是断卦的关键</li>
+            <li><strong>八卦的五行属性与五行生克的基本理解</strong>——生克关系贯穿所有解卦方法</li>
+            <li><strong>起卦方法：先天起卦与后天起卦，以及两者的区别</strong>——起对了，解才能准</li>
+            <li><strong>几类基本的解卦方法</strong>——掌握套路，才不会对着卦发呆</li>
+            <li><strong>应期</strong>——事情什么时候发生？这里是重点</li>
+            <li><strong>案例示范</strong>——把前面学的串起来，看看实战怎么用</li>
+        </ol>
+    </div>
+
+    <!-- ==================== 结尾 ==================== -->
+
+    <div class="divider"></div>
+
+    <p>以上就是小编对《梅花易数》这本书的一点认识和猜测。不管说得对还是不对，希望能给正在入门的朋友们提供一些新的思路。别把梅花当成死记硬背的东西，多琢磨琢磨它背后的逻辑，也许你会有不一样的收获。</p>
+
+    <p>下一期，咱们就正式开干——先从<strong>八卦</strong>讲起，记得关注，别掉队！</p>
+
+    <div class="footer-note">
+        ▼<br>
+        老六茶事 · 梅花易数系列<br>
+        小白友好 · 接地气 · 讲干货
+    </div>
+
+</div>`},
+  {title: '八卦次序、符号及相关易理（上）', content: `<div style="text-align:center;margin:16px 0;"><img src="/images/jc-03-03-八卦次序符号上.jpg" alt="八卦次序符号的文章配图：八卦符号与太极图" style="max-width:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></div>
+<h1>《梅花易数》小白快速入门教程（三）</h1>
+<h1 style="border-bottom: none; margin-top: -10px; font-size: 1.6em;">八卦次序、符号及相关易理（上）</h1>
+
+<p>想要学习占卜，首先必须掌握的知识点就是八卦。在梅花易数中，更准确的说法是<strong>先天八卦</strong>。本节我们就来介绍先天八卦的符号与排序。</p>
+
+<div class="bagua-list">
+    <p style="text-indent: 0; font-weight: bold; margin-bottom: 8px;">先天八卦排序：</p>
+    <div class="seq">乾☰1 &nbsp; 兑☱2 &nbsp; 离☲3 &nbsp; 震☳4 &nbsp; 巽☴5 &nbsp; 坎☵6 &nbsp; 艮☶7 &nbsp; 坤☷8</div>
+</div>
+
+<div class="bagua-list">
+    <p style="text-indent: 0; font-weight: bold; margin-bottom: 8px;">先天八卦符号口诀：</p>
+    <div class="symbol">☰ 乾三连 &nbsp; ☷ 坤六断 &nbsp; ☳ 震仰盂 &nbsp; ☶ 艮覆碗</div>
+    <div class="symbol">☲ 离中虚 &nbsp; ☵ 坎中满 &nbsp; ☱ 兑上缺 &nbsp; ☴ 巽下断</div>
+</div>
+
+<hr>
+
+<h2>太极、两仪、四象、八卦——符号背后的易理</h2>
+
+<p>下面我们来聊聊太极、两仪、四象与八卦符号背后的易理内涵。这部分内容综合了网上比较有趣的说法，分享给大家，帮助理解与记忆。</p>
+
+<h2>一、太极</h2>
+
+<p>首先要说的是<strong>太极</strong>。如今有很多人在研究"太极点"的问题，也有人试图将其与现代科学联系起来，认为太极就是宇宙大爆炸之前的初始形态。但不管哪种说法，最令人信服的还是<strong>伏羲一画开天地</strong>的传说。</p>
+
+<p>说白了，太极就是伏羲在思索宇宙空间、阴阳尚未分化之前的一种存在状态。在远古那个没有文字的时代，伏羲用简单的一横来表示它——甚至可能只是随手捡起的一根木棍。因为在那个年代，别说文字了，连符号的概念都还没有。所以有易学研究者提出，太极最初可能真的就是一根木棍，后来为了方便记忆才演变成符号——一横。这一横，极其形象地表达了太极的涵义。</p>
+
+<div class="taiji-section">
+    <p style="text-indent: 0; margin-bottom: 0;">☯ 太极，简单来说就是"一"。这一画，开天辟地，阴阳从此而生。</p>
+</div>
+
+<h2>二、两仪</h2>
+
+<p>两仪在符号上的易理解释其实并不多，但有一个说法颇为有趣：一根完整的木棍就是太极，如果将木棍折断，它的形态就变了；而把折断的两截放回一起，形态又恢复如初。由此，古人将完整的一横定义为太极（也是阳爻），将断开的两横定义为阴爻。</p>
+
+<p>这便是<strong>"太极生两仪"</strong>。而且值得注意的是，阴中有阳，阳中有阴——断裂的两截合在一起还是一，一分为二便是二。这个解释虽然有些牵强，但作为现代人的一种脑洞，了解一下也无妨，至少有助于记忆。</p>
+
+<div class="highlight-box">
+    <p style="font-weight: bold;">阳爻（⚊）—— 一横不断</p>
+    <p>阴爻（⚋）—— 两横断开</p>
+</div>
+
+<h2>三、四象</h2>
+
+<p>在远古时代，人们最主要的学习方式就是<strong>观察</strong>，而最大的好奇对象就是<strong>自然界</strong>。古人观察到的四种典型现象，便构成了"四象"。</p>
+
+<p>具体来说，四象源自太阳东升西落所产生的四种景象。说到这里，不由得让人想起孔子东游时遇到"两小儿辩日"的故事。这样看来，关于四象源自太阳现象的假设是站得住脚的——对于善于观察的古人来说，太阳带来的这四种变化确实足够引人深思。</p>
+
+<h3>少阳</h3>
+<p>早上，太阳刚升起时又红又大，感觉有些热，但地面却是清冷的。上天下地，冷暖不同，古人用<strong>上面一个阳爻、下面一个阴爻</strong>来表示这种现象，称之为<strong>少阳</strong>（⚎）。</p>
+
+<h3>太阳</h3>
+<p>到了中午，太阳晒得人感觉很热，地面同样也是滚烫的。上下皆热，古人用<strong>两个阳爻</strong>——上面一个、下面一个——来表示，称之为<strong>太阳</strong>（⚌）。</p>
+
+<p style="text-align: center; color: #7a4e2a; margin-top: 28px;"><em>（未完待续——少阴、太阴及更多易理将在下篇继续）</em></p>
+
+<hr>
+
+<div class="note">
+    <p><strong>📌 本讲要点回顾</strong></p>
+    <p>• 先天八卦排序：乾1 兑2 离3 震4 巽5 坎6 艮7 坤8</p>
+    <p>• 先天八卦符号口诀：乾三连 坤六断 震仰盂 艮覆碗 离中虚 坎中满 兑上缺 巽下断</p>
+    <p>• 太极：伏羲一画开天地，用一横或一根木棍象征宇宙未分之状态</p>
+    <p>• 两仪：一横不断为阳爻（⚊），两横断开为阴爻（⚋），太极生两仪</p>
+    <p>• 四象之少阳（⚎）：上阳下阴，清晨太阳与地面冷暖不同</p>
+    <p>• 四象之太阳（⚌）：上阳下阳，正午天地皆热</p>
+</div>`},
+  {title: '八卦次序、符号及相关易理（下）', content: `<div style="text-align:center;margin:16px 0;"><img src="/images/jc-04-04-八卦次序符号下.jpg" alt="太极两仪四象八卦的文章配图" style="max-width:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></div>
+<h1>梅花易数小白快速入门教程（四）<br>八卦次序、符号以及相关易理（下）</h1>
+
+    <!-- ============ 四象 ============ -->
+    <h2>四象：从时间到符号</h2>
+
+    <p>傍晚，太阳奄奄一息，虽感凉意，但地面余温未散。上阴下阳，故以<strong>上面一个阴爻、下面一个阳爻</strong>表示，称之为<strong class="highlight">少阴</strong>。</p>
+
+    <p>午夜，天地俱凉，上下皆阴，故以<strong>两个阴爻</strong>表示，称之为<strong class="highlight">太阴</strong>。</p>
+
+    <p>这种说法简单粗暴——只用两个爻，一个代表天上，一个代表地上。若让咱们来描述这四种现象，怕是要费不少字数，但古人两个符号一组合就搞定，实在妙趣横生。</p>
+
+    <!-- ============ 八卦总说 ============ -->
+    <h2>八卦：天地间的八种基本现象</h2>
+
+    <p>「你这人很八卦哎！」——如今「八卦」常被用作谈资闲话的代名词，但在易理中，<strong>八卦就是世间的万事万物</strong>。天地初开，最先出现的便是<strong class="highlight">八种自然现象</strong>。</p>
+
+    <p>宇宙大爆炸，天地初分，日月交替登场，形成四象。在这四种现象的交互作用下，产生了大地上最初的八种自然现象：<strong>天、泽、火、雷、风、水、山、大地</strong>。</p>
+
+    <!-- ============ 坤变：震坎艮 ============ -->
+    <h2>从坤卦衍生：震、坎、艮</h2>
+
+    <p>在众多解读中，小编觉得<strong>曾仕强</strong>先生的解释最为生动有趣。他先定义乾坤符号：</p>
+
+    <div class="quote">
+        <p><strong>乾为天</strong>——三横（☰）<br>
+        <strong>坤为地</strong>——三断横（☷）</p>
+    </div>
+
+    <p>从坤出发，将最下面一断横改为一横，便得到<strong class="highlight">震（☳）</strong>，象征雷。为何是雷？<strong>因为</strong>打雷时你会感觉大地震动，故为震、为雷。</p>
+
+    <p>同理，将坤<strong>中间</strong>一断横改为一横，得到<strong class="highlight">坎（☵）</strong>，象征水。</p>
+
+    <p>将坤<strong>最上面</strong>一断横改为一横，得到<strong class="highlight">艮（☶）</strong>，象征山。</p>
+
+    <p>俯瞰大地：大地之上隆起为山，向下深陷为水为溪流。所以<strong>地上变动为山，地中变动为水，地下变动为雷</strong>——坤的三爻变动，分别对应着三种截然不同的自然景观。</p>
+
+    <!-- ============ 乾变：巽离兑 ============ -->
+    <h2>从乾卦衍生：巽、离、兑</h2>
+
+    <p>上面说的是「坤变」，下面说「乾变」。方法相同：</p>
+
+    <p><strong>天下变动为风（☴）</strong>，天之下气流涌动即为风。</p>
+
+    <p><strong>天中变动为火（☲）</strong>。为何是火？因为火生烟，烟飘至天空中，故以天中一爻变动来象征火。</p>
+
+    <p><strong>天上变动呢？</strong>古人无法去到天上，但他们观察到河水倒映着天空——也就是说，天的上面是河、是泽。这个联想最是精彩，也是小编最为佩服之处。于是便有了<strong class="highlight">兑（☱）</strong>，象征泽。</p>
+
+    <!-- ============ 小结 ============ -->
+    <h2>小结：理解即记忆</h2>
+
+    <div class="quote">
+        <p><strong>坤变（地之变动）：</strong></p>
+        <p>地下变动 → 震（雷）<br>地中变动 → 坎（水）<br>地上变动 → 艮（山）</p>
+        <p style="margin-top:0.6em;"><strong>乾变（天之变动）：</strong></p>
+        <p>天下变动 → 巽（风）<br>天中变动 → 离（火）<br>天上变动 → 兑（泽）</p>
+    </div>
+
+    <p>以上都是现代人在研究八卦符号时所提出的一些猜想，这里提出来，也有助于诸位对这些符号的记忆。易理深奥，各家有各家的理解，不必深究其严谨性，重在得其意趣。</p>
+
+    <div class="footer-note">
+        老六茶事 · 梅花易数入门系列
+    </div>
+
+</div>`},
+  {title: '八卦属性及五行生克理解', content: `<div style="text-align:center;margin:16px 0;"><img src="/images/jc-05-05-五行生克理解.jpg" alt="五行生克理解的文章配图：五行循环" style="max-width:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></div>
+<h1>《梅花易数》小白快速入门教程五</h1>
+<p class="subtitle">八卦属性及五行生克理解</p>
+
+<!-- ========== 一、八卦属性 ========== -->
+<h2>一、八卦属性</h2>
+
+<div class="wx-grid">
+    <div class="wx-card">
+        <h4>☰ 乾 · ☱ 兑 → 金</h4>
+        <p class="no-indent" style="text-align:center;color:#555;">乾为天、兑为泽，皆属金</p>
+    </div>
+    <div class="wx-card">
+        <h4>☳ 震 · ☴ 巽 → 木</h4>
+        <p class="no-indent" style="text-align:center;color:#555;">震为雷、巽为风，皆属木</p>
+    </div>
+    <div class="wx-card">
+        <h4>☷ 坤 · ☶ 艮 → 土</h4>
+        <p class="no-indent" style="text-align:center;color:#555;">坤为地、艮为山，皆属土</p>
+    </div>
+    <div class="wx-card">
+        <h4>☲ 离 → 火 &nbsp;&nbsp;|&nbsp;&nbsp; ☵ 坎 → 水</h4>
+        <p class="no-indent" style="text-align:center;color:#555;">离为火、坎为水</p>
+    </div>
+</div>
+
+<!-- ========== 二、五行生克关系 ========== -->
+<h2>二、五行生克关系</h2>
+
+<h3>相生关系</h3>
+<p><strong>金生水 → 水生木 → 木生火 → 火生土 → 土生金</strong></p>
+
+<h3>相克关系</h3>
+<p><strong>金克木 → 木克土 → 土克水 → 水克火 → 火克金</strong></p>
+
+<div class="highlight">
+    <p>💡 五行生克关系对于刚入门的人来说，<strong>硬记</strong>可能比较困难，下面和大家分享小编的记忆方法。</p>
+</div>
+
+<!-- ========== 三、记忆方法 ========== -->
+<h2>三、形象记忆法</h2>
+
+<h3>相生记忆</h3>
+<p>溪水从山上流出，山为石、代表金，所以<strong>金生水</strong>；水流两侧滋养树木，所以<strong>水生木</strong>；伐木生火，<strong>木生火</strong>这个好理解；火烧木成灰滋养土地，或者大火所焚烧过的灰烬时间久了便化为土，<strong>火生土</strong>；土地里常常有结块而成的石头，<strong>土生金</strong>。</p>
+
+<h3>相克记忆</h3>
+<p>石头阻碍树木根系伸展，<strong>金克木</strong>；树木防止水土流失，<strong>木克土</strong>；水来土掩，<strong>土克水</strong>；<strong>水克火</strong>很好理解；大火可以焚烧石头成土，<strong>火克金</strong>。</p>
+
+<!-- ========== 四、吉凶判定 ========== -->
+<h2>四、生克与吉凶判定</h2>
+
+<p>总体而言，在梅花易数中：</p>
+
+<div class="table-wrap">
+<table>
+    <thead>
+        <tr>
+            <th style="width:20%;">生克关系</th>
+            <th style="width:20%;">吉凶</th>
+            <th style="width:60%;">含义</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>克出</strong><br><small>（我克者）</small></td>
+            <td class="g-col">✅ 大吉</td>
+            <td style="text-align:left;">我方克制对方，占据主动，全局有利</td>
+        </tr>
+        <tr>
+            <td><strong>生出</strong><br><small>（生他者）</small></td>
+            <td class="x-col">⚠️ 小凶</td>
+            <td style="text-align:left;">我方能量流向对方，自身有所损耗</td>
+        </tr>
+        <tr>
+            <td><strong>被克</strong><br><small>（克我者）</small></td>
+            <td class="x-col">❌ 大凶</td>
+            <td style="text-align:left;">我方被对方压制，处境被动不利</td>
+        </tr>
+        <tr>
+            <td><strong>生入</strong><br><small>（生我者）</small></td>
+            <td class="g-col">✅ 小吉</td>
+            <td style="text-align:left;">对方能量流向我方，得助受益</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+<!-- ========== 五、军队作战比喻 ========== -->
+<h2>五、军队作战比喻（帮你彻底理解）</h2>
+
+<p>对于生克的理解，小编经常以<strong>军队作战</strong>来比喻，这样比较好理解。</p>
+
+<div class="battle-box">
+    <p><span class="battle-label">⚔️ 场景设定：</span>A 军代表你自己，B 军代表敌军。</p>
+</div>
+
+<h3>▸ 克出 → 大吉：「我方获胜，但也有代价」</h3>
+<p>好比 A、B 两支军队作战，最终 A 军大获全胜。切记：虽然你最终赢得了胜利，但你自己也是有代价、有伤亡的。</p>
+
+<h3>▸ 被克 → 大凶：「我方被压制，处处被动」</h3>
+<p>A 军被 B 军围攻压制，节节败退，损失惨重，此为最不利的局势。</p>
+
+<h3>▸ 生入 → 小吉：「援军到来，实力增强」</h3>
+<p>B 军中有一部分士兵投降、投奔到 A 军，壮大了 A 军的实力，削弱了敌军的力量。不战而屈人之兵，虽非全胜，但已获利。</p>
+
+<h3>▸ 生出 → 小凶：「兵力外调，实力削弱」</h3>
+<p>两军对峙，A 军的一部分人叛逃到对方那里，壮大了对方的实力，而减弱了你自己的实力。</p>
+
+<div class="highlight">
+    <p>💡 <strong>一句话总结：</strong></p>
+    <p>克出（我克他）→ <span style="color:#1a7a3a;font-weight:600;">大吉</span>，但需付出代价</p>
+    <p>生入（他生我）→ <span style="color:#1a7a3a;font-weight:600;">小吉</span>，有人相助</p>
+    <p>生出（我生他）→ <span style="color:#b22222;font-weight:600;">小凶</span>，自身损耗</p>
+    <p>被克（他克我）→ <span style="color:#b22222;font-weight:600;">大凶</span>，处处受制</p>
+</div>
+
+<!-- ========== 六、实例：婚姻占卜 ========== -->
+<h2>六、活学活用：以婚姻占卜为例</h2>
+
+<p>具体到某件事上时，却不能单纯以吉凶表象来定论。譬如占卜婚姻：</p>
+
+<div class="table-wrap">
+<table>
+    <thead>
+        <tr>
+            <th>卦象</th>
+            <th>常规判定</th>
+            <th>婚姻中的具体解读</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>克出</strong></td>
+            <td class="g-col">大吉</td>
+            <td style="text-align:left;">婚姻可成，但<strong>成婚较晚</strong>。因为你虽赢得胜利（克制对方），但自己也付出了代价（时间、精力）。</td>
+        </tr>
+        <tr>
+            <td><strong>生入</strong></td>
+            <td class="g-col">小吉</td>
+            <td style="text-align:left;"><strong>因婚有所得</strong>，反而是最好的结果！对方能量流入你方，意味着你在婚姻中受益、得到滋养。</td>
+        </tr>
+        <tr>
+            <td><strong>生出</strong></td>
+            <td class="x-col">小凶</td>
+            <td style="text-align:left;">自己在婚姻中付出较多，精力消耗大，需注意平衡。</td>
+        </tr>
+        <tr>
+            <td><strong>被克</strong></td>
+            <td class="x-col">大凶</td>
+            <td style="text-align:left;">婚姻中受制于人，处境被动，需谨慎处理关系。</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+<p>看吧，这里就不能单纯以吉凶来定义事情的程度。究其原因，还是对生克的理解问题。用军队作战的思维去理解婚姻占卜，是不是感觉好多了？卦中<strong>克出</strong>虽然是大吉，但你自己还是要付出代价的，所以说婚姻虽然能成但比较晚；<strong>生入</strong>虽是小吉，却因婚有所得，反而最为圆满。</p>
+
+<!-- ========== 七、总结 ========== -->
+<h2>七、总结</h2>
+
+<div class="highlight">
+    <p>梅花易数大多以生克分析，所以对<strong>生克的理解</strong>尤为重要。</p>
+    <p>记住四句话：</p>
+    <p>克出大吉，胜中有损；生入小吉，得助受益。</p>
+    <p>生出小凶，耗己利他；被克大凶，处处受制。</p>
+</div>
+
+<p style="text-align:center;color:#999;margin-top:40px;text-indent:0;">—— 梅花易数入门系列 · 第五篇 ——</p>
+
+</div>`},
+  {title: '干支排序及时辰对照', content: `<div style="text-align:center;margin:16px 0;"><img src="/images/jc-06-06-干支时辰.jpg" alt="干支时辰对照的文章配图：古历法" style="max-width:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></div>
+<h1>《梅花易数》小白快速入门教程六<br>干支排序及时辰对照</h1>
+
+    <p>前面几篇分享了起卦前需要掌握的八卦排序、八卦属性以及五行生克关系。这一篇接着分享梅花易数起卦必备知识点——<span class="highlight">干支时辰排序</span>。</p>
+
+    <p>在梅花易数起卦中，时间通常以干支历法为准。地支（子、丑、寅、卯、辰、巳、午、未、申、酉、戌、亥）用于表示年份、月份、日期和时辰，并配有对应的数字排序，起卦时非常常用。</p>
+
+    <h2>十二地支序数</h2>
+
+    <p>十二地支的固定排序（对应数字）如下：</p>
+
+    <table>
+        <tr><th>地支</th><td>子</td><td>丑</td><td>寅</td><td>卯</td><td>辰</td><td>巳</td><td>午</td><td>未</td><td>申</td><td>酉</td><td>戌</td><td>亥</td></tr>
+        <tr><th>序数</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td></tr>
+    </table>
+
+    <p>这套序数就是起卦时取地支数字的依据。比如 <span class="highlight">子</span> 为 1，<span class="highlight">丑</span> 为 2，依此类推。</p>
+
+    <h2>年份的干支纪年</h2>
+
+    <p>干支纪年由十天干（甲、乙、丙、丁、戊、己、庚、辛、壬、癸）和十二地支组合而成，六十年一循环。一般可以查阅万年历获得。例如：2026 年是 <span class="highlight">丙午年</span>，其中地支为"午"，对应序数 <strong>7</strong>。</p>
+
+    <div class="tip-box">
+        <strong>💡 提示：</strong>立春是一年的分界点。如果起卦时间在当年立春之前，年份仍按上一年的干支计算。
+    </div>
+
+    <h2>时辰排序与对应时间</h2>
+
+    <p>时辰的排序和地支序数完全一致，即：</p>
+
+    <p class="no-indent" style="text-align:center; font-size:1.05em;">
+        子1 — 丑2 — 寅3 — 卯4 — 辰5 — 巳6 —<br>
+        午7 — 未8 — 申9 — 酉10 — 戌11 — 亥12
+    </p>
+
+    <p>每个时辰对应两小时，具体对照表如下：</p>
+
+    <table>
+        <tr><th>地支</th><th>序数</th><th>对应时间</th></tr>
+        <tr><td>子</td><td>1</td><td>23:00 — 01:00（夜半）</td></tr>
+        <tr><td>丑</td><td>2</td><td>01:00 — 03:00（鸡鸣）</td></tr>
+        <tr><td>寅</td><td>3</td><td>03:00 — 05:00（平旦）</td></tr>
+        <tr><td>卯</td><td>4</td><td>05:00 — 07:00（日出）</td></tr>
+        <tr><td>辰</td><td>5</td><td>07:00 — 09:00（食时）</td></tr>
+        <tr><td>巳</td><td>6</td><td>09:00 — 11:00（隅中）</td></tr>
+        <tr><td>午</td><td>7</td><td>11:00 — 13:00（日中）</td></tr>
+        <tr><td>未</td><td>8</td><td>13:00 — 15:00（日昳）</td></tr>
+        <tr><td>申</td><td>9</td><td>15:00 — 17:00（晡时）</td></tr>
+        <tr><td>酉</td><td>10</td><td>17:00 — 19:00（日入）</td></tr>
+        <tr><td>戌</td><td>11</td><td>19:00 — 21:00（黄昏）</td></tr>
+        <tr><td>亥</td><td>12</td><td>21:00 — 23:00（人定）</td></tr>
+    </table>
+
+    <div class="warning-box">
+        <strong>⚠️ 注意：</strong>一般不建议子时（23:00~01:00）起卦。因子时跨越两天，且子时在术数中气数驳杂，初学者宜避开。
+    </div>
+
+    <h2>👆 手指记忆法（指节定位）</h2>
+
+    <p>对于刚入门的小白来说，要记牢十二地支序数可能有些为难。下面教大家一种实用的小技巧——<span class="highlight">手指记忆法</span>，把时辰序数记录在手指上，随时可用。</p>
+
+    <p>我们用到的部位是右手的<span class="highlight">中间三根手指</span>（食指、中指、无名指）。每根手指有四个标记点：三个指节 + 指尖，三根手指正好十二个标记点。</p>
+
+    <p>从无名指指尖开始，往下逐个标记，排布如下：</p>
+
+    <table class="finger-table">
+        <tr class="header-row">
+            <th>无名指</th>
+            <th>中指</th>
+            <th>食指</th>
+        </tr>
+        <tr>
+            <td>子 1 （指尖）</td>
+            <td>辰 5 （指尖）</td>
+            <td>申 9 （指尖）</td>
+        </tr>
+        <tr>
+            <td>丑 2</td>
+            <td>巳 6</td>
+            <td>酉 10</td>
+        </tr>
+        <tr>
+            <td>寅 3</td>
+            <td>午 7</td>
+            <td>戌 11</td>
+        </tr>
+        <tr>
+            <td>卯 4</td>
+            <td>未 8</td>
+            <td>亥 12</td>
+        </tr>
+    </table>
+
+    <p>排列示意图（指节顺序）：</p>
+
+    <div class="note-box">
+        <strong>👆 无名指：</strong>子1（指尖）→ 丑2 → 寅3 → 卯4<br>
+        <strong>👆 中指：</strong>辰5（指尖）→ 巳6 → 午7 → 未8<br>
+        <strong>👆 食指：</strong>申9（指尖）→ 酉10 → 戌11 → 亥12
+    </div>
+
+    <p>可能会有朋友问：这和正常背下来有什么区别呢？</p>
+
+    <p>正常情况下，我们需要先把十二地支背下来，再去对应时间。但用了这个手指定位法，你其实根本不用死记硬背十二地支的顺序——<span class="highlight">只要找到对应时辰在哪个指节上，然后沿着手指依次往下数，就能快速得出序数</span>。</p>
+
+    <p><strong>举例说明：</strong></p>
+
+    <p>想知道晚上八点（20:00）对应的时辰序数是多少？</p>
+    <p style="text-indent:0;">1️⃣ 晚上8点属于 <strong>戌时</strong>（19:00~21:00）。</p>
+    <p style="text-indent:0;">2️⃣ 查看手指定位：戌时在 <strong>食指第二指节</strong>（戌11）。</p>
+    <p style="text-indent:0;">3️⃣ 从所在列的起点开始数——食指指尖是申9，往下是酉10，再往下就是戌11。</p>
+    <p style="text-indent:0;">4️⃣ 得出结论：<span class="highlight">戌时的序数为 11</span>。</p>
+
+    <p>熟练之后，不需要回忆地支是哪几个字，只要手指一掐，序数就出来了。这就是所谓的"掐指一算"的基本功之一 ✨</p>
+
+    <div class="tip-box">
+        <strong>💡 练习建议：</strong>平时多练习随手指节数数。随便说一个时间，就在手指上走一遍：先确定在哪个手指哪一节，再从该列顶端往下数到该节，就是序数。多练几次就熟了。
+    </div>
+
+    <p style="margin-top:28px; text-align:center; color:#8a7a6a; font-size:0.9em;">— 梅花易数入门教程 · 第六篇 —</p>
+
+</div>`},
+  {title: '起卦示例', content: `<div style="text-align:center;margin:16px 0;"><img src="/images/jc-07-07-起卦示例.jpg" alt="起卦示例的文章配图：起卦场景" style="max-width:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></div>
+<h1>📜 梅花易数教程（七）：起卦示例</h1>
+
+<p>梅花易数起卦方式多种多样，简单方便。大体可以分为<strong>先天起卦</strong>和<strong>后天起卦</strong>两大类。</p>
+
+<p>先天起卦以体用生克为主、爻辞卦辞为辅；后天起卦则反过来，以《易经》的卦辞爻辞为主体，体用生克则为辅助。这里先以<strong>先天起卦</strong>举例说明。</p>
+
+<p>最常见的起卦方法就是报数字、用日期、捻米……倘若感觉这些方式都不太方便你当时所处的环境，还可以测字、数树叶，或者数数小石头，都是可以的。</p>
+
+<p>下面我们用一个完整的实例，一步步展示从问事到成卦的全过程。</p>
+
+<hr>
+
+<h2>📌 实例：问工作室创业发展</h2>
+
+<div class="note"><strong>问题：</strong>倘若自己开工作室创业，发展会是如何？</div>
+
+<h2>📐 第一步：确定起卦数据</h2>
+
+<p>以<strong>日期时辰</strong>起卦。假设问事时间为：</p>
+
+<div class="calc"><strong>丙午年（2026年） 正月 三十 午时</strong></div>
+
+<p>将年、月、日、时转换为数字（梅花易数中，地支序号即为其数字）：</p>
+
+<table>
+  <tr><th>项目</th><th>地支</th><th>数字</th></tr>
+  <tr><td>年</td><td>丙午年 → 地支午</td><td><strong>7</strong></td></tr>
+  <tr><td>月</td><td>正月</td><td><strong>1</strong></td></tr>
+  <tr><td>日</td><td>三十</td><td><strong>30</strong></td></tr>
+  <tr><td>时</td><td>午时 → 地支午</td><td><strong>7</strong></td></tr>
+</table>
+
+<div class="calc">年7 + 月1 + 日30 + 时7</div>
+
+<hr>
+
+<h2>🔢 第二步：求上卦</h2>
+
+<p>用<strong>年 + 月 + 日</strong>之和除以8，取余数定上卦：</p>
+
+<div class="calc">(7 + 1 + 30) ÷ 8 = 38 ÷ 8 = 4 余 <strong>6</strong>
+余数 6 → <strong>坎卦 ☵（水）</strong></div>
+
+<table>
+  <tr><th>余数</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>0（8）</th></tr>
+  <tr><th>卦</th><td>乾☰</td><td>兑☱</td><td>离☲</td><td>震☳</td><td>巽☴</td><td>坎☵</td><td>艮☶</td><td>坤☷</td></tr>
+</table>
+
+<p>上卦为 <strong>坎 ☵</strong>，属水。</p>
+
+<hr>
+
+<h2>🔢 第三步：求下卦</h2>
+
+<p>用<strong>年 + 月 + 日 + 时</strong>之和除以8，取余数定下卦：</p>
+
+<div class="calc">(7 + 1 + 30 + 7) ÷ 8 = 45 ÷ 8 = 5 余 <strong>5</strong>
+余数 5 → <strong>巽卦 ☴（风）</strong></div>
+
+<p>下卦为 <strong>巽 ☴</strong>，属木。</p>
+
+<hr>
+
+<h2>🔢 第四步：求动爻</h2>
+
+<p>用<strong>年 + 月 + 日 + 时</strong>之和除以6，取余数定动爻（余数为0则动第6爻）：</p>
+
+<div class="calc">(7 + 1 + 30 + 7) ÷ 6 = 45 ÷ 6 = 7 余 <strong>3</strong>
+余数 3 → <strong>第三爻动</strong></div>
+
+<p><strong>动爻为第三爻</strong>（从下往上数，初爻为第一爻）。</p>
+
+<hr>
+
+<h2>🏛️ 第五步：列出主卦（本卦）</h2>
+
+<p>上卦为坎 ☵，下卦为巽 ☴，组成主卦：</p>
+
+<div class="hexagram-box">
+  <div class="hexagram">
+    <div class="name">䷯ <strong>水风井</strong>（主卦）</div>
+    <div class="lines">
+      ⚋ 上六<br>
+      ⚊ 九五<br>
+      ⚋ 六四<br>
+      ⚊ 九三 <span class="highlight">← 动爻</span><br>
+      ⚊ 九二<br>
+      ⚋ 初六
+    </div>
+    <div class="desc">上坎☵下巽☴ · 水风井</div>
+  </div>
+</div>
+
+<p>第三爻为阳爻（九三），是动爻。有动爻的卦即为<strong>用卦</strong>（巽 ☴），无动爻的卦为<strong>体卦</strong>（坎 ☵）。</p>
+
+<div class="note"><strong>体用关系：</strong>体卦为坎水，用卦为巽木。水生木，<strong>体生用</strong>——主劳心费力、有付出之象，但根基稳固。</div>
+
+<hr>
+
+<h2>🔄 第六步：求互卦</h2>
+
+<p>互卦反映事物发展过程中的<strong>内在状态</strong>。取主卦的中间四爻重新组合：</p>
+
+<ul>
+  <li><strong>下互卦</strong>：取主卦的第2、3、4爻（九二、九三、六四）组成下卦</li>
+  <li><strong>上互卦</strong>：取主卦的第3、4、5爻（九三、六四、九五）组成上卦</li>
+</ul>
+
+<div class="calc"><strong>下互卦：</strong>九二（阳）、九三（阳）、六四（阴）→ 阳阳阴 → <strong>兑 ☱（泽）</strong>
+<strong>上互卦：</strong>九三（阳）、六四（阴）、九五（阳）→ 阳阴阳 → <strong>离 ☲（火）</strong></div>
+
+<div class="hexagram-box">
+  <div class="hexagram">
+    <div class="name">䷥ <strong>火泽睽</strong>（互卦）</div>
+    <div class="lines">
+      ⚊ 上九<br>
+      ⚊ 六五<br>
+      ⚋ 九四<br>
+      ⚋ 六三<br>
+      ⚊ 九二<br>
+      ⚊ 初九
+    </div>
+    <div class="desc">上离☲下兑☱ · 火泽睽</div>
+  </div>
+</div>
+
+<hr>
+
+<h2>🔄 第七步：求变卦</h2>
+
+<p>将主卦的动爻（第三爻）由阳爻变为阴爻，其余各爻不变，得到<strong>变卦</strong>，代表事物发展的<strong>最终结果</strong>：</p>
+
+<div class="calc">主卦第三爻：九三（阳⚊）→ 六三（阴⚋）</div>
+
+<div class="hexagram-box">
+  <div class="hexagram">
+    <div class="name">䷝ <strong>离为火</strong>（变卦）</div>
+    <div class="lines">
+      ⚊ 上九<br>
+      ⚋ 六五<br>
+      ⚊ 九四<br>
+      ⚋ 六三<br>
+      ⚊ 九二<br>
+      ⚋ 初九
+    </div>
+    <div class="desc">上离☲下离☲ · 离为火</div>
+  </div>
+</div>
+
+<hr>
+
+<h2>📊 第八步：完整卦象总览</h2>
+
+<div class="hexagram-box">
+  <div class="hexagram">
+    <div class="name">䷯ 主卦 · 水风井</div>
+    <div class="lines">
+      ⚋ 上六<br>
+      ⚊ 九五<br>
+      ⚋ 六四<br>
+      ⚊ 九三<span class="highlight">●</span><br>
+      ⚊ 九二<br>
+      ⚋ 初六
+    </div>
+    <div class="desc">体：坎水 | 用：巽木</div>
+  </div>
+  <div class="hexagram">
+    <div class="name">䷥ 互卦 · 火泽睽</div>
+    <div class="lines">
+      ⚊ 上九<br>
+      ⚊ 六五<br>
+      ⚋ 九四<br>
+      ⚋ 六三<br>
+      ⚊ 九二<br>
+      ⚊ 初九
+    </div>
+    <div class="desc">上离火 · 下兑泽</div>
+  </div>
+  <div class="hexagram">
+    <div class="name">䷝ 变卦 · 离为火</div>
+    <div class="lines">
+      ⚊ 上九<br>
+      ⚋ 六五<br>
+      ⚊ 九四<br>
+      ⚋ 六三<br>
+      ⚊ 九二<br>
+      ⚋ 初九
+    </div>
+    <div class="desc">上离火 · 下离火</div>
+  </div>
+</div>
+
+<table>
+  <tr><th>卦</th><th>名称</th><th>上卦</th><th>下卦</th><th>说明</th></tr>
+  <tr>
+    <td>䷯ 主卦</td>
+    <td>水风井</td>
+    <td>坎 ☵（水）</td>
+    <td>巽 ☴（风）</td>
+    <td>体卦：坎水<br>用卦：巽木<br>体生用</td>
+  </tr>
+  <tr>
+    <td>䷥ 互卦</td>
+    <td>火泽睽</td>
+    <td>离 ☲（火）</td>
+    <td>兑 ☱（泽）</td>
+    <td>发展过程中的状态</td>
+  </tr>
+  <tr>
+    <td>䷝ 变卦</td>
+    <td>离为火</td>
+    <td>离 ☲（火）</td>
+    <td>离 ☲（火）</td>
+    <td>最终结果</td>
+  </tr>
+</table>
+
+<hr>
+
+<h2>💡 附：起卦方法补充</h2>
+
+<p>除了日期时辰起卦，梅花易数还有以下几种常见起卦方式：</p>
+
+<ul>
+  <li><strong>报数起卦：</strong>心中默念问题，随意报出两个或三个数字，以前者定上卦、次者定下卦（第三数定动爻）</li>
+  <li><strong>捻米/数豆：</strong>随手抓一把米或豆子，数出粒数，用来计算卦象</li>
+  <li><strong>测字起卦：</strong>任意写一个字，按笔画数或字形结构分拆定卦</li>
+  <li><strong>外应起卦：</strong>观察周围环境中的物品数量、声音次数等，随机取数</li>
+</ul>
+
+<div class="note">起卦的关键在于"<strong>心诚则灵</strong>"——无论用何种方式，问事时心要静、念要专，这样得出的卦象才具有参考价值。卦象到手之后，下一步就是<strong>解卦</strong>，我们将在下篇教程中详细讲解。</div>
+
+<hr>
+
+<div class="center" style="color:#999;font-size:14px;margin-top:20px;">
+  本文为梅花易数入门教程 · 第七篇<br>
+  起卦示例 · 丙午年（2026年）
+</div>`},
+  {title: '解卦示例', content: `<div style="text-align:center;margin:16px 0;"><img src="/images/jc-08-08-解卦示例.jpg" alt="解卦示例的文章配图：解卦场景" style="max-width:100%;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></div>
+<h1>《梅花易数》小白快速入门教程（八）：解卦示例</h1>
+
+<p><span class="tag">梅花易数</span><span class="tag tag-orange">教程</span></p>
+
+<p>本应昨日更新，早写完这部分，这套教程也就算是有始有终了。奈何小编疏懒，迟迟未能动笔。今早看到竟有前辈大神留言评论，顿时又燃起斗志，遂与诸君在此做个了结。</p>
+
+<h2>解卦</h2>
+
+<p>解卦一事，人各有法，各具心得。说到底，往往是只可意会，不可言传。梅花心易重灵感，本无定式。今且以昨日所起之卦为例，为诸君做一示范。日后若有更多实例，亦当陆续奉上。</p>
+
+<p><strong>问：小编自己开工作室会是如何的发展？</strong></p>
+
+<div class="highlight">
+    <p>如上卦，先看体用关系。</p>
+    <p><strong>体用：</strong>体用比助，主现状顺利。体卦为乾金，说明团队目标清晰、态度<strong>明显</strong>，不会吊儿郎当做几天就放弃。用卦为兑金，兑为缺损，故此事尚在草创，体制未臻完善，一切才刚刚开始。</p>
+    <p><strong>互卦：</strong>互卦为事情发展之兆。上下互卦皆乾，比助有力，体党众多。时已立春，春属木，金克木，故此事可成，然进程较为辛苦，需经历一番磨砺。</p>
+    <p><strong>变卦：</strong>变卦为事情之结果。变卦为震木，体党众多，乾金克之，故虽事有难处，但得贵人相助，亦能与伙伴分担焦虑，尚属可成之象，唯不可懈怠。事可成，但成迟。</p>
+    <p><strong>应期：</strong>整体观之，工作室稳定后收益约在四万左右，约五日左右可见初步成果。应期亦藏于互卦之中，成事之日当在戌亥日。查万年历，本月戌亥日为十号或十一号前后。</p>
+</div>
+
+<p>梅花易数解卦并无固定程序，以上仅提供一种思路而已。解卦之法驳杂多变，更多精妙之处，全在各自体悟。</p>
+
+<div class="ending">
+    <p class="no-indent">至此，《梅花易数》小白快速入门教程八篇已全部完结。本系列从基础原理到起卦方法，再到本节的解卦示例，力求为初学者勾勒一条清晰的学习路径。然梅花易数博大精深，心易之妙全在灵机，更多精微之处，尚待诸君在实占中自行体会。愿诸君以此为引，勤加实践，终能触类旁通，得心应手。后会有期。</p>
+</div>`},
+];
+
+function renderChapter(idx) {
+  const body = document.getElementById('bookBody');
+  body.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'chapter-content';
+  div.innerHTML = CHAPTERS[idx].content;
+  body.appendChild(div);
+  document.querySelectorAll('.chapter-item').forEach((el, i) => el.classList.toggle('active', i === idx));
+  document.querySelectorAll('.mc-item').forEach((el, i) => el.classList.toggle('active', i === idx));
+  document.querySelector('.content').scrollTop = 0;
+}
+
+function initBook() {
+  const list = document.getElementById('chapterList');
+  let groupDiv = document.createElement('div'); groupDiv.className = 'chapter-group';
+  let title = document.createElement('div'); title.className = 'chapter-group-title'; title.textContent = '教程';
+  groupDiv.appendChild(title);
+  CHAPTERS.forEach((ch, i) => {
+    const idx = i;
+    const item = document.createElement('div'); item.className = 'chapter-item';
+    item.innerHTML = `<span style="min-width:24px;color:rgba(212,175,55,0.4)">${i+1}</span>${ch.title}`;
+    item.onclick = () => renderChapter(idx);
+    groupDiv.appendChild(item);
+  });
+  list.appendChild(groupDiv);
+  
+  // Populate mobile chapter list
+  const mcList = document.getElementById('mcList');
+  if (mcList) {
+    CHAPTERS.forEach((ch, i) => {
+      const item = document.createElement('div'); item.className = 'mc-item';
+      item.innerHTML = `<span class="mi-num">${i+1}</span>${ch.title}`;
+      item.onclick = () => { renderChapter(i); mcList.classList.remove('open'); document.querySelector('.mc-toggle')?.classList.remove('open'); };
+      mcList.appendChild(item);
+    });
+  }
+  
+  renderChapter(0);
+}
+initBook();
+</script>
+</body>
+</html>
