@@ -1,0 +1,6 @@
+User-agent: Baiduspider
+Allow: /
+
+User-agent: *
+Allow: /
+Sitemap: https://www.laoliuchashi.top/sitemap.xml
