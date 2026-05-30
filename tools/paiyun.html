@@ -160,7 +160,9 @@ function render(){
   const sxIdx=getYZ(u.year);
 
   app.innerHTML=`
-<div class="back-link"><a href="/" style="color:#e67e22;text-decoration:none;font-size:14px;display:inline-flex;align-items:center;gap:4px;">← 返回互动目录</a></div>
+<div style="margin-bottom:8px;">
+  <a href="/?page=tools" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:rgba(217,119,6,0.15);border:1px solid rgba(217,119,6,0.3);color:#d97706;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(217,119,6,0.25)'" onmouseout="this.style.background='rgba(217,119,6,0.15)'">← 返回互动工具</a>
+</div>
 <div class="header">
   <h1>牌运 · 每日麻将运势</h1>
   <div class="brand">— 牌运测算 · 日卦推演 —</div>
@@ -204,7 +206,9 @@ function render(){
 function renderForm(){
   const u=loadUser();
   document.getElementById('app').innerHTML=`
-<div class="back-link"><a href="/" style="color:#e67e22;text-decoration:none;font-size:14px;display:inline-flex;align-items:center;gap:4px;">← 返回互动目录</a></div>
+<div style="margin-bottom:8px;">
+  <a href="/?page=tools" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:rgba(217,119,6,0.15);border:1px solid rgba(217,119,6,0.3);color:#d97706;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(217,119,6,0.25)'" onmouseout="this.style.background='rgba(217,119,6,0.15)'">← 返回互动工具</a>
+</div>
 <div class="header">
   <h1>牌运 · 每日麻将运势</h1>
   <div class="brand">— 牌运测算 · 日卦推演 —</div>
