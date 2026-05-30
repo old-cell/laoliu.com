@@ -144,19 +144,17 @@ function showMobile(cards){
   requestAnimationFrame(function(){strip.scrollLeft=0;});
 }
 
-// === DESKTOP: true fan from shared pivot point ===
+// === DESKTOP: fan via transition (reliable, no keyframe bug) ===
 function showDesktop(cards){
   var O = document.getElementById('fanOverlay');
   O.innerHTML = '';
   O.className = 'fan-overlay show';
-  var n = cards.length;
+  var n = Math.min(cards.length, 20);
   var vw = window.innerWidth, vh = window.innerHeight;
   var cw = 100, ch = 150;
-  // All cards share this pivot point (the fan center)
   var px = vw/2;
-  var py = vh - 20;  // lower pivot = cards more centered
-  // Classic fan: position all cards at same point, rotate around bottom-center
-  var angleSpan = 100;
+  var py = vh - 30;
+  var angleSpan = Math.min(130, n*7+15);
   var frag = document.createDocumentFragment();
   
   for(var i=0;i<n;i++){
@@ -164,24 +162,27 @@ function showDesktop(cards){
     var angle = angleSpan/2 - pct * angleSpan;
     var el = document.createElement('div');
     el.className = 'fan-card';
+    el.style.width = cw+'px'; el.style.height = ch+'px';
     el.style.left = (px - cw/2)+'px';
     el.style.top = (py - ch)+'px';
-    el.style.width = cw+'px';
-    el.style.height = ch+'px';
-    // Rotate around bottom-center → all cards converge at pivot
-    el.style.opacity = '0';
-    // All cards fly in from bottom-left
-    el.style.setProperty('--start', 'rotate(60deg) translateY(50px) translateX(-200px)');
-    el.style.setProperty('--mid', 'rotate('+angle+'deg) translateY(-'+vh*1.1+'px)');
-    el.style.setProperty('--end', 'rotate('+angle+'deg) translateY(-'+vh*0.75+'px)');
-    el.style.animation = 'fanSwingIn 0.8s cubic-bezier(0.33,1,0.68,1) '+ (i*0.08) +'s both';
-    el.style.transform = 'rotate('+angle+'deg) translateY(-'+vh*0.75+'px)';
     el.style.transformOrigin = 'center bottom';
+    // Start: from bottom-left, small, hidden
+    el.style.transform = 'rotate(60deg) translateY(30px) translateX(-180px) scale(0.4)';
+    el.style.opacity = '0';
+    el.style.transition = 'none';
     var img = document.createElement('img');
     img.src = B; img.alt = cards[i].name;
     el.appendChild(img);
     el.onclick = (function(c,e){return function(ev){fanPull(ev,c,e);}})(cards[i],el);
     frag.appendChild(el);
+    // Staggered entrance via transition
+    (function(elem, ang, vhh){
+      setTimeout(function(){
+        elem.style.transition = 'all 0.75s cubic-bezier(0.33,1,0.68,1)';
+        elem.style.opacity = '1';
+        elem.style.transform = 'rotate('+ang+'deg) translateY(-'+vhh*0.65+'px) scale(1)';
+      }, 80 + i*70);
+    })(el, angle, vh);
   }
   O.appendChild(frag);
 }
