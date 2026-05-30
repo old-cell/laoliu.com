@@ -76,7 +76,7 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei','Noto Serif SC',s
 <div class="deck-area" id="deckArea">
   <div class="deck-glow"></div>
   <img src="卡牌背面.png" alt="">
-  <div class="deck-count" id="deckCount">62</div>
+  <div class="deck-count" id="deckCount" style="display:none">0</div>
 </div>
 <div class="swipe-guide" id="swipeGuide">— 左右滑动选择 —</div>
 <div class="m-strip" id="mStrip"></div>
@@ -130,7 +130,7 @@ function showMobile(cards){
   strip.className = 'm-strip show';
   var guide = document.getElementById('swipeGuide');
   guide.className = 'swipe-guide show';
-  var n = Math.min(cards.length,15);
+  var n = Math.min(cards.length, 20);
   var frag = document.createDocumentFragment();
   for(var i=0;i<n;i++){
     var el = document.createElement('div');
@@ -151,7 +151,7 @@ function showDesktop(cards){
   var O = document.getElementById('fanOverlay');
   O.innerHTML = '';
   O.className = 'fan-overlay show';
-  var n = Math.min(cards.length, 15);
+  var n = cards.length;
   var vw = window.innerWidth, vh = window.innerHeight;
   var cw = 100, ch = 150;
   // All cards share this pivot point (the fan center)
@@ -173,9 +173,9 @@ function showDesktop(cards){
     // Rotate around bottom-center → all cards converge at pivot
     el.style.opacity = '0';
     var startRot = angle + (angle>0?30:-30);
-    el.style.setProperty('--start', 'rotate('+startRot+'deg) translateY(-'+vh*0.85+'px)');
+    el.style.setProperty('--start', 'rotate('+startRot+'deg) translateY(-'+vh*0.95+'px)');
     el.style.setProperty('--end', 'rotate('+angle+'deg) translateY(-'+vh*0.75+'px)');
-    el.style.animation = 'fanSwingIn 0.6s cubic-bezier(0.33,1,0.68,1) '+ (i*0.06) +'s both';
+    el.style.animation = 'fanSwingIn 0.8s cubic-bezier(0.33,1,0.68,1) '+ (i*0.08) +'s both';
     el.style.transform = 'rotate('+angle+'deg) translateY(-'+vh*0.75+'px)';
     el.style.transformOrigin = 'center bottom';
     var img = document.createElement('img');
