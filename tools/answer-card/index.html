@@ -152,12 +152,12 @@ function showDesktop(cards){
   var n = Math.min(cards.length, 9);
   var vw = window.innerWidth, vh = window.innerHeight;
   var cw = 100, ch = 150;
-  // Circle center below screen
+  // Circle center far below screen for big arc
   var cx = vw/2;
-  var cy = vh + 80;
-  // Bigger radius for wider arc
-  var radius = Math.min(vh * 0.75, 550);
-  var angleSpan = 100; // 100° sweep
+  var cy = vh + 120;
+  // Much bigger radius - no cap
+  var radius = vh * 0.9;
+  var angleSpan = 110; // 110° wide fan
   var frag = document.createDocumentFragment();
   
   for(var i=0;i<n;i++){
@@ -166,7 +166,7 @@ function showDesktop(cards){
     var rad = angle * Math.PI / 180;
     var x = cx + Math.sin(rad) * radius - cw/2;
     var y = cy - Math.cos(rad) * radius - ch/2;
-    // Rotate to face circle center
+    // Rotate each card to face the circle center
     var rot = -angle;
     
     var el = document.createElement('div');
@@ -174,7 +174,7 @@ function showDesktop(cards){
     el.style.left = x+'px'; el.style.top = y+'px';
     el.style.width = cw+'px'; el.style.height = ch+'px';
     el.style.transform = 'rotate('+rot+'deg)';
-    el.style.transformOrigin = 'bottom center';
+    el.style.transformOrigin = 'center center';
     var img = document.createElement('img');
     img.src = B; img.alt = cards[i].name;
     el.appendChild(img);
