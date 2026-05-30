@@ -153,7 +153,7 @@ function showDesktop(cards){
   O.className = 'fan-overlay show';
   var n = Math.min(cards.length,15);
   var vw = window.innerWidth, vh = window.innerHeight;
-  var cw = 95, ch = 142;
+  var cw = 100, ch = 150;
   // Virtual origin below screen, creates nice semi-circle
   var cx = vw/2, cy = vh + 40;
   var radius = Math.min(vh * 0.55, 380);
@@ -161,7 +161,7 @@ function showDesktop(cards){
   
   for(var i=0;i<n;i++){
     var pct = n<=1?0.5:i/(n-1);
-    var angle = 15 - pct * 30; // from 15° to -15°
+    var angle = 40 - pct * 80; // from 40° to -40° (80° wide fan)
     var rad = angle * Math.PI / 180;
     var x = cx + Math.sin(rad) * radius - cw/2;
     var y = cy - Math.cos(rad) * radius - ch/2;
