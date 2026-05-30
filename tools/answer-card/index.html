@@ -22,7 +22,7 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei','Noto Serif SC',s
 .deck-glow{position:absolute;inset:-4px;border-radius:10px;background:radial-gradient(ellipse,rgba(212,175,55,0.2),transparent 70%);animation:glow 2s ease-in-out infinite;pointer-events:none}
 @keyframes glow{0%,100%{opacity:0.5}50%{opacity:1}}
 .deck-count{position:absolute;top:-8px;right:-8px;background:#d4af37;color:#1a1a2e;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px}
-/* Mobile */
+/* Mobile strip */
 .m-strip{display:none;position:fixed;bottom:0;left:0;right:0;z-index:50;padding:10px 0 18px;background:linear-gradient(transparent,rgba(0,0,0,0.85));overflow-x:scroll;-webkit-overflow-scrolling:touch;white-space:nowrap}
 .m-strip.show{display:block}
 .m-card{display:inline-block;width:72px;height:108px;border-radius:5px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,0.5);cursor:pointer;vertical-align:bottom}
@@ -144,17 +144,20 @@ function showMobile(cards){
   requestAnimationFrame(function(){strip.scrollLeft=0;});
 }
 
-// === DESKTOP ===
+// === DESKTOP: wider fan, cards facing center ===
 function showDesktop(cards){
   var O = document.getElementById('fanOverlay');
   O.innerHTML = '';
   O.className = 'fan-overlay show';
-  var n = Math.min(cards.length, 9); // max 9 cards for desktop
+  var n = Math.min(cards.length, 9);
   var vw = window.innerWidth, vh = window.innerHeight;
   var cw = 100, ch = 150;
-  var cx = vw/2, cy = vh + 60;
-  var radius = Math.min(vh * 0.65, 480);
-  var angleSpan = 90; // 90° wide fan
+  // Circle center below screen
+  var cx = vw/2;
+  var cy = vh + 80;
+  // Bigger radius for wider arc
+  var radius = Math.min(vh * 0.75, 550);
+  var angleSpan = 100; // 100° sweep
   var frag = document.createDocumentFragment();
   
   for(var i=0;i<n;i++){
@@ -163,13 +166,15 @@ function showDesktop(cards){
     var rad = angle * Math.PI / 180;
     var x = cx + Math.sin(rad) * radius - cw/2;
     var y = cy - Math.cos(rad) * radius - ch/2;
-    var rot = -angle * 0.8;
+    // Rotate to face circle center
+    var rot = -angle;
     
     var el = document.createElement('div');
     el.className = 'fan-card';
     el.style.left = x+'px'; el.style.top = y+'px';
     el.style.width = cw+'px'; el.style.height = ch+'px';
     el.style.transform = 'rotate('+rot+'deg)';
+    el.style.transformOrigin = 'bottom center';
     var img = document.createElement('img');
     img.src = B; img.alt = cards[i].name;
     el.appendChild(img);
@@ -223,7 +228,7 @@ function showResult(card){
   document.getElementById('deckArea').style.opacity='1';
   var img=document.createElement('img');
   img.src=card.file;
-  img.onerror=function(){this.src=B;this.style.transform='scaleX(-1)'};
+  img.onerror=function(){this.src=B;this.style.transform='scaleX(-1)';};
   img.style.cssText='width:100%;height:100%;object-fit:cover;display:block';
   document.getElementById('resultCard').innerHTML=''; document.getElementById('resultCard').appendChild(img);
   var p=card.name.split('，');
