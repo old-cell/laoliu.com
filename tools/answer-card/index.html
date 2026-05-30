@@ -138,9 +138,8 @@ function pickFromPool(ids, count){
 
 function match(q){
   if(!q.trim()) return [];
-  var pools = {yesno:TYPE_POOLS.yes.concat(TYPE_POOLS.no),self:TYPE_POOLS.self,love:TYPE_POOLS.love,timing:TYPE_POOLS.timing,action:TYPE_POOLS.action,courage:TYPE_POOLS.courage,general:TYPE_POOLS.yes.concat(TYPE_POOLS.no,TYPE_POOLS.vibe)};
-  var ids = pools[detectType(q)] || pools.general;
-  return pickFromPool(ids);
+  // 全部牌展示，用户凭直觉选牌
+  return ALL;
 }
 
 function deal(){
