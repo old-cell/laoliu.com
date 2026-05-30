@@ -144,7 +144,7 @@ function showMobile(cards){
   requestAnimationFrame(function(){strip.scrollLeft=0;});
 }
 
-// === DESKTOP: wider fan, cards facing center ===
+// === DESKTOP: true fan from shared pivot point ===
 function showDesktop(cards){
   var O = document.getElementById('fanOverlay');
   O.innerHTML = '';
@@ -152,29 +152,25 @@ function showDesktop(cards){
   var n = Math.min(cards.length, 9);
   var vw = window.innerWidth, vh = window.innerHeight;
   var cw = 100, ch = 150;
-  // Circle center far below screen for big arc
-  var cx = vw/2;
-  var cy = vh + 120;
-  // Much bigger radius - no cap
-  var radius = vh * 0.9;
-  var angleSpan = 110; // 110° wide fan
+  // All cards share this pivot point (the fan center)
+  var px = vw/2;
+  var py = vh - 60;
+  // Classic fan: position all cards at same point, rotate around bottom-center
+  var angleSpan = 100;
   var frag = document.createDocumentFragment();
   
   for(var i=0;i<n;i++){
     var pct = n<=1?0.5:i/(n-1);
     var angle = angleSpan/2 - pct * angleSpan;
-    var rad = angle * Math.PI / 180;
-    var x = cx + Math.sin(rad) * radius - cw/2;
-    var y = cy - Math.cos(rad) * radius - ch/2;
-    // Rotate each card to face the circle center
-    var rot = angle;
-    
     var el = document.createElement('div');
     el.className = 'fan-card';
-    el.style.left = x+'px'; el.style.top = y+'px';
-    el.style.width = cw+'px'; el.style.height = ch+'px';
-    el.style.transform = 'rotate('+rot+'deg)';
-    el.style.transformOrigin = 'center center';
+    el.style.left = (px - cw/2)+'px';
+    el.style.top = (py - ch)+'px';
+    el.style.width = cw+'px';
+    el.style.height = ch+'px';
+    // Rotate around bottom-center → all cards converge at pivot
+    el.style.transform = 'rotate('+angle+'deg) translateY(-'+vh*0.75+'px)';
+    el.style.transformOrigin = 'center bottom';
     var img = document.createElement('img');
     img.src = B; img.alt = cards[i].name;
     el.appendChild(img);
