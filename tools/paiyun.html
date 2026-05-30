@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>牌运 · 每日麻将运势 — 老六茶事</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
+.container{max-width:800px;margin:0 auto;padding:20px}
+.header{text-align:center;padding:24px 0 16px;border-bottom:1px solid rgba(148,163,184,0.2);margin-bottom:20px}
+.header h1{font-size:28px;color:#e2e8f0;margin-bottom:4px}
+.header .brand{font-size:12px;color:#64748b;margin-top:2px;letter-spacing:2px}
+.header .date-display{font-size:15px;color:#94a3b8;margin-top:8px}
+.user-section{background:rgba(30,41,59,0.8);border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid rgba(148,163,184,0.15)}
+.user-section h3{font-size:16px;color:#e67e22;margin-bottom:12px;font-weight:bold}
+.user-inputs{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.user-inputs .field{flex:1;min-width:80px}
+.user-inputs .field label{display:block;font-size:12px;color:#64748b;margin-bottom:4px}
+.user-inputs .field input,.user-inputs .field select{width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);background:rgba(15,23,42,0.8);color:#e2e8f0;font-size:14px;font-family:inherit;outline:none}
+.user-inputs .field input:focus,.user-inputs .field select:focus{border-color:#e67e22}
+.user-inputs button{padding:10px 24px;border-radius:8px;border:none;background:linear-gradient(135deg,#d97706,#b45309);color:#fff;font-size:14px;cursor:pointer;font-weight:bold;font-family:inherit;white-space:nowrap}
+.user-inputs button:hover{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.user-info{display:none;margin-top:12px;padding:12px 16px;background:rgba(230,126,34,0.08);border-radius:8px;border:1px solid rgba(230,126,34,0.2);font-size:14px;color:#94a3b8}
+.user-info .highlight{color:#fbbf24;font-weight:bold}
+.user-info.show{display:block}
+.score-section{text-align:center;padding:24px;background:rgba(30,41,59,0.8);border-radius:14px;margin-bottom:16px;border:1px solid rgba(148,163,184,0.1)}
+.score-circle{width:110px;height:110px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 12px;font-weight:bold;border:4px solid}
+.score-circle .score-num{font-size:36px;line-height:1}
+.score-circle .score-label{font-size:13px;opacity:0.8;margin-top:2px}
+.score-section .score-text{font-size:15px;color:#94a3b8;line-height:1.7;max-width:500px;margin:0 auto}
+.score-section .score-text .hl{color:#fbbf24;font-weight:bold}
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.info-card{background:rgba(30,41,59,0.8);border-radius:10px;padding:14px;text-align:center;border:1px solid rgba(148,163,184,0.1)}
+.info-card .label{font-size:11px;color:#64748b;margin-bottom:3px}
+.info-card .value{font-size:16px;font-weight:bold}
+.info-card .value.gold{color:#fbbf24}
+.info-card .value.red{color:#ef4444}
+.info-card .value.green{color:#27ae60}
+.cards-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.card-item{background:rgba(15,23,42,0.5);border-radius:10px;padding:16px;text-align:center;border:1px solid rgba(148,163,184,0.08)}
+.card-item .cicon{font-size:28px;margin-bottom:4px}
+.card-item .caction{font-size:16px;font-weight:bold;margin-bottom:3px}
+.card-item .cdetail{font-size:12px;color:#64748b}
+.hour-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hour-slot{padding:10px 14px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.hour-slot.good{background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.2)}
+.hour-slot.bad{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2)}
+.hour-slot.good .tag{color:#27ae60;font-weight:bold}
+.hour-slot.bad .tag{color:#ef4444;font-weight:bold}
+.hour-slot .time{color:#94a3b8}
+.hour-slot .desc{font-size:12px;color:#64748b}
+.section-card{background:rgba(30,41,59,0.8);border-radius:12px;padding:18px;margin-bottom:14px;border:1px solid rgba(148,163,184,0.1)}
+.section-card h3{font-size:17px;color:#e67e22;margin-bottom:10px;font-weight:bold;padding-bottom:6px;border-bottom:1px solid rgba(148,163,184,0.1)}
+.lucky-nums{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.lucky-nums .num{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#d97706,#b45309);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:bold}
+.signoff{text-align:center;padding:20px;color:#64748b;font-size:13px;border-top:1px solid rgba(148,163,184,0.1);margin-top:16px}
+@media(max-width:600px){.container{padding:12px}.info-grid,.cards-row{grid-template-columns:1fr}.hour-grid{grid-template-columns:1fr}.user-inputs .field{min-width:100%}}
+.loading{text-align:center;padding:60px 20px;color:#64748b}.loading .spinner{width:36px;height:36px;border:3px solid rgba(148,163,184,0.1);border-top-color:#e67e22;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px}@keyframes spin{to{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:5px;background:#0f172a}
+.back-link{padding:8px 0 4px}.back-link a:hover{text-decoration:underline!important}
+
+</style>
+</head>
+<body><div class="container" id="app"><div class="loading"><div class="spinner"></div><div>正在推算今日牌运…</div></div></div>
+<script>
+const TIAN_GAN=['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+const DI_ZHI=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+const SHENGXIAO=['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+const SX_EMOJI=['🐭','🐮','🐯','🐰','🐲','🐍','🐴','🐏','🐵','🐔','🐶','🐷'];
+function jdn(y,m,d){const a=Math.floor((14-m)/12),yy=y+4800-a,mm=m+12*a-3;return d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045;}
+function dayIdx(y,m,d){return((jdn(y,m,d)-11)%60+60)%60;}
+function getYZ(y){return((y-4)%12+12)%12;}
+
+// 地支关系核心算法（与黄历工具、公众号文章同源）
+function getZhiRelation(userZhi,todayZhi){
+  const liuhe={0:1,1:0,2:11,3:10,4:9,5:8,6:7,7:6,8:5,9:4,10:3,11:2};
+  const sanheGroups=[[0,4,8],[1,5,9],[2,6,10],[3,7,11]];
+  const chong={0:6,1:7,2:8,3:9,4:10,5:11,6:0,7:1,8:2,9:3,10:4,11:5};
+  const xingPairs=[[0,3],[2,5],[1,10],[1,7],[7,10],[3,0],[5,2],[10,1],[10,7],[7,1]];
+  const hai={0:7,1:6,2:5,3:4,4:3,5:2,6:1,7:0,8:11,9:10,10:9,11:8};
+
+  if(liuhe[userZhi]===todayZhi) return {r:'大吉',c:'#27ae60',s:92};
+  for(let g of sanheGroups) if(g.includes(userZhi)&&g.includes(todayZhi)&&userZhi!==todayZhi) return {r:'大吉',c:'#27ae60',s:88};
+  for(let g of sanheGroups) if(g.includes(userZhi)){let rest=g.filter(x=>x!==userZhi);if(rest.includes(todayZhi))return {r:'吉',c:'#27ae60',s:82};}
+  if(chong[userZhi]===todayZhi) return {r:'大凶',c:'#ef4444',s:35};
+  for(let p of xingPairs) if(p[0]===userZhi&&p[1]===todayZhi) return {r:'凶',c:'#ef4444',s:40};
+  if(hai[userZhi]===todayZhi) return {r:'凶',c:'#ef4444',s:42};
+  if(userZhi===todayZhi) return {r:'中平',c:'#e67e22',s:58};
+  return {r:'平',c:'#e67e22',s:62};
+}
+
+// 今日数据（与公众号文章同源）
+function calcToday(){
+  const n=new Date(),y=n.getFullYear(),m=n.getMonth()+1,d=n.getDate();
+  const di=dayIdx(y,m,d);
+  return{
+    dG:(di%10),dZ:(di%12),gN:(di%10)+1,zN:(di%12)+1,
+    sG:((di%10)+1)%8||8,xG:((di%12)+1)%8||8
+  };
+}
+
+// 麻将运势核心算法
+function calcMajiang(userZhi){
+  const td=calcToday();
+  const rel=getZhiRelation(userZhi,td.dZ);
+  const score=rel.s;
+
+  // 牌运等级描述
+  let desc='';
+  if(score>=85) desc='今日六合三合入命，牌运极旺。宜大胆做牌，碰碰胡、清一色皆有机缘。手气正盛，顺势而为。';
+  else if(score>=75) desc='今日财运亨通，牌运向好。适合主动碰牌，留意风牌和花牌。见好就收，不宜恋战。';
+  else if(score>=60) desc='运势平稳，小赢即安。宜短局不宜长局，稳扎稳打为上策。';
+  else if(score>=50) desc='运势偏弱，忌与旺家硬碰。以守为主，小胡即走就是赢。';
+  else desc='今日运势低迷，不宜上桌。如有牌局，务必低调，少放炮为上。';
+
+  // 策略
+  const strats=[
+    {i:'🀄',a:['碰','忌碰'][+(score<50)],d:score>=70?'遇碰则碰，主动创造牌型':'少碰多摸，减少暴露牌型',ok:score>=70},
+    {i:'🀅',a:['可杠','忌杠'][+(score<55)],d:score>=75?'暗杠优先，杠上开花机缘大':'明杠风险高，宜谨慎',ok:score>=60},
+    {i:'🀇',a:['能吃则吃','少吃为主'][+(score<50)],d:score>=65?'快速听牌，短平快':'少吃不碰，防点炮',ok:score>=60},
+    {i:'🀀',a:'自摸',d:score>=75?'自摸运旺，宜留牌等胡':score>=55?'自摸运中，听早胡早':'自摸运弱，宜早听保本',ok:true}
+  ];
+
+  // 推荐牌型
+  const paiTypes=[
+    {n:'碰碰胡',d:'三对碰成型快，稳定',s:70},
+    {n:'混一色',d:'单色+字牌，稳中有攻',s:score>=75?85:70},
+    {n:'清一色',d:'纯色高番，风险与收益并存',s:score>=80?88:55},
+    {n:'对对胡',d:'四对单吊，耐打持久',s:72}
+  ];
+
+  // 坐向
+  const dir={
+    best:['正东','东南','正南','西南','正西','西北','正北','东北','正东','东南','正南','西南'][td.dZ],
+    good:['东南','正东','西南','正南','西北','正西','东北','正北','东南','正东','西南','正南'][td.dZ],
+    avoid:['正西','正北','正东','正南','东北','正北','正南','正西','西北','正南','正东','正北'][userZhi]
+  };
+
+  // 幸运数字
+  const lucky=[(td.dZ+1),(userZhi+1),(td.sG),(td.xG),(td.gN+td.zN)%9+1];
+
+  // 时辰吉凶
+  const hL=['凶','凶','吉','凶','吉','吉','吉','凶','吉','平','凶','吉'];
+  const hA=['忌上桌','宜观望','手气旺','不宜','吉时','旺财','利碰','防点炮','好运','平局','不利','旺尾'];
+
+  return{score,rel,desc,strats,paiTypes,dir,lucky,hL,hA};
+}
+
+// UI
+function render(){
+  const u=loadUser();
+  const app=document.getElementById('app');
+  if(!u.name||!u.year||!u.month||!u.day)return renderForm();
+
+  const userZhi=dayIdx(u.year,u.month,u.day)%12;
+  const mj=calcMajiang(userZhi);
+  const sc=mj.score;
+  const scC=sc>=75?'#27ae60':sc>=55?'#e67e22':'#ef4444';
+  const sxIdx=getYZ(u.year);
+
+  app.innerHTML=`
+<div class="back-link"><a href="/" style="color:#e67e22;text-decoration:none;font-size:14px;display:inline-flex;align-items:center;gap:4px;">← 返回互动目录</a></div>
+<div class="header">
+  <h1>牌运 · 每日麻将运势</h1>
+  <div class="brand">— 牌运测算 · 日卦推演 —</div>
+  <div class="date-display">${new Date().getFullYear()}年${new Date().getMonth()+1}月${new Date().getDate()}日 · 算法与公众号文章同源</div>
+</div>
+
+<div class="user-section">
+  <h3>🀄 玩家信息</h3>
+  <div class="user-inputs">
+    <div class="field"><label>姓名</label><input type="text" id="iN" placeholder="你的名字" value="${u.name}"></div>
+    <div class="field" style="min-width:80px;"><label>年</label><select id="iY">${Array.from({length:80},(_,i)=>2026-i).map(y=>'<option value="'+y+'"'+(y===u.year?' selected':'')+'>'+y+'</option>').join('')}</select></div>
+    <div class="field" style="min-width:70px;"><label>月</label><select id="iM">${Array.from({length:12},(_,i)=>i+1).map(m=>'<option value="'+m+'"'+(m===u.month?' selected':'')+'>'+m+'月</option>').join('')}</select></div>
+    <div class="field" style="min-width:70px;"><label>日</label><select id="iD">${Array.from({length:31},(_,i)=>i+1).map(dy=>'<option value="'+dy+'"'+(dy===u.day?' selected':'')+'>'+dy+'日</option>').join('')}</select></div>
+    <button onclick="saveUser()">重新测算</button>
+  </div>
+  <div class="user-info show"><span class="highlight">${u.name}</span> · 属${SX_EMOJI[sxIdx]}<span class="highlight">${SHENGXIAO[sxIdx]}</span> · 日柱 ${TIAN_GAN[dayIdx(u.year,u.month,u.day)%10]}${DI_ZHI[userZhi]} · 今日 <span class="highlight">${mj.rel.r}</span></div>
+</div>
+
+<div class="score-section">
+  <div class="score-circle" style="border-color:${scC};color:${scC}"><div class="score-num">${mj.score}</div><div class="score-label">今日牌运</div></div>
+  <div class="score-text"><span class="hl">${mj.rel.r}</span> — ${mj.desc}</div>
+</div>
+
+<div class="info-grid">
+  <div class="info-card"><div class="label">最佳坐向</div><div class="value gold">${mj.dir.best}</div></div>
+  <div class="info-card"><div class="label">辅助吉位</div><div class="value green">${mj.dir.good}</div></div>
+  <div class="info-card"><div class="label">忌坐方向</div><div class="value red">${mj.dir.avoid}</div></div>
+</div>
+
+<div class="section-card"><h3>🎯 幸运数字</h3><div class="lucky-nums">${mj.lucky.map(n=>'<div class="num">'+n+'</div>').join('')}</div></div>
+
+<div class="section-card"><h3>🧠 策略建议</h3><div class="cards-row">${mj.strats.map(s=>'<div class="card-item" style="border-color:'+(s.ok?'rgba(39,174,96,0.3)':'rgba(239,68,68,0.2)')+';background:'+(s.ok?'rgba(39,174,96,0.05)':'rgba(239,68,68,0.05)')+'"><div class="cicon">'+s.i+'</div><div class="caction" style="color:'+(s.ok?'#27ae60':'#ef4444')+'">'+s.a+'</div><div class="cdetail">'+s.d+'</div></div>').join('')}</div></div>
+
+<div class="section-card"><h3>🀄 推荐牌型</h3><div class="cards-row">${mj.paiTypes.map(p=>'<div class="card-item" style="border-color:'+(p.s>=75?'rgba(39,174,96,0.3)':p.s>=65?'rgba(251,191,36,0.3)':'rgba(239,68,68,0.2)')+'"><div class="cicon">🀄</div><div class="caction" style="color:'+(p.s>=75?'#27ae60':p.s>=65?'#fbbf24':'#94a3b8')+'">'+p.n+'</div><div class="cdetail">'+p.d+'</div></div>').join('')}</div></div>
+
+<div class="section-card"><h3>⏰ 上桌吉时</h3><div class="hour-grid">${mj.hL.map((l,i)=>'<div class="hour-slot '+(l==='吉'?'good':'bad')+'"><div><span class="tag">'+(l==='吉'?'🟢吉':'🔴凶')+'</span> <span class="time">'+['子23-01','丑01-03','寅03-05','卯05-07','辰07-09','巳09-11','午11-13','未13-15','申15-17','酉17-19','戌19-21','亥21-23'][i]+'</span></div><span class="desc">'+mj.hA[i]+'</span></div>').join('')}</div></div>
+
+<div class="signoff">牌运 · 每日麻将运势<br>仅供娱乐参考 · 小赌怡情 🀄</div>`;
+}
+
+function renderForm(){
+  const u=loadUser();
+  document.getElementById('app').innerHTML=`
+<div class="back-link"><a href="/" style="color:#e67e22;text-decoration:none;font-size:14px;display:inline-flex;align-items:center;gap:4px;">← 返回互动目录</a></div>
+<div class="header">
+  <h1>牌运 · 每日麻将运势</h1>
+  <div class="brand">— 牌运测算 · 日卦推演 —</div>
+  <div class="date-display">${new Date().getFullYear()}年${new Date().getMonth()+1}月${new Date().getDate()}日</div>
+</div>
+<div class="user-section">
+  <h3>🀄 请输入出生信息</h3>
+  <div class="user-inputs">
+    <div class="field"><label>姓名</label><input type="text" id="iN" placeholder="你的名字" value="${u.name||''}"></div>
+    <div class="field" style="min-width:80px;"><label>年</label><select id="iY">${Array.from({length:80},(_,i)=>2026-i).map(y=>'<option value="'+y+'"'+(y===u.year?' selected':'')+'>'+y+'</option>').join('')}</select></div>
+    <div class="field" style="min-width:70px;"><label>月</label><select id="iM">${Array.from({length:12},(_,i)=>i+1).map(m=>'<option value="'+m+'"'+(m===u.month?' selected':'')+'>'+m+'月</option>').join('')}</select></div>
+    <div class="field" style="min-width:70px;"><label>日</label><select id="iD">${Array.from({length:31},(_,i)=>i+1).map(dy=>'<option value="'+dy+'"'+(dy===u.day?' selected':'')+'>'+dy+'日</option>').join('')}</select></div>
+    <button onclick="saveUser()">开始测算</button>
+  </div>
+  <div style="text-align:center;padding:20px 0;color:#64748b;display:flex;justify-content:center;gap:8px;align-items:center;">🀄 填写完整出生年月日，查看今日牌运</div>
+</div>
+<div class="signoff">老六茶事 · 仅供娱乐参考 · 小赌怡情 🀄</div>`;
+}
+
+function loadUser(){try{return JSON.parse(localStorage.getItem('ll_mj'))||{};}catch{return {};}}
+function saveUser(){
+  const n=document.getElementById('iN').value.trim();
+  const y=parseInt(document.getElementById('iY').value);
+  const m=parseInt(document.getElementById('iM').value);
+  const d=parseInt(document.getElementById('iD').value);
+  if(!n||!y||!m||!d)return alert('请填写完整出生信息');
+  localStorage.setItem('ll_mj',JSON.stringify({name:n,year:y,month:m,day:d}));
+  render();
+}
+document.addEventListener('DOMContentLoaded',()=>{setTimeout(render,200);});
+</script></body></html>
