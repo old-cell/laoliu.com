@@ -2329,9 +2329,12 @@ let _bookReturnHandled = false; // 标记是否已从书页返回
     return;
   }
   const params = new URLSearchParams(window.location.search);
-  if (params.get('page') === 'library') {
+  const pageParam = params.get('page');
+  if (pageParam === 'library') {
     showPage('library');
     _bookReturnHandled = true;
+  } else if (pageParam === 'tools') {
+    showPage('tools');
   }
 })();
 
