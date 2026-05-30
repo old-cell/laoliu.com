@@ -170,9 +170,9 @@ function showDesktop(cards){
     el.style.transformOrigin = 'center bottom';
     el.style.zIndex = n - i;
     el.style.opacity = '1';
-    // All cards start stacked at the rightmost position (like a deck)
-    var rightAng = angleSpan/2;
-    el.style.transform = 'rotate('+rightAng+'deg) translateY(-'+radius+'px)';
+    // All cards start stacked at the leftmost position (bottom-left entry)
+    var leftAng = -angleSpan/2;
+    el.style.transform = 'rotate('+leftAng+'deg) translateY(-'+radius+'px)';
     el.style.transition = 'none';
     var img = document.createElement('img');
     img.src = B; img.alt = cards[i].name;
@@ -191,10 +191,10 @@ function showDesktop(cards){
         var el = O.children[i];
         (function(elem, ang, delay){
           setTimeout(function(){
-            elem.style.transition = 'all 0.6s cubic-bezier(0.22,1,0.36,1)';
+            elem.style.transition = 'all 0.8s cubic-bezier(0.22,1,0.36,1)';
             elem.style.transform = 'rotate('+ang+'deg) translateY(-'+radius+'px)';
           }, delay);
-        })(el, targetAngle, (n-1-i)*35);
+        })(el, targetAngle, i*40);
       }
     });
   });
