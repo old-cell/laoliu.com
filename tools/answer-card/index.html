@@ -264,7 +264,14 @@ function showResult(card){
   document.getElementById('resultSub').textContent=p.slice(1).join(' ')||'';
   document.getElementById('resultOverlay').className='result-overlay show';
 }
-function cl(){document.getElementById('resultOverlay').className='result-overlay'}
+function cl(){
+  document.getElementById('resultOverlay').className='result-overlay';
+  document.getElementById('deckArea').style.opacity='1';
+  document.getElementById('fanOverlay').className='fan-overlay';
+  document.getElementById('fanOverlay').innerHTML='';
+  document.getElementById('mStrip').className='m-strip';
+  document.getElementById('swipeGuide').className='swipe-guide';
+}
 function exitResult(){document.getElementById('resultOverlay').className='result-overlay';document.getElementById('deckArea').style.opacity='1'}
 function dl(){
   if(!sel||!sel.file)return;
