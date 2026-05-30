@@ -129,19 +129,21 @@ var TYPE_POOLS = {
 
 function detectType(q){
   var t = q.replace(/[，。！？、；：""''（）【】《》\s]/g,'');
-  if(/是否|该不该|能不能|要不要|应不应该|对不对|行不行|可不可以|合适吗|可以吗|对吗|好吗|行吗/.test(t)) return 'yesno';
+  // 具体类型优先判断，是否类放最后
   if(/什么样的人|怎么评价|如何看待|你觉得我|我这个人|我是谁|评价/.test(t)) return 'self';
-  if(/爱|喜欢|分手|复合|在一起|婚姻|离婚|感情|结婚|对象|男朋友|女朋友|他|她/.test(t)) return 'love';
+  if(/爱|喜欢|分手|复合|在一起|婚姻|离婚|感情|结婚|对象|男朋友|女朋友|他|她|初恋|前任/.test(t)) return 'love';
   if(/什么时候|何时|多久|时机|时候才|还要|才能|等多久/.test(t)) return 'timing';
   if(/怎么办|怎么选|怎么走|往哪|方向|选择|决定|抉择|还是|或者|哪条/.test(t)) return 'action';
   if(/害怕|担心|紧张|焦虑|压力|恐惧|不安|迷茫|怕|犹豫/.test(t)) return 'courage';
   if(/旅游|旅行|出行|顺利|旅途|出门|去玩/.test(t)) return 'travel';
-  if(/健康|生病|身体|康复|恢复|养生/.test(t)) return 'health';
-  if(/财运|投资|赚钱|生意|收入|工资/.test(t)) return 'fortune';
+  if(/健康|生病|身体|康复|恢复|养生|痊愈/.test(t)) return 'health';
+  if(/财运|投资|赚钱|生意|收入|工资|发财|暴富/.test(t)) return 'fortune';
   if(/考试|学业|学习|成绩|毕业|录取|上学/.test(t)) return 'exam';
   if(/家庭|家人|父母|孩子|子女|爸妈/.test(t)) return 'family';
-  if(/同事|朋友|相处|社交|人际|合不/.test(t)) return 'social';
-  if(/升职|跳槽|创业|职场|工作|事业|辞职|上班/.test(t)) return 'career';
+  if(/同事|朋友|相处|社交|人际|合不|关系/.test(t)) return 'social';
+  if(/升职|跳槽|创业|职场|工作|事业|辞职|上班|离职/.test(t)) return 'career';
+  // 是否类最后判断
+  if(/是否|该不该|能不能|要不要|应不应该|对不对|行不行|可不可以|合适吗|可以吗|对吗|好吗|行吗|能否|适不适合/.test(t)) return 'yesno';
   return 'general';
 }
 
