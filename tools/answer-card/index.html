@@ -104,7 +104,8 @@ var B = "卡牌背面.jpg";
 var sel = null;
 (new Image()).src = B;
 
-// === QUESTION TYPE MATCHING SYSTEM ===
+// === TYPE-BASED SCORING SYSTEM ===
+// 所有牌全展示，但高分牌放扇形中间（最显眼位置）
 var TYPE_POOLS = {
   yes: [1,4,5,7,8,13,14,16,18,20,21,24,25,28,30,33,35,36,41,44,46,50,51,52,53,54,55,57,62],
   no: [6,9,15,17,22,23,26,27,29,32,34,37,38,39,40,42,43,56,58,59,60],
@@ -124,22 +125,56 @@ function detectType(q){
   if(/什么时候|何时|多久|时机|时候才|还要|才能|等多久/.test(t)) return 'timing';
   if(/怎么办|怎么选|怎么走|往哪|方向|选择|决定|抉择|还是|或者|哪条/.test(t)) return 'action';
   if(/害怕|担心|紧张|焦虑|压力|恐惧|不安|迷茫|怕|犹豫/.test(t)) return 'courage';
+  if(/旅游|旅行|出行|顺利|旅途|出门|去玩/.test(t)) return 'general_yes';
+  if(/健康|生病|身体|康复|恢复|养生/.test(t)) return 'general_patience';
+  if(/财运|投资|赚钱|生意|收入|工资/.test(t)) return 'general_action';
+  if(/考试|学业|学习|成绩|毕业|录取|上学/.test(t)) return 'general_yes';
+  if(/家庭|家人|父母|孩子|子女|爸妈/.test(t)) return 'general_soft';
+  if(/升职|跳槽|创业|职场|工作|事业|辞职|上班/.test(t)) return 'general_action';
+  if(/同事|朋友|相处|社交|人际|合不/.test(t)) return 'general_soft';
   return 'general';
 }
 
-function pickFromPool(ids, count){
-  var s = ids.slice();
-  for(var i=s.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=s[i];s[i]=s[j];s[j]=t;}
-  var n = Math.min(count||10, s.length);
-  var r = [];
-  for(var p=0;p<n;p++){for(var a=0;a<ALL.length;a++){if(ALL[a].id===s[p]){r.push(ALL[a]);break;}}}
-  return r;
+// Get pool mix for each question type
+function poolForType(type){
+  var m = {
+    yesno: TYPE_POOLS.yes.concat(TYPE_POOLS.no),
+    self: TYPE_POOLS.self,
+    love: TYPE_POOLS.love,
+    timing: TYPE_POOLS.timing,
+    action: TYPE_POOLS.action,
+    courage: TYPE_POOLS.courage,
+    general_yes: TYPE_POOLS.yes.concat([4,13,14,16,25,28,44,50,51,52,53,55,57,62]),
+    general_no: TYPE_POOLS.no.concat([2,3,9,15,17,19,23,29,37,39,40,43,45,47,60]),
+    general_action: TYPE_POOLS.action.concat(TYPE_POOLS.yes),
+    general_soft: TYPE_POOLS.love.concat(TYPE_POOLS.self, [2,3,19,29,45,47,56,58,59,61]),
+    general_patience: TYPE_POOLS.timing.concat(TYPE_POOLS.vibe, [29,45,47]),
+    general: TYPE_POOLS.yes.concat(TYPE_POOLS.no, TYPE_POOLS.vibe)
+  };
+  return m[type] || m.general;
 }
 
 function match(q){
   if(!q.trim()) return [];
-  // 全部牌展示，用户凭直觉选牌
-  return ALL;
+  var qw = q.replace(/[，。！？、；：""''（）【】《》\s]/g,' ').split(' ').filter(function(x){return x});
+  var pool = poolForType(detectType(q));
+  var s = ALL.map(function(c){
+    var sc = 0;
+    for(var p=0;p<pool.length;p++){if(pool[p]===c.id){sc+=5;break;}}
+    for(var a=0;a<qw.length;a++) for(var b=0;b<c.kw.length;b++){
+      if(c.kw[b].indexOf(qw[a])>=0||qw[a].indexOf(c.kw[b])>=0) sc+=2;
+    }
+    return {c:c,s:sc};
+  });
+  s.sort(function(a,b){return b.s-a.s});
+  // Place high-score cards in center of fan
+  var n = ALL.length;
+  var r = new Array(n);
+  var L = Math.floor((n-1)/2), R = Math.ceil((n-1)/2);
+  for(var i=0;i<n;i++){
+    if(i%2===0){r[R]=s[i].c;R++;}else{r[L]=s[i].c;L--;}
+  }
+  return r;
 }
 
 function deal(){
