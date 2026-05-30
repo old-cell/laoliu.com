@@ -104,20 +104,43 @@ var B = "卡牌背面.jpg";
 var sel = null;
 (new Image()).src = B;
 
+// === QUESTION TYPE MATCHING SYSTEM ===
+var TYPE_POOLS = {
+  yes: [1,4,5,7,8,13,14,16,18,20,21,24,25,28,30,33,35,36,41,44,46,50,51,52,53,54,55,57,62],
+  no: [6,9,15,17,22,23,26,27,29,32,34,37,38,39,40,42,43,56,58,59,60],
+  self: [10,11,31,48,49],
+  vibe: [2,3,19,45,47],
+  love: [6,26,27,32,34,38,56,58,59,61],
+  timing: [4,17,25,28,37,39,40,43,44,50,60,62],
+  action: [1,5,7,8,18,30,33,35,36,41,46,51,52,53,54,55,57],
+  courage: [12,13,14,16]
+};
+
+function detectType(q){
+  var t = q.replace(/[，。！？、；：""''（）【】《》\s]/g,'');
+  if(/是否|该不该|能不能|要不要|应不应该|对不对|行不行|可不可以|合适吗|可以吗|对吗|好吗|行吗/.test(t)) return 'yesno';
+  if(/什么样的人|怎么评价|如何看待|你觉得我|我这个人|我是谁|评价/.test(t)) return 'self';
+  if(/爱|喜欢|分手|复合|在一起|婚姻|离婚|感情|结婚|对象|男朋友|女朋友|他|她/.test(t)) return 'love';
+  if(/什么时候|何时|多久|时机|时候才|还要|才能|等多久/.test(t)) return 'timing';
+  if(/怎么办|怎么选|怎么走|往哪|方向|选择|决定|抉择|还是|或者|哪条/.test(t)) return 'action';
+  if(/害怕|担心|紧张|焦虑|压力|恐惧|不安|迷茫|怕|犹豫/.test(t)) return 'courage';
+  return 'general';
+}
+
+function pickFromPool(ids, count){
+  var s = ids.slice();
+  for(var i=s.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=s[i];s[i]=s[j];s[j]=t;}
+  var n = Math.min(count||10, s.length);
+  var r = [];
+  for(var p=0;p<n;p++){for(var a=0;a<ALL.length;a++){if(ALL[a].id===s[p]){r.push(ALL[a]);break;}}}
+  return r;
+}
+
 function match(q){
   if(!q.trim()) return [];
-  var w = q.replace(/[，。！？、；：""''（）【】《》\s]/g,' ').split(' ').filter(function(x){return x});
-  var s = ALL.map(function(c){
-    var sc = 0;
-    for(var a=0;a<w.length;a++) for(var b=0;b<c.kw.length;b++){
-      if(c.kw[b].indexOf(w[a])>=0||w[a].indexOf(c.kw[b])>=0) sc+=5;
-      if(w[a]===c.kw[b]) sc+=3;
-    }
-    return {c:c,s:sc};
-  });
-  s.sort(function(a,b){return b.s-a.s});
-  var t = s.filter(function(x){return x.s>0}).map(function(x){return x.c});
-  return t.length<6?ALL:t.slice(0,Math.min(15,Math.max(8,Math.ceil(t.length*0.3))));
+  var pools = {yesno:TYPE_POOLS.yes.concat(TYPE_POOLS.no),self:TYPE_POOLS.self,love:TYPE_POOLS.love,timing:TYPE_POOLS.timing,action:TYPE_POOLS.action,courage:TYPE_POOLS.courage,general:TYPE_POOLS.yes.concat(TYPE_POOLS.no,TYPE_POOLS.vibe)};
+  var ids = pools[detectType(q)] || pools.general;
+  return pickFromPool(ids);
 }
 
 function deal(){
