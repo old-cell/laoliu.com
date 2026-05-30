@@ -41,14 +41,14 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei','Noto Serif SC',s
 .fan-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 .fan-card{opacity:0}
 .fan-card:hover{z-index:100!important;box-shadow:0 8px 30px rgba(212,175,55,0.4)!important}
-@keyframes fanSwingIn{0%{opacity:0;transform:var(--start)}100%{opacity:1;transform:var(--end)}}
+@keyframes fanSwingIn{0%{opacity:0;transform:var(--start)}60%{opacity:1;transform:var(--mid)}100%{transform:var(--end)}}
 /* Floating pull-out card */
 .floating-card{position:fixed;z-index:150;border-radius:8px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.6);pointer-events:none;transition:all 1.8s cubic-bezier(0.22,1,0.36,1)}
 .floating-card img{width:100%;height:100%;object-fit:cover;display:block}
 /* Result */
 .result-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;flex-direction:column}
 .result-overlay.show{display:flex}
-.result-card{width:290px;height:435px;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.6);border:2px solid #d4af37;animation:fadeIn 1s both}
+.result-card{width:360px;height:540px;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.6);border:2px solid #d4af37;animation:fadeIn 1s both}
 .result-card img{width:100%;height:100%;object-fit:cover;display:block}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .result-text{margin-top:14px;color:#d4af37;font-size:20px;font-weight:700;letter-spacing:3px;text-align:center}
@@ -156,7 +156,7 @@ function showDesktop(cards){
   var cw = 100, ch = 150;
   // All cards share this pivot point (the fan center)
   var px = vw/2;
-  var py = vh - 60;
+  var py = vh - 20;  // lower pivot = cards more centered
   // Classic fan: position all cards at same point, rotate around bottom-center
   var angleSpan = 100;
   var frag = document.createDocumentFragment();
@@ -172,8 +172,9 @@ function showDesktop(cards){
     el.style.height = ch+'px';
     // Rotate around bottom-center → all cards converge at pivot
     el.style.opacity = '0';
-    var startRot = angle + (angle>0?30:-30);
-    el.style.setProperty('--start', 'rotate('+startRot+'deg) translateY(-'+vh*0.95+'px)');
+    // All cards fly in from bottom-left
+    el.style.setProperty('--start', 'rotate(60deg) translateY(50px) translateX(-200px)');
+    el.style.setProperty('--mid', 'rotate('+angle+'deg) translateY(-'+vh*1.1+'px)');
     el.style.setProperty('--end', 'rotate('+angle+'deg) translateY(-'+vh*0.75+'px)');
     el.style.animation = 'fanSwingIn 0.8s cubic-bezier(0.33,1,0.68,1) '+ (i*0.08) +'s both';
     el.style.transform = 'rotate('+angle+'deg) translateY(-'+vh*0.75+'px)';
