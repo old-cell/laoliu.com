@@ -17,27 +17,26 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei','Noto Serif SC',s
 .btn-row{display:flex;gap:10px;margin-top:8px;justify-content:center}
 .btn{padding:10px 28px;border-radius:10px;border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
 .btn-pri{background:linear-gradient(135deg,#d4af37,#b8942e);color:#1a1a2e;box-shadow:0 2px 10px rgba(212,175,55,0.3)}
-/* Deck */
 .deck-area{position:fixed;bottom:30px;left:20px;z-index:10;width:90px;height:135px;cursor:pointer}
 .deck-area img{width:100%;height:100%;object-fit:cover;border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,0.5)}
 .deck-glow{position:absolute;inset:-4px;border-radius:10px;background:radial-gradient(ellipse,rgba(212,175,55,0.2),transparent 70%);animation:glow 2s ease-in-out infinite;pointer-events:none}
 @keyframes glow{0%,100%{opacity:0.5}50%{opacity:1}}
 .deck-count{position:absolute;top:-8px;right:-8px;background:#d4af37;color:#1a1a2e;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px}
-/* Mobile card strip */
-.m-strip{display:none;position:fixed;bottom:0;left:0;right:0;z-index:50;padding:8px 0 14px;background:linear-gradient(transparent,rgba(0,0,0,0.85));overflow-x:scroll;-webkit-overflow-scrolling:touch;white-space:nowrap}
+/* Mobile strip */
+.m-strip{display:none;position:fixed;bottom:0;left:0;right:0;z-index:50;padding:10px 0 18px;background:linear-gradient(transparent,rgba(0,0,0,0.85));overflow-x:scroll;-webkit-overflow-scrolling:touch;white-space:nowrap}
 .m-strip.show{display:block}
-.m-card{display:inline-block;width:75px;height:112px;border-radius:6px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.5);cursor:pointer;vertical-align:bottom;flex-shrink:0}
+.m-card{display:inline-block;width:72px;height:108px;border-radius:5px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,0.5);cursor:pointer;vertical-align:bottom}
 .m-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
-.m-card:active{transform:scale(0.92);transition:transform 0.1s}
+.m-card:active{transform:scale(0.9);transition:transform 0.1s}
 .m-card+.m-card{margin-left:6px}
 .m-card:first-child{margin-left:12px}
 .m-card:last-child{margin-right:12px}
-/* Swipe guide - ABOVE the cards, not overlapping */
-.swipe-guide{display:none;position:fixed;bottom:145px;left:0;right:0;z-index:60;text-align:center;color:rgba(212,175,55,0.6);font-size:12px;letter-spacing:4px;animation:guidePulse 1.5s ease-in-out infinite;pointer-events:none}
+/* Swipe guide */
+.swipe-guide{display:none;position:fixed;bottom:145px;left:0;right:0;z-index:60;text-align:center;color:rgba(212,175,55,0.5);font-size:12px;letter-spacing:4px;animation:guidePulse 1.5s ease-in-out infinite;pointer-events:none}
 .swipe-guide.show{display:block}
 @keyframes guidePulse{0%,100%{opacity:0.3}50%{opacity:1}}
 /* Desktop fan */
-.fan-overlay{display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,0.65)}
+.fan-overlay{display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,0.7)}
 .fan-overlay.show{display:block}
 .fan-card{position:absolute;cursor:pointer;border-radius:6px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.5)}
 .fan-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
@@ -99,7 +98,6 @@ var ALL = R.map(function(a,i){return{id:i+1,file:a[0],name:a[1],kw:a[2].split(',
 var B = "卡牌背面.png";
 var sel = null;
 
-// Preload back image
 (new Image()).src = B;
 
 function match(q){
@@ -138,64 +136,56 @@ function showMobile(cards){
     var el = document.createElement('div');
     el.className = 'm-card';
     var img = document.createElement('img');
-    img.src = B;
-    img.alt = cards[i].name;
+    img.src = B; img.alt = cards[i].name;
     el.appendChild(img);
     el.onclick = (function(c){return function(e){guide.className='swipe-guide';pullFrom(e,c);}})(cards[i]);
     frag.appendChild(el);
   }
   strip.appendChild(frag);
-  // Guide disappears on first scroll
   strip.onscroll = function(){guide.className='swipe-guide';};
   requestAnimationFrame(function(){strip.scrollLeft=0;});
 }
 
-// === DESKTOP FAN ===
+// === DESKTOP: true semi-circle fan ===
 function showDesktop(cards){
   var O = document.getElementById('fanOverlay');
   O.innerHTML = '';
   O.className = 'fan-overlay show';
   var n = Math.min(cards.length,15);
   var vw = window.innerWidth, vh = window.innerHeight;
-  // Origin = deck position (bottom-left)
-  var ox = 30, oy = vh - 40;
-  var radius = Math.min(vw * 0.48, 280);
-  var cw = 90, ch = 135;
+  var cw = 95, ch = 142;
+  // Virtual origin below screen, creates nice semi-circle
+  var cx = vw/2, cy = vh + 40;
+  var radius = Math.min(vh * 0.55, 380);
   var frag = document.createDocumentFragment();
   
   for(var i=0;i<n;i++){
     var pct = n<=1?0.5:i/(n-1);
-    var angleDeg = 5 + pct * 60;
-    var rad = angleDeg * Math.PI / 180;
-    // Position on arc from origin
-    var x = ox + Math.cos(rad) * radius - cw/2;
-    var y = oy - Math.sin(rad) * radius - ch/2;
-    // Card fans outward
-    var rot = angleDeg - 5;
+    var angle = 15 - pct * 30; // from 15° to -15°
+    var rad = angle * Math.PI / 180;
+    var x = cx + Math.sin(rad) * radius - cw/2;
+    var y = cy - Math.cos(rad) * radius - ch/2;
+    var rot = -angle; // face center
     
     var el = document.createElement('div');
     el.className = 'fan-card';
-    el.style.left = x+'px';
-    el.style.top = y+'px';
-    el.style.width = cw+'px';
-    el.style.height = ch+'px';
+    el.style.left = x+'px'; el.style.top = y+'px';
+    el.style.width = cw+'px'; el.style.height = ch+'px';
     el.style.transform = 'rotate('+rot+'deg)';
-    el.style.transformOrigin = 'bottom center';
     var img = document.createElement('img');
-    img.src = B;
-    img.alt = cards[i].name;
+    img.src = B; img.alt = cards[i].name;
     el.appendChild(img);
-    el.onclick = (function(c,el){return function(e){fanPull(e,c,el);}})(cards[i],el);
+    el.onclick = (function(c,e){return function(ev){fanPull(ev,c,e);}})(cards[i],el);
     frag.appendChild(el);
   }
   O.appendChild(frag);
 }
 
-// === PULL-OUT ANIMATION ===
+// === PULL-OUT ===
 function pullFrom(e,card){
   sel = card;
   var rect = e.currentTarget.getBoundingClientRect();
-  animatePull(rect, card);
+  doPull(rect, card);
   document.getElementById('mStrip').className='m-strip';
   document.getElementById('fanOverlay').className='fan-overlay';
   document.getElementById('swipeGuide').className='swipe-guide';
@@ -203,39 +193,27 @@ function pullFrom(e,card){
 
 function fanPull(e,card,el){
   sel = card;
-  var rect = el.getBoundingClientRect();
-  var rot = el.style.transform.match(/rotate\(([^)]+)\)/);
-  animatePull(rect, card, rot?rot[1]:'0deg');
+  doPull(el.getBoundingClientRect(), card);
   document.getElementById('fanOverlay').className='fan-overlay';
 }
 
-function animatePull(rect, card, extraRot){
+function doPull(rect, card){
   var vw = window.innerWidth, vh = window.innerHeight;
   var cw = rect.width, ch = rect.height;
   var cx = rect.left + cw/2, cy = rect.top + ch/2;
-  
   var fc = document.createElement('div');
   fc.className = 'floating-card';
-  fc.style.width = cw+'px';
-  fc.style.height = ch+'px';
-  fc.style.left = (cx-cw/2)+'px';
-  fc.style.top = (cy-ch/2)+'px';
+  fc.style.width = cw+'px'; fc.style.height = ch+'px';
+  fc.style.left = (cx-cw/2)+'px'; fc.style.top = (cy-ch/2)+'px';
   fc.style.transform = 'rotateY(0deg)';
   fc.innerHTML = '<img src="'+B+'">';
   document.body.appendChild(fc);
-  
-  // Force layout
   fc.offsetHeight;
-  
-  var tW = Math.min(290, vw*0.8);
-  var tH = tW * 1.5;
-  fc.style.width = tW+'px';
-  fc.style.height = tH+'px';
-  fc.style.left = (vw-tW)/2+'px';
-  fc.style.top = (vh-tH)/2+'px';
+  var tW = Math.min(290, vw*0.8), tH = tW*1.5;
+  fc.style.width = tW+'px'; fc.style.height = tH+'px';
+  fc.style.left = (vw-tW)/2+'px'; fc.style.top = (vh-tH)/2+'px';
   fc.style.transform = 'rotateY(720deg)';
   fc.style.boxShadow = '0 20px 60px rgba(0,0,0,0.6)';
-  
   setTimeout(function(){
     fc.innerHTML = '<img src="'+card.file+'">';
     setTimeout(function(){
@@ -252,8 +230,7 @@ function showResult(card){
   img.src=card.file;
   img.onerror=function(){this.src=B;this.style.transform='scaleX(-1)'};
   img.style.cssText='width:100%;height:100%;object-fit:cover;display:block';
-  document.getElementById('resultCard').innerHTML='';
-  document.getElementById('resultCard').appendChild(img);
+  document.getElementById('resultCard').innerHTML=''; document.getElementById('resultCard').appendChild(img);
   var p=card.name.split('，');
   document.getElementById('resultText').textContent=p[0]||card.name;
   document.getElementById('resultSub').textContent=p.slice(1).join(' ')||'';
