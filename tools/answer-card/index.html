@@ -325,28 +325,15 @@ function doPull(rect, card){
 function showResult(card){
   sel = card;
   document.getElementById('deckArea').style.opacity='1';
-  // Show the picked card's IMAGE (visual intuition)
   var img=document.createElement('img');
   img.src=card.file;
   img.onerror=function(){this.src=B;this.style.transform='scaleX(-1)';};
   img.style.cssText='width:100%;height:100%;object-fit:cover;display:block';
   document.getElementById('resultCard').innerHTML=''; document.getElementById('resultCard').appendChild(img);
-  // But show MATCHED answer text based on question
-  var matched = getMatchedAnswer(curQ);
-  var p=matched.name.split('，');
-  document.getElementById('resultText').textContent=p[0]||matched.name;
+  var p=card.name.split('，');
+  document.getElementById('resultText').textContent=p[0]||card.name;
   document.getElementById('resultSub').textContent=p.slice(1).join(' ')||'';
   document.getElementById('resultOverlay').className='result-overlay show';
-}
-
-// Pick a random matched answer from the question's type pool
-function getMatchedAnswer(q){
-  if(!q||!q.trim()) return sel||ALL[Math.floor(Math.random()*ALL.length)];
-  var pool = poolForType(detectType(q));
-  // Pick a random card from the pool
-  var pick = pool[Math.floor(Math.random()*pool.length)];
-  for(var a=0;a<ALL.length;a++){if(ALL[a].id===pick) return ALL[a];}
-  return sel||ALL[Math.floor(Math.random()*ALL.length)];
 }
 function cl(){
   document.getElementById('resultOverlay').className='result-overlay';
