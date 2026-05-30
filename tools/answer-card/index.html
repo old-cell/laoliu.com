@@ -105,7 +105,7 @@ var sel = null;
 (new Image()).src = B;
 
 function match(q){
-  if(!q.trim()) return ALL;
+  if(!q.trim()) return [];
   var w = q.replace(/[，。！？、；：""''（）【】《》\s]/g,' ').split(' ').filter(function(x){return x});
   var s = ALL.map(function(c){
     var sc = 0;
@@ -121,7 +121,14 @@ function match(q){
 }
 
 function deal(){
-  var cards = match(document.getElementById('qt').value);
+  var q = document.getElementById('qt').value.trim();
+  if(!q){
+    document.getElementById('qt').focus();
+    document.getElementById('qt').style.borderColor='#ef4444';
+    setTimeout(function(){document.getElementById('qt').style.borderColor=''},1500);
+    return;
+  }
+  var cards = match(q);
   if(window.innerWidth<768) showMobile(cards);
   else showDesktop(cards);
   document.getElementById('deckArea').style.opacity='0.3';
