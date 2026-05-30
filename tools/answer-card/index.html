@@ -102,6 +102,7 @@ var R = [["一切就绪只等你动.jpg", "一切就绪，只等你动", "行动
 var ALL = R.map(function(a,i){return{id:i+1,file:a[0],name:a[1],kw:a[2].split(',')}});
 var B = "卡牌背面.jpg";
 var sel = null;
+var curQ = '';  // current question for answer matching
 (new Image()).src = B;
 
 // === TYPE-BASED SCORING SYSTEM ===
@@ -185,6 +186,7 @@ function deal(){
     setTimeout(function(){document.getElementById('qt').style.borderColor=''},1500);
     return;
   }
+  curQ = q;
   var cards = match(q);
   if(window.innerWidth<768) showMobile(cards);
   else showDesktop(cards);
@@ -311,15 +313,28 @@ function doPull(rect, card){
 function showResult(card){
   sel = card;
   document.getElementById('deckArea').style.opacity='1';
+  // Show the picked card's IMAGE (visual intuition)
   var img=document.createElement('img');
   img.src=card.file;
   img.onerror=function(){this.src=B;this.style.transform='scaleX(-1)';};
   img.style.cssText='width:100%;height:100%;object-fit:cover;display:block';
   document.getElementById('resultCard').innerHTML=''; document.getElementById('resultCard').appendChild(img);
-  var p=card.name.split('，');
-  document.getElementById('resultText').textContent=p[0]||card.name;
+  // But show MATCHED answer text based on question
+  var matched = getMatchedAnswer(curQ);
+  var p=matched.name.split('，');
+  document.getElementById('resultText').textContent=p[0]||matched.name;
   document.getElementById('resultSub').textContent=p.slice(1).join(' ')||'';
   document.getElementById('resultOverlay').className='result-overlay show';
+}
+
+// Pick a random matched answer from the question's type pool
+function getMatchedAnswer(q){
+  if(!q||!q.trim()) return sel||ALL[Math.floor(Math.random()*ALL.length)];
+  var pool = poolForType(detectType(q));
+  // Pick a random card from the pool
+  var pick = pool[Math.floor(Math.random()*pool.length)];
+  for(var a=0;a<ALL.length;a++){if(ALL[a].id===pick) return ALL[a];}
+  return sel||ALL[Math.floor(Math.random()*ALL.length)];
 }
 function cl(){
   document.getElementById('resultOverlay').className='result-overlay';
