@@ -44,9 +44,9 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei','Noto Serif SC',s
 .floating-card{position:fixed;z-index:150;border-radius:8px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.6);pointer-events:none;transition:all 1.8s cubic-bezier(0.22,1,0.36,1)}
 .floating-card img{width:100%;height:100%;object-fit:cover;display:block}
 /* Result */
-.result-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;flex-direction:column}
+.result-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;flex-direction:column}
 .result-overlay.show{display:flex}
-.result-card{width:360px;height:540px;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.6);border:2px solid #d4af37;animation:fadeIn 1s both}
+.result-card{width:280px;height:420px;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.6);border:2px solid #d4af37;animation:fadeIn 1s both}
 .result-card img{width:100%;height:100%;object-fit:cover;display:block}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .result-text{margin-top:14px;color:#d4af37;font-size:20px;font-weight:700;letter-spacing:3px;text-align:center}
@@ -59,6 +59,7 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei','Noto Serif SC',s
   .m-strip{display:none!important}
   .swipe-guide{display:none!important}
   .deck-area{width:100px;height:150px}
+  .result-card{width:400px;height:600px}
 }
 </style>
 </head>
@@ -175,14 +176,14 @@ function showDesktop(cards){
     el.appendChild(img);
     el.onclick = (function(c,e){return function(ev){fanPull(ev,c,e);}})(cards[i],el);
     frag.appendChild(el);
-    // Staggered entrance via transition
-    (function(elem, ang, vhh){
+    // Staggered entrance: left side (closer to entry) enters first
+    (function(elem, ang, vhh, idx, total){
       setTimeout(function(){
         elem.style.transition = 'all 0.75s cubic-bezier(0.33,1,0.68,1)';
         elem.style.opacity = '1';
         elem.style.transform = 'rotate('+ang+'deg) translateY(-'+vhh*0.65+'px) scale(1)';
-      }, 80 + i*70);
-    })(el, angle, vh);
+      }, 80 + (total-1-idx)*70);
+    })(el, angle, vh, i, n);
   }
   O.appendChild(frag);
 }
@@ -199,7 +200,7 @@ function pullFrom(e,card){
 function fanPull(e,card,el){
   sel = card;
   doPull(el.getBoundingClientRect(), card);
-  document.getElementById('fanOverlay').className='fan-overlay';
+  // Keep fan visible behind result overlay
 }
 function doPull(rect, card){
   var vw = window.innerWidth, vh = window.innerHeight;
