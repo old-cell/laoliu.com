@@ -906,7 +906,6 @@ body { padding-bottom: 72px; }
   .rs-hl-type-btn:nth-child(2) { animation-delay: 0.2s; }
   .rs-hl-type-btn.huangli { background: linear-gradient(135deg,#f0f7ec,#e8f0e6); border: 1px solid #c8dcc4; color: var(--green-deep); }
   .rs-hl-type-btn.majiang { background: linear-gradient(135deg,#fdf8ea,#faf3e0); border: 1px solid #e8dcc0; color: #8B6914; }
-  .rs-hl-type-btn.shengsx { background: linear-gradient(135deg,#eef0f8,#e6e8f5); border: 1px solid #c0c8dc; color: #3a4a8b; }
   .rs-hl-type-btn:hover { transform: scale(1.02); }
   .rs-hl-type-btn:active { transform: scale(0.97); }
   .rs-hl-type-btn .rs-ti { font-size: 22px; }
@@ -2425,7 +2424,6 @@ function renderDir(category, activeId) {
       html += '<div class="rs-hl-type-grid">';
       html += '<div class="rs-hl-type-btn huangli' + (hasHL ? ' has-article' : '') + '" onclick="openHuangliArticle()"><span class="rs-ti">📅</span>生肖黄历' + (hasHL ? ' <span class="rs-check">✅</span>' : '') + '</div>';
       html += '<div class="rs-hl-type-btn majiang' + (hasMJ ? ' has-article' : '') + '" onclick="openMajiangArticle()"><span class="rs-ti">🀄</span>生肖麻将运势' + (hasMJ ? ' <span class="rs-check">✅</span>' : '') + '</div>';
-      html += '<div class="rs-hl-type-btn shengsx" onclick="openSxArticle()"><span class="rs-ti">📊</span>整体运势</div>';
       html += '</div>';
       html += '<div class="rs-hl-type-btn back" onclick="hlState.level=\'zodiac\';renderDir(\'huangli\')"><span class="rs-ti">↩️</span>返回选择生肖</div>';
       list.innerHTML = html;
@@ -3259,7 +3257,6 @@ function renderType(container) {
   html += '<div class="hl-type-grid">';
   html += '<div class="hl-type-btn huangli' + (hasHL ? ' has-article' : '') + '" onclick="openHuangliArticle()"><span class="ti">📅</span><span class="tn">生肖黄历' + (hasHL ? ' ✅' : '') + '</span></div>';
   html += '<div class="hl-type-btn majiang' + (hasMJ ? ' has-article' : '') + '" onclick="openMajiangArticle()"><span class="ti">🀄</span><span class="tn">生肖麻将运势' + (hasMJ ? ' ✅' : '') + '</span></div>';
-  html += '<div class="hl-type-btn shengsx" onclick="openSxArticle()"><span class="ti">📊</span><span class="tn">整体运势</span></div>';
   html += '</div></div>';
   
   container.innerHTML = html;
@@ -3344,13 +3341,6 @@ function openMajiangArticle() {
     && a.zodiac === hlState.zodiac);
   if (art) openArticle(art.id);
   else alert('暂无该日生肖麻将运势');
-}
-
-function openSxArticle() {
-  const id = 'sx-' + String(ZODIACS.findIndex(z => z.id === hlState.zodiac) + 1).padStart(2, '0');
-  const art = allArticles.find(a => a.id === id);
-  if (art) openArticle(id);
-  else window.location.href = '/articles/' + id;
 }
 
 // 拦截goCategory('huangli')使用日历
