@@ -360,7 +360,7 @@ function showDetail(index) {
 
   // 设置三个tab的跳转链接
   var animal = animalMap[z.name];
-  var day = today.getFullYear() + "-" + String(today.getMonth()+1).padStart(2,"0") + "-" + String(today.getDate()).padStart(2,"0");
+  var mm = String(today.getMonth()+1).padStart(2,"0"); var dd = String(today.getDate()).padStart(2,"0"); var day = mm + dd;
   document.getElementById("tab0").innerHTML = "<div style=\"text-align:center;padding:60px 20px;\"><a href=\"/articles/hl-" + animal + "-" + day.replace(/-/g,"") + "\" style=\"display:inline-block;padding:16px 40px;background:#8b1a1a;color:#fff;border-radius:10px;font-size:18px;text-decoration:none;\">查看今日运势</a><p style=\"margin-top:12px;color:#999;font-size:13px;\">将跳转到当日运势文章</p></div>";
   document.getElementById("tab1").innerHTML = "<div style=\"text-align:center;padding:60px 20px;\"><a href=\"/articles/mj-" + animal + "-" + day.replace(/-/g,"") + "\" style=\"display:inline-block;padding:16px 40px;background:#2d5c2d;color:#fff;border-radius:10px;font-size:18px;text-decoration:none;\">查看今日麻将运势</a><p style=\"margin-top:12px;color:#999;font-size:13px;\">将跳转到麻将运势文章</p></div>";
   document.getElementById("tab2").innerHTML = "<div style=\"text-align:center;padding:60px 20px;\"><a href=\"/articles/" + sxNum[index+1] + "\" style=\"display:inline-block;padding:16px 40px;background:#1a2e5c;color:#fff;border-radius:10px;font-size:18px;text-decoration:none;\">查看整体运势</a><p style=\"margin-top:12px;color:#999;font-size:13px;\">将跳转到整体运势文章</p></div>";
