@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>十二生肖运势 - 老六茶事</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #f5f0e8;
+  color: #3d3229;
+  min-height: 100vh;
+}
+.header {
+  background: #8b1a1a;
+  color: #f5e6d0;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.header .back-btn {
+  font-size: 22px; cursor: pointer;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  transition: background 0.2s;
+}
+.header h1 { font-size: 18px; font-weight: 600; flex: 1; text-align: center; margin-right: 36px; }
+.zodiac-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 20px 16px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.zodiac-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px 8px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: transform 0.2s;
+  border: 2px solid transparent;
+}
+.zodiac-card:active { transform: scale(0.95); }
+.zodiac-card .emoji { font-size: 36px; display: block; margin-bottom: 6px; }
+.zodiac-card .name { font-size: 15px; font-weight: 600; color: #5a4a3a; }
+.zodiac-card .sub { font-size: 11px; color: #999; margin-top: 2px; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.zodiac-card { animation: fadeUp 0.35s ease both; }
+.detail-page { display: none; max-width: 700px; margin: 0 auto; padding: 0 0 40px; }
+.detail-page.active { display: block; }
+.cover-image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.cover-image::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 30% 40%, rgba(232,67,67,0.15), transparent 60%),
+              radial-gradient(circle at 70% 60%, rgba(255,215,0,0.1), transparent 50%);
+}
+.cover-image .cover-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 30px 20px;
+}
+.cover-image .cover-emoji { font-size: 52px; display: block; margin-bottom: 10px; }
+.cover-image .cover-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #f5e6d0;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  line-height: 1.4;
+}
+.cover-image .cover-sub {
+  font-size: 13px;
+  color: rgba(245,230,208,0.7);
+  margin-top: 8px;
+  letter-spacing: 2px;
+}
+.cover-0 { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+.cover-1 { background: linear-gradient(135deg, #2d1b00, #5c3a00); }
+.cover-2 { background: linear-gradient(135deg, #1b2838, #2c4a5a); }
+.cover-3 { background: linear-gradient(135deg, #2d1b2e, #5c3a5a); }
+.cover-4 { background: linear-gradient(135deg, #1a2e1a, #2d5c2d); }
+.cover-5 { background: linear-gradient(135deg, #1a1a2e, #2d2d5c); }
+.cover-6 { background: linear-gradient(135deg, #2e1a1a, #5c2d2d); }
+.cover-7 { background: linear-gradient(135deg, #1a2e2e, #2d5c5c); }
+.cover-8 { background: linear-gradient(135deg, #2e2d1a, #5c5a2d); }
+.cover-9 { background: linear-gradient(135deg, #1a1a2e, #3d2d5c); }
+.cover-10 { background: linear-gradient(135deg, #2e1a2e, #5c2d5c); }
+.cover-11 { background: linear-gradient(135deg, #1a2e1a, #2d5c3d); }
+.tab-bar {
+  display: flex;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: -10px 16px 16px;
+  position: relative;
+  z-index: 3;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+}
+.tab-btn {
+  flex: 1;
+  padding: 12px 4px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.25s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn.active {
+  color: #8b1a1a;
+  border-bottom-color: #8b1a1a;
+  font-weight: 700;
+}
+.tab-btn .tab-icon { display: block; font-size: 18px; margin-bottom: 2px; }
+.tab-content { display: none; padding: 0 16px; }
+.tab-content.active { display: block; }
+.fortune-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+}
+.fortune-card h3 {
+  font-size: 16px;
+  color: #8b1a1a;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0e8dd;
+}
+.fortune-card .stars {
+  font-size: 14px; color: #e6a817; margin-bottom: 8px;
+}
+.fortune-card p {
+  font-size: 14px; line-height: 1.8; color: #555;
+}
+.fortune-card .tag {
+  display: inline-block;
+  background: #f5ede4;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #8b6b4a;
+  margin-right: 6px; margin-top: 6px;
+}
+.season-list {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+}
+.season-item {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f0e8dd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.15s;
+}
+.season-item:last-child { border-bottom: none; }
+.season-item:hover { background: #faf6ef; }
+.season-item .s-label { font-weight: 600; color: #5a4a3a; font-size: 14px; min-width: 70px; }
+.season-item .s-desc { font-size: 13px; color: #999; flex: 1; }
+.season-item .s-arrow { color: #ccc; font-size: 16px; }
+.back-to-grid {
+  display: block;
+  width: auto;
+  margin: 24px 16px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 15px;
+  color: #666;
+  transition: background 0.2s;
+}
+.back-to-grid:hover { background: #faf6ef; }
+@media (min-width: 600px) {
+  .zodiac-grid { grid-template-columns: repeat(6, 1fr); max-width: 700px; gap: 14px; }
+  .zodiac-card { padding: 20px 12px; }
+  .zodiac-card .emoji { font-size: 42px; }
+  .cover-image .cover-title { font-size: 32px; }
+  .cover-image .cover-emoji { font-size: 64px; }
+}
+</style>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png">
+<style>
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div style="display:flex;align-items:center;gap:12px;width:100%;">
+    <a href="/" style="color:#f5e6d0;text-decoration:none;font-size:14px;white-space:nowrap;">← 老六茶事</a>
+    <span style="color:rgba(245,230,208,0.4);font-size:12px;">|</span>
+    <h1 id="pageTitle" style="font-size:18px;font-weight:600;flex:1;text-align:center;margin:0;">十二生肖运势</h1>
+    <div class="back-btn" id="globalBack" style="font-size:22px;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,0.1);margin-left:auto;">&#x25C0;</div>
+  </div>
+</div>
+
+<div id="zodiacGrid" class="zodiac-grid"></div>
+
+<div id="detailPage" class="detail-page">
+  <div class="cover-image" id="coverImage">
+    <div class="cover-content">
+      <span class="cover-emoji" id="coverEmoji">&#x1F42D;</span>
+      <div class="cover-title" id="coverTitle">生肖鼠今日运势</div>
+      <div class="cover-sub" id="coverSub">5月31日 · 整体运程全解析</div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <div class="tab-btn active" onclick="switchTab(0)">
+      <span class="tab-icon">&#x2600;&#xFE0F;</span>当日运势
+    </div>
+    <div class="tab-btn" onclick="switchTab(1)">
+      <span class="tab-icon">&#x1F004;</span>麻将运势
+    </div>
+    <div class="tab-btn" onclick="switchTab(2)">
+      <span class="tab-icon">&#x1F4CA;</span>整体运势
+    </div>
+  </div>
+
+  <div class="tab-content active" id="tab0">
+    <div class="fortune-card">
+      <h3>&#x1F4C5; 今日综合运势</h3>
+      <div class="stars">&#x2605;&#x2605;&#x2605;&#x2605;&#x2606;</div>
+      <p>今日整体运势呈小吉态势，人际关系顺畅。工作中与同事配合默契，有望推进搁置已久的项目。财运方面稳中有升，正财为主，不宜投机。感情上多些耐心，少些计较，关系会更融洽。</p>
+    </div>
+    <div class="fortune-card">
+      <h3>&#x1F4BC; 事业运势</h3>
+      <p>工作中贵人运显现，有机会得到上级认可。适合处理积压已久的任务，也适合与人沟通协调。</p>
+      <div><span class="tag">宜沟通</span><span class="tag">忌急躁</span></div>
+    </div>
+    <div class="fortune-card">
+      <h3>&#x1F4B0; 财运</h3>
+      <p>正财稳定，偏财不可贪。今日不易做重大投资决策，适合整理账目、规划开支。</p>
+    </div>
+    <div class="fortune-card">
+      <h3>&#x2764;&#xFE0F; 感情</h3>
+      <p>单身者有机会通过朋友介绍认识新的人，有伴者适合一起做饭或散步，增进感情。</p>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab1">
+    <div class="fortune-card">
+      <h3>今日牌势总评</h3>
+      <div class="stars">&#x2605;&#x2605;&#x2605;&#x2606;&#x2606;</div>
+      <p>今天整体牌势一般偏上，手气不算爆棚但也说不上差。适合稳扎稳打的打法，不宜冒险做大牌。</p>
+    </div>
+    <div class="fortune-card">
+      <h3>&#x1F455; 今日着装建议</h3>
+      <p><b>推荐：</b>绿色、棕色系 —— 木生火助运，利于判断力<br>
+      <b>避开：</b>黑色、深蓝色 —— 水过旺易生犹豫</p>
+    </div>
+    <div class="fortune-card">
+      <h3>&#x1F9D8; 状态调整</h3>
+      <p>上桌前喝杯温水，深呼吸三次。心态放平稳，输赢不要太在意，享受过程最重要。</p>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab2">
+    <div class="season-list">
+      <div class="season-item">
+        <span class="s-label">&#x1F4C5; 2026上半年</span>
+        <span class="s-desc">整体走势稳中有升，事业机会增多</span>
+        <span class="s-arrow">&#x203A;</span>
+      </div>
+      <div class="season-item">
+        <span class="s-label">&#x1F4C5; 2026下半年</span>
+        <span class="s-desc">下半年机遇与挑战并存，把握贵人</span>
+        <span class="s-arrow">&#x203A;</span>
+      </div>
+      <div class="season-item">
+        <span class="s-label">&#x1F4C5; 全年总览</span>
+        <span class="s-desc">太岁影响逐渐减弱，整体向好</span>
+        <span class="s-arrow">&#x203A;</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-to-grid" onclick="showGrid()">&#x2190; 返回生肖列表</div>
+</div>
+
+<script>
+
+var zodiacs = [
+  { emoji: "\uD83D\uDC2D", name: "鼠", period: "子" },
+  { emoji: "\uD83D\uDC2E", name: "牛", period: "丑" },
+  { emoji: "\uD83D\uDC2F", name: "虎", period: "寅" },
+  { emoji: "\uD83D\uDC30", name: "兔", period: "卯" },
+  { emoji: "\uD83E\uDD8B", name: "龙", period: "辰" },
+  { emoji: "\uD83D\uDC0D", name: "蛇", period: "巳" },
+  { emoji: "\uD83D\uDC34", name: "马", period: "午" },
+  { emoji: "\uD83D\uDC11", name: "羊", period: "未" },
+  { emoji: "\uD83D\uDC35", name: "猴", period: "申" },
+  { emoji: "\uD83D\uDC14", name: "鸡", period: "酉" },
+  { emoji: "\uD83D\uDC36", name: "狗", period: "戌" },
+  { emoji: "\uD83D\uDC37", name: "猪", period: "亥" }
+];
+
+var today = new Date();
+var dateStr = (today.getMonth()+1) + "月" + today.getDate() + "日";
+var weekdays = ["周日","周一","周二","周三","周四","周五","周六"];
+
+var grid = document.getElementById("zodiacGrid");
+for (var i = 0; i < zodiacs.length; i++) {
+  (function(idx) {
+    var z = zodiacs[idx];
+    var card = document.createElement("div");
+    card.className = "zodiac-card";
+    card.style.animationDelay = (0.03 * idx) + "s";
+    card.innerHTML = '<span class="emoji">' + z.emoji + '</span><span class="name">属' + z.name + '</span><span class="sub">' + z.period + ' · 今日运势</span>';
+    card.onclick = function() { showDetail(idx); };
+    grid.appendChild(card);
+  })(i);
+}
+
+var animalMap = { "鼠":"rat","牛":"ox","虎":"tiger","兔":"rabbit","龙":"dragon","蛇":"snake","马":"horse","羊":"goat","猴":"monkey","鸡":"rooster","狗":"dog","猪":"pig" };
+var sxNum = ["","sx-01","sx-02","sx-03","sx-04","sx-05","sx-06","sx-07","sx-08","sx-09","sx-10","sx-11","sx-12"];
+
+function showDetail(index) {
+  var z = zodiacs[index];
+  document.getElementById("coverImage").className = "cover-image cover-" + index;
+  document.getElementById("coverEmoji").textContent = z.emoji;
+  document.getElementById("coverTitle").textContent = "生肖" + z.name + "今日运势";
+  document.getElementById("coverSub").textContent = dateStr + " · " + weekdays[today.getDay()] + " · 整体运程全解析";
+  document.getElementById("pageTitle").textContent = "属" + z.name + "运势";
+  document.getElementById("zodiacGrid").style.display = "none";
+  document.getElementById("detailPage").classList.add("active");
+
+  // 设置三个tab的跳转链接
+  var animal = animalMap[z.name];
+  var day = today.getFullYear() + "-" + String(today.getMonth()+1).padStart(2,"0") + "-" + String(today.getDate()).padStart(2,"0");
+  document.getElementById("tab0").innerHTML = "<div style=\"text-align:center;padding:60px 20px;\"><a href=\"/articles/hl-" + animal + "-" + day.replace(/-/g,"") + "\" style=\"display:inline-block;padding:16px 40px;background:#8b1a1a;color:#fff;border-radius:10px;font-size:18px;text-decoration:none;\">查看今日运势</a><p style=\"margin-top:12px;color:#999;font-size:13px;\">将跳转到当日运势文章</p></div>";
+  document.getElementById("tab1").innerHTML = "<div style=\"text-align:center;padding:60px 20px;\"><a href=\"/articles/mj-" + animal + "-" + day.replace(/-/g,"") + "\" style=\"display:inline-block;padding:16px 40px;background:#2d5c2d;color:#fff;border-radius:10px;font-size:18px;text-decoration:none;\">查看今日麻将运势</a><p style=\"margin-top:12px;color:#999;font-size:13px;\">将跳转到麻将运势文章</p></div>";
+  document.getElementById("tab2").innerHTML = "<div style=\"text-align:center;padding:60px 20px;\"><a href=\"/articles/" + sxNum[index+1] + "\" style=\"display:inline-block;padding:16px 40px;background:#1a2e5c;color:#fff;border-radius:10px;font-size:18px;text-decoration:none;\">查看整体运势</a><p style=\"margin-top:12px;color:#999;font-size:13px;\">将跳转到整体运势文章</p></div>";
+
+  switchTab(0);
+  window.scrollTo(0, 0);
+}
+
+function showGrid() {
+  document.getElementById("zodiacGrid").style.display = "grid";
+  document.getElementById("detailPage").classList.remove("active");
+  document.getElementById("pageTitle").textContent = "十二生肖运势";
+  window.scrollTo(0, 0);
+};
+
+function switchTab(index) {
+  var btns = document.querySelectorAll(".tab-btn");
+  var contents = document.querySelectorAll(".tab-content");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle("active", i === index);
+    contents[i].classList.toggle("active", i === index);
+  }
+}
+
+
+
+document.getElementById("globalBack").onclick = function() {
+  if (document.getElementById("detailPage").classList.contains("active")) {
+    showGrid();
+  }
+};
+
+</script>
+</body>
+</html>
