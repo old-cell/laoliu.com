@@ -1,7 +1,11 @@
 {
   "rewrites": [
+    { "source": "/robots.txt", "destination": "/robots.txt" },
+    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
+    { "source": "/images/og-preview.jpg", "destination": "/images/og-preview.jpg" },
     { "source": "/tools/(.*)", "destination": "/tools/$1" },
     { "source": "/books/(.*)", "destination": "/books/$1" },
+    { "source": "/articles/(.*)", "destination": "/articles/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
