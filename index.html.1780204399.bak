@@ -1,0 +1,3507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>老六茶事 - 每日黄历 · 易学知识</title>
+<meta name="description" content="每日梅花易数黄历运势、民俗易学小知识。老六茶事陪你过日子。">
+<meta name="baidu-site-verification" content="codeva-ciSzWXG1Ir" />
+<link rel="icon" href="/images/favicon-six.png" type="image/png">
+<link rel="apple-touch-icon" href="/images/favicon-six-64.png">
+<link rel="shortcut icon" href="/images/favicon-six.png" type="image/png">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- vercel-deploy: 008 -->
+<!-- Baidu Statistics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?cdedee85a4218775aaf6e3d98ae86631";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- Baidu Auto Push - automatically submit pages to Baidu -->
+<script>
+(function(){
+  var bp = document.createElement('script');
+  var curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https') {
+    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  } else {
+    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<style>
+/* ===== Reset & Variables ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg-page: #efe4d0;
+  --bg-card: #ffffff;
+  --green-deep: #1a3c2a;
+  --green-mid: #2d5a3e;
+  --green-light: #e8f0e6;
+  --gold: #d4af37;
+  --gold-light: #f5e6b8;
+  --gold-pale: #faf3e0;
+  --text: #2c2c2c;
+  --text-light: #888;
+  --text-muted: #bbb;
+  --border: #e8e0d6;
+  --shadow: 0 2px 12px rgba(26,60,42,0.08);
+  --shadow-hover: 0 4px 20px rgba(26,60,42,0.15);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --sidebar-w: 280px;
+}
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Serif SC", serif;
+  background: var(--bg-page);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+
+/* ================================================================
+   MOBILE FIRST (< 768px)
+   ================================================================ */
+
+/* Top Bar */
+.topbar {
+  background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
+  padding: 24px 20px 18px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(26,60,42,0.2);
+}
+.topbar h1 {
+  font-size: 26px;
+  letter-spacing: 4px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold) 0%, #e8c840 50%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.mobile-logo {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 4px;
+  background: #fff;
+  padding: 2px;
+  object-fit: contain;
+}
+.topbar .sub {
+  font-size: 11px;
+  color: rgba(212,175,55,0.7);
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+/* Bottom Nav (mobile only) — v2: taller + shadow + active pill + slide-up */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #ffffff;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  display: flex;
+  gap: 0;
+  z-index: 200;
+  padding: 4px 6px;
+  padding-bottom: calc(4px + env(safe-area-inset-bottom, 0));
+  animation: navSlideUp 0.6s ease-out;
+  transition: transform 0.3s ease;
+}
+.bottom-nav.hidden {
+  transform: translateY(100%);
+}
+@keyframes navSlideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.nav-item {
+  flex: 1;
+  text-align: center;
+  padding: 10px 2px 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  border-radius: 10px;
+  margin: 0 2px;
+}
+.nav-item .ni-icon { font-size: 26px; display: block; margin-bottom: 2px; }
+.nav-item.active {
+  background: var(--green-deep);
+  color: var(--gold);
+  font-weight: 700;
+}
+.nav-item:active { opacity: 0.65; }
+
+/* Page System (mobile) */
+body { padding-bottom: 72px; }
+.page { display: none; padding: 16px 16px 0; max-width: 640px; margin: 0 auto; }
+.page.active { display: block; }
+.page-header {
+  padding: 10px 0 14px;
+  margin-bottom: 14px;
+}
+.page-header h2 { font-size: 20px; color: var(--green-deep); font-weight: 700; letter-spacing: 1px; }
+.page-header .sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+/* Section Title */
+.section-title {
+  font-size: 15px; color: var(--green-deep); font-weight: 600;
+  padding: 18px 0 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, #ddd, transparent);
+}
+
+/* Home Menu Grid (mobile 2×2) */
+.menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 4px 0 8px; }
+.menu-card {
+  background: var(--bg-card); border-radius: var(--radius);
+  padding: 22px 16px 18px; box-shadow: var(--shadow);
+  cursor: pointer; transition: all 0.2s; text-align: center;
+  border: 1px solid rgba(212,175,55,0.1); position: relative; overflow: hidden;
+}
+.menu-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+}
+.menu-card.green::before { background: linear-gradient(90deg, var(--green-deep), var(--gold)); }
+.menu-card.green { background: linear-gradient(135deg, #f0f7ec, #e8f0e6); }
+.menu-card.gold::before  { background: linear-gradient(90deg, var(--gold), #e8c840); }
+.menu-card.gold { background: linear-gradient(135deg, #fdf8ea, #faf3e0); }
+.menu-card.purple::before { background: linear-gradient(90deg, #6b4c8a, #9b6db0); }
+.menu-card.purple { background: linear-gradient(135deg, #f5eff8, #f0eaf5); }
+.menu-card.blue::before  { background: linear-gradient(90deg, #2c6b8a, #4a9bb5); }
+.menu-card.blue { background: linear-gradient(135deg, #eef5f8, #e6f0f5); }
+.menu-card:active { transform: scale(0.96); box-shadow: var(--shadow-hover); }
+.mc-icon-img {
+  width: 56px; height: 56px; margin: 0 auto 10px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+}
+.mc-icon-img.green { background: var(--green-light); }
+.mc-icon-img.gold  { background: var(--gold-pale); }
+.mc-icon-img.purple { background: #f0eaf5; }
+.mc-icon-img.blue  { background: #e6f0f5; }
+.mc-label { font-size: 15px; font-weight: 600; color: var(--green-deep); margin-bottom: 4px; }
+.mc-desc  { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+
+/* #mc-huangli E型布局：左竖脊+右三横臂，中间嵌每日详查，整体色调统一 */
+#mc-huangli { padding: 0; overflow: hidden; }
+.mc-e-wrap { display: flex; min-height: 100%; }
+.mc-e-spine {
+  width: 48px; flex-shrink: 0;
+  background: linear-gradient(180deg, #f0f7ec, #e8f0e6);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative;
+}
+.mc-e-spine::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--green-deep), var(--gold));
+  z-index: 1;
+}
+.mc-e-spine::after {
+  content: ''; position: absolute; top: 0; right: 0; width: 1px; height: 100%;
+  background: rgba(212,175,55,0.18);
+}
+.mc-e-spine-text {
+  font-size: 12px; color: var(--green-deep); font-weight: 700;
+  writing-mode: vertical-rl; text-orientation: upright;
+  letter-spacing: 2px; line-height: 1.5;
+}
+.mc-e-body { flex: 1; display: flex; flex-direction: column; position: relative; }
+.mc-e-top, .mc-e-bottom {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; gap: 6px; padding: 4px 8px;
+  position: relative;
+}
+.mc-e-top { min-height: 52px; }
+.mc-e-bottom { min-height: 30px; }
+/* 分隔线：顶中层之间、中底层之间 */
+.mc-e-top::after, .mc-e-gap::after {
+  content: ''; position: absolute; left: 8px; right: 8px; bottom: 0;
+  height: 1px; background: rgba(212,175,55,0.12);
+}
+.mc-e-top .mc-icon-img {
+  width: 30px; height: 30px; font-size: 15px; margin: 0; flex-shrink: 0;
+}
+.mc-e-top .mc-label { font-size: 12px; margin-bottom: 1px; }
+.mc-e-top .mc-desc { font-size: 10px; }
+.mc-e-gap {
+  min-height: 38px;
+  display: flex; align-items: center; cursor: pointer;
+  /* 略深底色区分嵌入卡片 */
+  background: linear-gradient(135deg, #eaf3e6, #dce8d6);
+  /* 左侧金色细条作为嵌入卡片的视觉锚点 */
+  box-shadow: inset 3px 0 0 var(--gold);
+  position: relative;
+}
+.mc-e-gap-text {
+  padding-left: 8px;
+  font-size: 12px; color: var(--green-deep); font-weight: 700;
+  display: flex; align-items: center; gap: 4px;
+  letter-spacing: 1px;
+}
+.mc-e-gap-text::before {
+  content: '📋'; font-size: 13px;
+}
+
+/* WeChat Follow (mobile) */
+.wechat-section { display: flex; flex-direction: column; gap: 10px; margin: 16px 0 6px; }
+.wechat-follow {
+  background: linear-gradient(135deg, var(--green-deep), #153322);
+  border-radius: var(--radius); padding: 16px;
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: var(--shadow); position: relative; overflow: hidden;
+}
+.wechat-follow.personal { background: linear-gradient(135deg, #2c3e50, #1a2a38); }
+.wechat-follow::after {
+  content: '🏮'; position: absolute; right: -8px; bottom: -8px;
+  font-size: 70px; opacity: 0.08;
+}
+.wechat-follow.personal::after { content: '💬'; }
+
+/* Global animation keyframes for recent articles & sidebar */
+@keyframes rsItemInSlow {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.wechat-qr {
+  width: 80px; height: 80px; border-radius: var(--radius-sm);
+  background: #fff; padding: 4px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.wechat-qr img { width: 100%; height: 100%; }
+.wechat-info { flex: 1; }
+.wechat-info h4 { color: var(--gold); font-size: 16px; margin-bottom: 4px; letter-spacing: 1px; }
+.wechat-info p { color: rgba(255,255,255,0.6); font-size: 12px; line-height: 1.6; }
+.wechat-info .wc-id {
+  display: inline-block; background: rgba(212,175,55,0.2);
+  color: var(--gold-light); font-size: 11px;
+  padding: 2px 10px; border-radius: 4px; margin-top: 4px;
+}
+
+/* Article List (mobile) */
+.article-list { padding: 4px 0; }
+.article-item {
+  background: var(--bg-card); border-radius: var(--radius-sm);
+  padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow);
+  cursor: pointer; transition: all 0.2s; border-left: 4px solid var(--gold);
+}
+.article-item:active { transform: scale(0.97); }
+.ai-label {
+  display: inline-block; font-size: 10px; color: #fff;
+  background: var(--green-deep); padding: 1px 10px; border-radius: 3px;
+  margin-bottom: 5px; letter-spacing: 0.5px;
+}
+.ai-date { font-size: 11px; color: #b8952e; margin-bottom: 3px; }
+.ai-title { font-size: 15px; color: var(--green-deep); line-height: 1.5; font-weight: 600; margin-bottom: 5px; }
+.ai-summary { font-size: 13px; color: var(--text-light); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.empty-list { text-align: center; color: #ddd; padding: 40px 0; font-size: 14px; }
+
+/* Tools Cards (mobile) */
+.tools-card-row { display: flex; flex-direction: column; gap: 12px; padding: 4px 0; }
+.tools-card {
+  background: var(--bg-card); border-radius: var(--radius); padding: 18px 20px;
+  box-shadow: var(--shadow); cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 16px;
+  border-left: 4px solid var(--gold);
+}
+.tools-card:active { transform: scale(0.97); box-shadow: var(--shadow-hover); }
+.tc-icon {
+  width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; background: var(--gold-pale);
+}
+.tc-info { flex: 1; }
+.tc-title { font-size: 16px; font-weight: 600; color: var(--green-deep); margin-bottom: 4px; }
+.tc-desc { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+
+/* ===== Service Page (易学咨询宣传页) ===== */
+/* Hero */
+.sv-hero {
+  text-align: center; padding: 36px 20px 32px;
+  background: linear-gradient(135deg, #1a3c2a 0%, #2d5a3e 40%, #4a2c5a 100%);
+  border-radius: var(--radius);
+  position: relative; overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 32px rgba(26,60,42,0.25);
+}
+.sv-hero::before {
+  content: '☯'; position: absolute; font-size: 140px;
+  opacity: 0.06; top: -30px; right: -20px;
+  transform: rotate(15deg);
+}
+.sv-hero::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(212,175,55,0.15) 0%, transparent 60%);
+}
+.sv-hero-icon { font-size: 52px; animation: svFloat 3s ease-in-out infinite; position: relative; z-index: 1; }
+@keyframes svFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.sv-hero h2 {
+  font-size: 24px; color: var(--gold); margin: 10px 0 6px;
+  letter-spacing: 3px; position: relative; z-index: 1;
+}
+.sv-hero .sv-sub {
+  font-size: 13px; color: rgba(212,175,55,0.7);
+  letter-spacing: 4px; position: relative; z-index: 1;
+}
+.sv-hero .sv-desc {
+  font-size: 14px; color: rgba(255,255,255,0.6);
+  margin-top: 12px; line-height: 1.8; position: relative; z-index: 1;
+  max-width: 400px; margin-left: auto; margin-right: auto;
+}
+
+/* Section Titles */
+.sv-section-title {
+  font-size: 17px; font-weight: 700; color: var(--green-deep);
+  text-align: center; margin: 24px 0 16px; letter-spacing: 2px;
+  position: relative;
+}
+.sv-section-title::after {
+  content: ''; display: block; width: 40px; height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--green-deep));
+  margin: 8px auto 0; border-radius: 2px;
+}
+
+/* Cards Grid */
+.sv-card-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 10px; }
+.sv-card {
+  background: linear-gradient(135deg, #fff, #faf3e0);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--gold);
+  transition: all 0.3s ease;
+  cursor: default;
+  position: relative; overflow: hidden;
+}
+.sv-card:active { transform: scale(0.98); box-shadow: var(--shadow-hover); }
+.sv-card .svc-icon { font-size: 28px; margin-bottom: 4px; }
+.sv-card .svc-q { font-size: 15px; font-weight: 600; color: var(--green-deep); margin-bottom: 4px; }
+.sv-card .svc-a {
+  font-size: 13px; color: var(--text-light); line-height: 1.6;
+  padding-left: 0; font-style: italic;
+}
+.sv-card .svc-a em { color: var(--gold); font-style: normal; font-weight: 600; }
+
+/* Steps */
+.sv-steps { display: flex; flex-direction: column; gap: 10px; margin: 8px 0 16px; }
+.sv-step {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--bg-card); border-radius: var(--radius-sm);
+  padding: 14px 16px; box-shadow: var(--shadow);
+}
+.sv-step-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+  color: var(--gold); display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px; flex-shrink: 0;
+}
+.sv-step-text { font-size: 14px; color: var(--text); line-height: 1.5; }
+.sv-step-text strong { color: var(--green-deep); }
+
+/* Date Selection Section */
+.sv-date-section {
+  background: linear-gradient(135deg, #f5eff8, #f0eaf5);
+  border-radius: var(--radius); padding: 20px;
+  margin: 10px 0 16px; text-align: center;
+  border: 1px solid rgba(107,76,138,0.15);
+}
+.sv-date-section h3 { font-size: 16px; color: #6b4c8a; margin-bottom: 6px; }
+.sv-date-section p { font-size: 13px; color: var(--text-light); line-height: 1.7; }
+.sv-date-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px; }
+.sv-date-tag {
+  background: #fff; border: 1px solid rgba(107,76,138,0.2);
+  border-radius: 6px; padding: 5px 12px; font-size: 12px;
+  color: #6b4c8a;
+}
+
+/* CTA */
+.sv-cta {
+  text-align: center; padding: 28px 20px;
+  background: linear-gradient(135deg, var(--green-deep), #153322);
+  border-radius: var(--radius); margin: 20px 0;
+  position: relative; overflow: hidden;
+}
+.sv-cta::before {
+  content: '🔮'; position: absolute; left: -10px; bottom: -10px;
+  font-size: 80px; opacity: 0.06;
+}
+.sv-cta h3 { font-size: 18px; color: var(--gold); margin-bottom: 6px; letter-spacing: 2px; }
+.sv-cta p { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 14px; line-height: 1.6; }
+.sv-cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gold); color: var(--green-deep);
+  padding: 12px 28px; border-radius: 25px;
+  font-size: 15px; font-weight: 700; letter-spacing: 1px;
+  box-shadow: 0 4px 16px rgba(212,175,55,0.3);
+  transition: all 0.3s; cursor: pointer; border: none;
+}
+.sv-cta-btn:active { transform: scale(0.95); box-shadow: 0 2px 8px rgba(212,175,55,0.2); }
+.sv-cta-btn .sv-cta-icon { font-size: 20px; animation: svPulse 2s ease-in-out infinite; }
+@keyframes svPulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+.sv-cta-wxid {
+  display: inline-block; margin-top: 10px;
+  background: rgba(212,175,55,0.15); color: var(--gold-light);
+  padding: 4px 16px; border-radius: 4px; font-size: 12px;
+  letter-spacing: 1px;
+}
+
+/* Disclaimer */
+.sv-disclaimer {
+  font-size: 11px; color: var(--text-muted); text-align: center;
+  padding: 14px 10px; line-height: 1.7; border-top: 1px solid var(--border);
+  margin-top: 12px;
+}
+
+/* Homepage CTA Banner */
+.home-sv-banner {
+  background: linear-gradient(135deg, #1a3c2a, #2d5a3e, #4a2c5a);
+  border-radius: var(--radius); padding: 20px 18px;
+  margin: 12px 0;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(26,60,42,0.2);
+  position: relative; overflow: hidden;
+}
+.home-sv-banner:active { transform: scale(0.97); }
+.home-sv-banner::before {
+  content: '☯'; position: absolute; right: -10px; top: -15px;
+  font-size: 80px; opacity: 0.05;
+}
+.home-sv-icon {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(212,175,55,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; flex-shrink: 0;
+  border: 2px solid rgba(212,175,55,0.3);
+}
+.home-sv-info { flex: 1; }
+.home-sv-info h4 { font-size: 16px; color: var(--gold); letter-spacing: 1px; margin-bottom: 3px; }
+.home-sv-info p { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+.home-sv-arrow { font-size: 20px; color: rgba(212,175,55,0.4); }
+
+/* Desktop Service page adjustments */
+@media (min-width: 768px) {
+  .sv-hero { padding: 48px 40px 40px; }
+  .sv-hero h2 { font-size: 30px; }
+  .sv-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .sv-card { padding: 22px 24px; }
+  .sv-steps { flex-direction: row; gap: 14px; }
+  .sv-step { flex: 1; flex-direction: column; text-align: center; padding: 20px 16px; }
+  .sv-cta { padding: 36px 20px; }
+}
+
+/* Back Button (mobile) */
+.back-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--green-deep, #1a3c2a); color: #d4af37; font-size: 13px; margin-bottom: 16px; cursor: pointer; padding: 8px 16px; border-radius: 8px; width: fit-content; }
+
+/* Article Detail (mobile) */
+.detail-wrap { background: transparent; border-radius: var(--radius); padding: 22px 20px; line-height: 1.9; font-size: 15px; margin-bottom: 20px; overflow-x: hidden; word-break: break-word; }
+.detail-wrap .article-inner { overflow-x: hidden; }
+.detail-wrap h1 { font-size: 20px; color: var(--green-deep); margin-bottom: 6px; line-height: 1.4; }
+.detail-meta { font-size: 12px; color: #b8952e; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid #eee; }
+.detail-wrap .dl-tag { display: inline-block; background: var(--green-deep); color: var(--gold); font-size: 10px; padding: 1px 10px; border-radius: 3px; margin-right: 6px; }
+.detail-wrap p { margin-bottom: 14px; text-indent: 2em; color: #444; }
+.detail-wrap .dl-section { font-weight: 700; color: var(--green-deep); font-size: 16px; margin: 20px 0 10px; text-indent: 0; }
+.detail-wrap .placeholder-text { color: #bbb; text-align: center; padding: 30px 0; font-style: italic; }
+/* Related articles */
+.related-wrap { margin-top: 28px; padding-top: 20px; border-top: 2px solid var(--gold); }
+.related-wrap .rw-title { font-size: 15px; font-weight: 700; color: var(--green-deep); margin-bottom: 14px; }
+.related-wrap .rw-item { display: block; padding: 12px 14px; border-radius: var(--radius-sm); background: var(--green-light); margin-bottom: 8px; cursor: pointer; transition: all 0.15s; text-decoration: none; color: var(--text); }
+.related-wrap .rw-item:hover { background: var(--gold-pale); transform: translateX(3px); }
+.related-wrap .rw-item .rw-title-text { font-size: 14px; font-weight: 600; display: block; }
+.related-wrap .rw-item .rw-meta { font-size: 12px; color: var(--text-muted); margin-top: 4px; display: block; }
+.article-inner section { display: block; }
+.article-inner img { max-width: 100%; height: auto; border-radius: 8px; }
+.detail-wrap .article-nav {
+  display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+  margin: 24px 0 8px; padding-top: 16px; border-top: 1px solid #eee;
+}
+.detail-wrap .article-nav a, .detail-wrap .article-nav span {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 36px; height: 36px; padding: 0 10px;
+  border-radius: 8px; font-size: 14px; text-decoration: none;
+  color: var(--green-deep); background: var(--green-light);
+  transition: all 0.15s;
+}
+.detail-wrap .article-nav a:hover { background: var(--gold-pale); }
+.detail-wrap .article-nav span.current {
+  background: var(--green-deep); color: var(--gold); font-weight: 700;
+}
+
+/* Ad Placeholder (mobile) */
+.ad-placeholder { background: rgba(212,175,55,0.05); border-radius: var(--radius-sm); text-align: center; padding: 14px; color: var(--text-muted); font-size: 11px; margin: 16px 0; border: 1px dashed rgba(212,175,55,0.3); }
+
+/* Quote Section (mobile) */
+.quote-section {
+  text-align: center;
+  padding: 24px 16px 8px;
+  color: var(--text-light);
+}
+.quote-section .quote-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--green-deep);
+  letter-spacing: 1px;
+}
+.quote-section .quote-source {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* Recent Articles (homepage) */
+.recent-articles {
+  padding: 16px 16px 24px;
+}
+.recent-articles .ra-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--green-deep);
+  margin-bottom: 12px;
+  text-align: center;
+}
+.ra-list {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.ra-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 10px; cursor: pointer;
+  background: #fff; border: 1px solid #e8e0d6;
+  border-left: 3px solid var(--gold);
+  font-size: 13px; color: var(--text); font-weight: 500;
+  transition: all 0.15s ease;
+  animation: rsItemInSlow 0.5s ease-out both;
+  text-decoration: none;
+}
+.ra-item .ra-icon { font-size: 18px; flex-shrink: 0; }
+.ra-item .ra-text { flex: 1; min-width: 0; }
+.ra-item .ra-text .ra-title-text {
+  display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 13px; font-weight: 500; color: var(--text);
+}
+.ra-item .ra-text .ra-meta {
+  font-size: 11px; color: var(--text-light); margin-top: 2px;
+}
+.ra-item .ra-badge {
+  font-size: 10px; padding: 2px 8px; border-radius: 8px;
+  background: var(--green-light); color: var(--green-deep);
+  flex-shrink: 0;
+}
+.ra-item:hover { background: var(--green-light); transform: translateX(3px); border-left-color: var(--green-deep); }
+.ra-item:active { transform: scale(0.97); }
+.ra-item:nth-child(1) { animation-delay: 0s; }
+.ra-item:nth-child(2) { animation-delay: 0.05s; }
+.ra-item:nth-child(3) { animation-delay: 0.10s; }
+.ra-item:nth-child(4) { animation-delay: 0.15s; }
+.ra-item:nth-child(5) { animation-delay: 0.20s; }
+.ra-item:nth-child(6) { animation-delay: 0.25s; }
+.ra-item:nth-child(7) { animation-delay: 0.30s; }
+.ra-item:nth-child(8) { animation-delay: 0.35s; }
+.ra-item:nth-child(9) { animation-delay: 0.40s; }
+.ra-item:nth-child(10) { animation-delay: 0.45s; }
+
+/* Back to Top (mobile) */
+.back-top { position: fixed; bottom: 76px; right: 16px; width: 40px; height: 40px; background: var(--green-deep); color: var(--gold); border: none; border-radius: 50%; font-size: 18px; cursor: pointer; opacity: 0; transition: opacity 0.3s; box-shadow: var(--shadow); display: flex; align-items: center; justify-content: center; z-index: 50; }
+/* Sidebar search */
+.sidebar-search { display: flex; align-items: center; gap: 10px; padding: 12px 24px; cursor: pointer; color: rgba(255,255,255,0.5); font-size: 14px; border-top: 1px solid rgba(212,175,55,0.1); margin-top: auto; transition: all 0.15s; }
+.sidebar-search:hover { color: var(--gold); background: rgba(212,175,55,0.1); }
+.sidebar-search .ss-icon { font-size: 18px; }
+/* Topbar search */
+.topbar-search { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 22px; cursor: pointer; padding: 6px; }
+/* Search page */
+.search-input-wrap { position: relative; margin-bottom: 20px; }
+.search-input { width: 100%; padding: 14px 40px 14px 16px; border: 2px solid var(--gold); border-radius: var(--radius-sm); font-size: 16px; outline: none; background: #fff; box-sizing: border-box; }
+.search-input:focus { border-color: var(--green-deep); box-shadow: 0 0 0 3px rgba(26,60,42,0.1); }
+.search-clear { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text-muted); display: none; }
+.search-clear.show { display: block; }
+.search-results .search-hint { text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 14px; }
+.search-results .search-none { text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 14px; }
+.search-results .sr-item { display: block; padding: 14px 16px; border-radius: var(--radius-sm); background: var(--bg-card); margin-bottom: 8px; cursor: pointer; transition: all 0.15s; text-decoration: none; color: var(--text); border-left: 4px solid var(--gold); }
+.search-results .sr-item:hover { background: var(--gold-pale); transform: translateX(3px); }
+.search-results .sr-item .sr-title { font-size: 15px; font-weight: 600; display: block; }
+.search-results .sr-item .sr-meta { font-size: 12px; color: var(--text-muted); margin-top: 4px; display: block; }
+.search-results .sr-item .sr-highlight { background: #fff3cd; padding: 0 2px; border-radius: 2px; }
+.back-top.show { opacity: 0.85; }
+
+/* Footer (mobile) */
+.footer { text-align: center; padding: 24px 16px 20px; color: #888; font-size: 11px; }
+
+/* Category Header Icons (mobile) */
+.cat-header-icon { display: inline-flex; width: 44px; height: 44px; border-radius: 12px; align-items: center; justify-content: center; font-size: 22px; margin-right: 10px; vertical-align: middle; }
+.cat-header-icon.green { background: var(--green-light); }
+.cat-header-icon.gold  { background: var(--gold-pale); }
+.cat-header-icon.purple { background: #f0eaf5; }
+.cat-header-icon.blue  { background: #e6f0f5; }
+
+/* Sidebar & Right-sidebar (mobile: hidden) */
+.sidebar { display: none; }
+.right-sidebar { display: none; }
+
+/* ================================================================
+   DESKTOP (≥ 768px)
+   ================================================================ */
+@media (min-width: 768px) {
+  body {
+    display: flex;
+    min-height: 100vh;
+    padding-bottom: 0 !important;
+    background: var(--bg-page);
+  }
+  .main-content {
+    background: #faf6ef;
+  }
+
+  /* ---- SIDEBAR ---- */
+  .sidebar {
+    display: flex; /* override mobile hidden */
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: linear-gradient(180deg, var(--green-deep) 0%, #0f2b1e 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .sidebar-brand {
+    padding: 24px 24px 16px;
+    text-align: center;
+    border-bottom: 1px solid rgba(212,175,55,0.15);
+  }
+  .sidebar-logo {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: #fff;
+    padding: 4px;
+    margin-bottom: 8px;
+    object-fit: contain;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .sidebar-brand .brand-sub {
+    font-size: 11px; color: rgba(212,175,55,0.6);
+    letter-spacing: 2px; margin-top: 3px;
+  }
+  .sidebar-brand .brand-divider {
+    width: 40px; height: 2px; background: var(--gold);
+    margin: 12px auto 0; border-radius: 2px;
+  }
+
+  /* Sidebar Navigation */
+  .sidebar-nav { padding: 12px 16px; flex: 1; overflow-y: auto; }
+  .sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    margin-bottom: 4px;
+    user-select: none;
+  }
+  .sidebar-nav-item:hover { background: rgba(212,175,55,0.15); color: #fff; }
+  .sidebar-nav-item.active {
+    background: rgba(212,175,55,0.2);
+    color: #f5e6b8;
+    font-weight: 600;
+  }
+  .sidebar-nav-item .sni-icon { font-size: 20px; width: 28px; text-align: center; }
+
+  /* ---- RIGHT SIDEBAR (Directory) ---- */
+  .right-sidebar {
+    display: none;
+    width: 240px;
+    min-width: 240px;
+    background: #ffffff;
+    border-left: 2px solid var(--gold);
+    box-shadow: -2px 0 12px rgba(26,60,42,0.06);
+    padding: 24px 16px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .right-sidebar.show { display: block; }
+  .right-sidebar .rs-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green-deep);
+    padding: 0 8px 12px;
+    border-bottom: 2px solid var(--gold);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+  .right-sidebar .rs-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 2px;
+    border-left: 3px solid transparent;
+  }
+  .right-sidebar .rs-item:hover {
+    background: var(--gold-pale);
+    color: var(--green-deep);
+  }
+  .right-sidebar .rs-item.active {
+    background: var(--green-light);
+    color: var(--green-deep);
+    font-weight: 600;
+    border-left-color: var(--green-deep);
+  }
+  .right-sidebar .rs-item .rs-num {
+    font-size: 10px;
+    color: var(--text-muted);
+    min-width: 20px;
+    text-align: right;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .right-sidebar .rs-item.active .rs-num {
+    color: var(--green-deep);
+    font-weight: 700;
+  }
+  .right-sidebar .rs-empty {
+    padding: 20px 8px;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+  .right-sidebar .rs-arrow { color: var(--text-muted); font-size: 11px; }
+
+  /* ---- RIGHT SIDEBAR: 黄历生肖导航 (desktop) ---- */
+  .rs-hl-hint {
+    font-size: 12px; color: var(--text-muted); text-align: center;
+    padding: 20px 0; line-height: 1.6;
+  }
+  .sidebar-wechat {
+    padding: 16px 20px 20px;
+    border-top: 1px solid rgba(212,175,55,0.15);
+  }
+  .sidebar-wechat .sw-title {
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    letter-spacing: 1px; margin-bottom: 10px;
+  }
+  .sidebar-wechat .sw-row {
+    display: flex; gap: 12px; margin-bottom: 10px;
+  }
+  .sidebar-wechat .sw-row:last-child { margin-bottom: 0; }
+  .sidebar-wechat .sw-qr {
+    width: 64px; height: 64px; border-radius: 8px;
+    background: #fff; padding: 3px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sidebar-wechat .sw-qr img { width: 100%; height: 100%; }
+  .sidebar-wechat .sw-info h5 {
+    font-size: 13px; color: var(--gold); margin-bottom: 2px;
+  }
+  .sidebar-wechat .sw-info p { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.4; }
+  .sidebar-wechat .sw-info .sw-tag {
+    display: inline-block; font-size: 10px;
+    background: rgba(212,175,55,0.15); color: var(--gold-light);
+    padding: 1px 8px; border-radius: 3px; margin-top: 2px;
+  }
+
+  /* Sidebar Footer */
+  .sidebar-foot {
+    padding: 12px 20px 20px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.25);
+    text-align: center;
+    border-top: 1px solid rgba(212,175,55,0.1);
+  }
+
+  /* ---- RIGHT SIDEBAR: 黄历生肖导航 (desktop) ---- */
+  @keyframes rsItemIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes rsItemInSlow {
+    from { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .rs-hl-date {
+    font-size: 11px; color: var(--gold); text-align: center;
+    margin-bottom: 8px; font-weight: 600;
+  }
+  .rs-hl-type-btn.back {
+    justify-content: center;
+    background: rgba(200,200,200,0.08);
+    border: 1px dashed rgba(200,200,200,0.3);
+    color: var(--text-light);
+    font-weight: 500;
+    font-size: 13px;
+    margin-top: 4px;
+    animation: rsItemInSlow 0.5s ease-out both;
+    animation-delay: 0.3s;
+  }
+  .rs-hl-date {
+    font-size: 11px; color: var(--gold); text-align: center;
+    margin-bottom: 8px; font-weight: 600;
+  }
+  .rs-hl-zodiac-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 14px; border-radius: 10px; cursor: pointer;
+    transition: all 0.15s; background: transparent;
+    font-size: 13px; color: #e8e0d6; font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-left: 3px solid var(--gold);
+    animation: rsItemInSlow 0.5s ease-out both;
+  }
+  .rs-hl-zodiac-btn:nth-child(1) { animation-delay: 0s; }
+  .rs-hl-zodiac-btn:nth-child(2) { animation-delay: 0.06s; }
+  .rs-hl-zodiac-btn:nth-child(3) { animation-delay: 0.12s; }
+  .rs-hl-zodiac-btn:nth-child(4) { animation-delay: 0.18s; }
+  .rs-hl-zodiac-btn:nth-child(5) { animation-delay: 0.24s; }
+  .rs-hl-zodiac-btn:nth-child(6) { animation-delay: 0.30s; }
+  .rs-hl-zodiac-btn:nth-child(7) { animation-delay: 0.36s; }
+  .rs-hl-zodiac-btn:nth-child(8) { animation-delay: 0.42s; }
+  .rs-hl-zodiac-btn:nth-child(9) { animation-delay: 0.48s; }
+  .rs-hl-zodiac-btn:nth-child(10) { animation-delay: 0.54s; }
+  .rs-hl-zodiac-btn:nth-child(11) { animation-delay: 0.60s; }
+  .rs-hl-zodiac-btn:nth-child(12) { animation-delay: 0.66s; }
+  .rs-hl-zodiac-btn:hover { background: rgba(255,255,255,0.15); transform: translateX(3px); border-left-color: #6bc46b; }
+  .rs-hl-zodiac-btn:active { transform: scale(0.97); }
+  .rs-hl-zodiac-btn .rs-zi { font-size: 22px; }
+  .rs-hl-zodiac-btn .rs-zn { font-size: 13px; color: var(--text-light); }
+  .rs-hl-type-grid { display: flex; flex-direction: column; gap: 8px; padding: 4px 0; }
+  .rs-hl-type-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; border-radius: 10px; cursor: pointer;
+    transition: all 0.15s; font-size: 14px; font-weight: 600;
+    animation: rsItemInSlow 0.5s ease-out both;
+  }
+  .rs-hl-type-btn:nth-child(1) { animation-delay: 0s; }
+  .rs-hl-type-btn:nth-child(2) { animation-delay: 0.2s; }
+  .rs-hl-type-btn.huangli { background: linear-gradient(135deg,#f0f7ec,#e8f0e6); border: 1px solid #c8dcc4; color: var(--green-deep); }
+  .rs-hl-type-btn.majiang { background: linear-gradient(135deg,#fdf8ea,#faf3e0); border: 1px solid #e8dcc0; color: #8B6914; }
+  .rs-hl-type-btn:hover { transform: scale(1.02); }
+  .rs-hl-type-btn:active { transform: scale(0.97); }
+  .rs-hl-type-btn .rs-ti { font-size: 22px; }
+
+  /* ---- MAIN CONTENT ---- */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    padding: 32px 40px 40px;
+    max-width: 100%;
+    overflow-y: auto;
+  }
+  .main-content .page {
+    display: none;
+    max-width: 960px;
+    width: 100%;
+    padding: 0;
+    margin: 0 auto;
+  }
+  #app { width: 100%; }
+  .main-content .page.active {
+    display: block;
+    animation: pageFadeIn 0.35s ease-out;
+  }
+  @keyframes pageFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .main-content .page-header {
+    padding: 8px 0 14px;
+  }
+
+  /* Hide mobile-only elements */
+  .topbar { display: none; }
+  .bottom-nav { display: none !important; }
+
+  /* Desktop: huangli page - dark green theme */
+  #page-huangli.active {
+    max-width: none !important;
+    width: 100%;
+    padding: 24px 32px 0;
+    background: linear-gradient(135deg, #1a3c2a 0%, #0f2b1e 100%);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  #page-huangli.active .hl-cal {
+    width: 100%;
+  }
+  #page-huangli.active .hl-cal-header .hl-month { font-size: 20px; color: #e8dcc0; }
+  #page-huangli.active .hl-cal-header .hl-nav-btn { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #e8dcc0; }
+  #page-huangli.active .hl-cal-header .hl-nav-btn:hover { background: rgba(255,255,255,0.2); }
+  #page-huangli.active .hl-weekdays span { color: rgba(232,220,192,0.6); }
+  #page-huangli.active .hl-weekdays .wk-sun { color: #e8a080; }
+  #page-huangli.active .hl-days {
+    width: 100%;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+  #page-huangli.active .hl-day {
+    aspect-ratio: auto;
+    height: 95px;
+    font-size: 16px;
+    border-radius: 10px;
+    flex-direction: column;
+    gap: 3px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #e8e0d6;
+    font-weight: 600;
+  }
+  #page-huangli.active .hl-day:hover { background: rgba(255,255,255,0.15); transform: scale(1.04); }
+  #page-huangli.active .hl-day .hl-day-lunar {
+    font-size: 11px;
+    color: #b8a88a;
+    font-weight: 400;
+  }
+  #page-huangli.active .hl-day .hl-day-yiji {
+    font-size: 10px;
+    color: #b8a88a;
+    font-weight: 400;
+  }
+  #page-huangli.active .hl-day .hl-day-yiji em:first-child { color: #6bc46b; }
+  #page-huangli.active .hl-day .hl-day-yiji em:last-child { color: #e8a080; }
+  #page-huangli.active .hl-day.today,
+  #page-huangli.active .hl-day.selected {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  #page-huangli.active .hl-day.today { background: #2d5a3e; border-color: #4a8a5e; color: #fff; }
+  #page-huangli.active .hl-day.selected { background: rgba(212,175,55,0.25); border-color: var(--gold); border-width: 2px; color: #fff; }
+  #page-huangli.active .hl-day.today .hl-day-lunar,
+  #page-huangli.active .hl-day.selected .hl-day-lunar,
+  #page-huangli.active .hl-day.today .hl-day-yiji,
+  #page-huangli.active .hl-day.selected .hl-day-yiji {
+    color: rgba(255,255,255,0.7);
+  }
+  #page-huangli.active .hl-day.today .hl-day-yiji em,
+  #page-huangli.active .hl-day.selected .hl-day-yiji em { color: inherit; }
+  #page-huangli.active .hl-cal-header { width: 100%; margin-bottom: 14px; }
+  #page-huangli.active .hl-weekdays { width: 100%; }
+  #page-huangli.active .hl-breadcrumb { display: none; }
+
+  /* 右侧栏字体加粗 */
+  .rs-hl-zodiac-btn { font-weight: 600; }
+  .rs-hl-zodiac-btn .rs-zn { font-weight: 600; color: var(--text); }
+  .rs-hl-zodiac-btn.zs-full { border-left-color: #27ae60 !important; }
+  .rs-hl-zodiac-btn.zs-half { border-left-color: #f39c12 !important; }
+  .rs-hl-zodiac-btn.zs-empty { opacity: 0.5; }
+  .rs-status { font-size: 11px; margin-left: auto; }
+  .rs-hl-type-btn.huangli { background: linear-gradient(135deg,#e8f0e6,#d0e8cc); }
+  .rs-hl-type-btn.majiang { background: linear-gradient(135deg,#fdf8ea,#f5e8c8); }
+  .rs-hl-type-btn.has-article { position: relative; }
+  .rs-check { font-size: 14px; }
+
+  /* 黄历页时右侧栏配深绿背景 */
+  body:has(#page-huangli.active) .right-sidebar {
+    background: linear-gradient(180deg, #1a3c2a 0%, #0f2b1e 100%);
+    border-left-color: var(--gold);
+  }
+  body:has(#page-huangli.active) .main-content {
+    background: linear-gradient(135deg, #1a3c2a 0%, #0f2b1e 100%);
+  }
+  body:has(#page-huangli.active) .right-sidebar .rs-title { color: #e8dcc0; border-bottom-color: var(--gold); }
+  body:has(#page-huangli.active) .right-sidebar .rs-hl-hint { color: rgba(232,220,192,0.6); }
+  body:has(#page-huangli.active) .right-sidebar .rs-hl-date { color: var(--gold-light); }
+  body:has(#page-huangli.active) .right-sidebar .rs-hl-type-btn.back {
+    background: rgba(255,255,255,0.06);
+    border: 1px dashed rgba(255,255,255,0.15);
+    color: rgba(232,220,192,0.5);
+  }
+  body:has(#page-huangli.active) .right-sidebar .rs-hl-type-btn.back:hover {
+    background: rgba(255,255,255,0.12);
+    color: #e8dcc0;
+  }
+
+  /* 深绿主题：易学小知识 / 十二生肖 / 梅花易数教程 / 每日黄历 / 麻将运势 — 仅侧栏 */
+  #rightSidebar[data-sidebar-cat="zhishi"],
+  #rightSidebar[data-sidebar-cat="shengxiao"],
+  #rightSidebar[data-sidebar-cat="jiaocheng"],
+  #rightSidebar[data-sidebar-cat="huangli"],
+  #rightSidebar[data-sidebar-cat="majiang"] {
+    background: linear-gradient(180deg, #1a3c2a 0%, #0f2b1e 100%);
+    border-left-color: var(--gold);
+  }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-title,
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-title,
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-title,
+  #rightSidebar[data-sidebar-cat="huangli"] .rs-title,
+  #rightSidebar[data-sidebar-cat="majiang"] .rs-title {
+    color: #e8dcc0;
+    border-bottom-color: var(--gold);
+  }
+  #rightSidebar[data-sidebar-cat="huangli"] .rs-hl-zodiac-btn,
+  #rightSidebar[data-sidebar-cat="majiang"] .rs-hl-zodiac-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-left: 3px solid var(--gold);
+    color: #e8e0d6;
+  }
+  #rightSidebar[data-sidebar-cat="huangli"] .rs-hl-zodiac-btn:hover,
+  #rightSidebar[data-sidebar-cat="majiang"] .rs-hl-zodiac-btn:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateX(3px);
+    border-left-color: #6bc46b;
+  }
+  #rightSidebar[data-sidebar-cat="huangli"] .rs-hl-zodiac-btn .rs-zn,
+  #rightSidebar[data-sidebar-cat="majiang"] .rs-hl-zodiac-btn .rs-zn {
+    color: #c8b88a;
+  }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item,
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item,
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-left: 3px solid var(--gold);
+    color: #e8e0d6;
+    margin-bottom: 4px;
+    padding: 10px 10px;
+    border-radius: 8px;
+    animation: rsItemInSlow 0.5s ease-out both;
+  }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(1),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(1),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(1) { animation-delay: 0s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(2),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(2),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(2) { animation-delay: 0.08s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(3),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(3),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(3) { animation-delay: 0.16s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(4),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(4),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(4) { animation-delay: 0.24s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(5),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(5),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(5) { animation-delay: 0.32s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(6),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(6),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(6) { animation-delay: 0.40s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(7),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(7),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(7) { animation-delay: 0.48s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(8),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(8),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(8) { animation-delay: 0.56s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(9),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(9),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(9) { animation-delay: 0.64s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(10),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(10),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(10) { animation-delay: 0.72s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(11),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(11),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(11) { animation-delay: 0.80s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(12),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(12),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(12) { animation-delay: 0.88s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(13),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(13),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(13) { animation-delay: 0.96s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(14),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(14),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(14) { animation-delay: 1.04s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:nth-child(15),
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:nth-child(15),
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:nth-child(15) { animation-delay: 1.12s; }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item:hover,
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item:hover,
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateX(3px);
+    border-left-color: #6bc46b;
+  }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item.active,
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item.active,
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item.active {
+    background: rgba(212,175,55,0.2);
+    border-left-color: var(--gold);
+    color: var(--gold-light);
+  }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item .rs-num,
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-item .rs-num,
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-item .rs-num {
+    color: rgba(232,220,192,0.4);
+  }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-item.active .rs-num {
+    color: var(--gold-light);
+  }
+  #rightSidebar[data-sidebar-cat="zhishi"] .rs-empty,
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-empty,
+  #rightSidebar[data-sidebar-cat="jiaocheng"] .rs-empty {
+    color: rgba(232,220,192,0.4);
+  }
+  body:has(#page-huangli.active) .right-sidebar .rs-hl-zodiac-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-left: 3px solid var(--gold); color: #e8e0d6; }
+  body:has(#page-huangli.active) .right-sidebar .rs-hl-zodiac-btn:hover { background: rgba(255,255,255,0.15); transform: translateX(3px); border-left-color: #6bc46b; }
+  body:has(#page-huangli.active) .right-sidebar .rs-hl-zodiac-btn .rs-zn { color: #c8b88a; }
+  body:has(#page-huangli.active) .right-sidebar .rs-hl-type-btn.huangli { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #e8dcc0; }
+  body:has(#page-huangli.active) .right-sidebar .rs-hl-type-btn.majiang { background: rgba(42,72,42,0.8); border-color: #8B6914; color: #d4af37; }
+  /* 十二生肖运势：侧栏12生肖按钮 */
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-hl-zodiac-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-left: 3px solid var(--gold); color: #e8e0d6; cursor: pointer; font-weight: 600; }
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-hl-zodiac-btn:hover { background: rgba(255,255,255,0.15); transform: translateX(3px); border-left-color: #6bc46b; }
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-hl-zodiac-btn.active { background: rgba(107,196,107,0.2); border-left-color: #6bc46b; }
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-hl-zodiac-btn .rs-zn { color: #c8b88a; }
+  #rightSidebar[data-sidebar-cat="shengxiao"] .rs-hl-zodiac-btn .rs-status { font-size: 11px; margin-left: auto; color: rgba(232,220,192,0.5); }
+
+  body { padding-bottom: 0; }
+
+  /* Desktop page header */
+  .main-content .page-header {
+    padding: 0 0 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .main-content .page-header h2 { font-size: 24px; }
+  .main-content .page-header .sub { font-size: 13px; }
+
+  /* Desktop menu grid - 2×2 or 4 in a row */
+  .main-content .menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 18px;
+  }
+  .main-content .menu-card {
+    padding: 30px 22px 24px;
+    background: var(--bg-card);
+  }
+  .main-content .menu-card.green { background: linear-gradient(135deg, #dcefd4, #c8e3be); }
+  .main-content .menu-card.gold  { background: linear-gradient(135deg, #fcf0cc, #f5e3b0); }
+  .main-content .menu-card.purple { background: linear-gradient(135deg, #e8daf0, #dccce8); }
+  .main-content .menu-card.blue  { background: linear-gradient(135deg, #d4e8f0, #c8dce8); }
+  @keyframes gradientFlow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Desktop card hover — lift + shadow + top bar glow */
+  .main-content .menu-card {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  }
+  .main-content .menu-card::before {
+    transition: opacity 0.3s ease;
+    background-size: 200% 100%;
+  }
+  .main-content .menu-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(26,60,42,0.18);
+  }
+  .main-content .menu-card:hover::before {
+    opacity: 0.9;
+    animation: gradientFlow 2s ease infinite;
+  }
+  .main-content .menu-card:active { transform: scale(0.96); }
+
+  /* Desktop article list hover — left gold bar + bg */
+  .main-content .article-item {
+    transition: all 0.25s ease;
+    border-left-width: 4px;
+    border-left-color: var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .main-content .article-item::after {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 0;
+    background: linear-gradient(90deg, rgba(212,175,55,0.08), transparent);
+    transition: width 0.3s ease;
+  }
+  .main-content .article-item:hover {
+    transform: translateX(3px);
+    border-left-color: var(--green-deep);
+    background: #fdfcf9;
+  }
+  .main-content .article-item:hover::after {
+    width: 100%;
+  }
+
+  /* Desktop sidebar nav — smooth active indicator */
+  .sidebar-nav-item {
+    position: relative;
+    transition: all 0.2s ease;
+  }
+  .sidebar-nav-item::before {
+    content: '';
+    position: absolute; left: 0; top: 50%;
+    width: 3px; height: 0;
+    background: var(--gold);
+    border-radius: 0 3px 3px 0;
+    transform: translateY(-50%);
+    transition: height 0.25s ease;
+  }
+  .sidebar-nav-item.active::before {
+    height: 60%;
+  }
+  .sidebar-nav-item:hover { background: rgba(212,175,55,0.15); color: #fff; }
+  .sidebar-nav-item.active {
+    background: rgba(212,175,55,0.12);
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+
+  /* Desktop article items — sequential entrance */
+  #plumContainer {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 240px;
+    height: 500px;
+    z-index: 40;
+    pointer-events: none;
+  }
+  #plumCanvas {
+    pointer-events: auto;
+    display: block;
+    height: 100% !important;
+    width: 100% !important;
+  }
+  #plumCanvas { margin-bottom: 0; }
+  @keyframes itemFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .main-content .article-item {
+    animation: itemFadeIn 0.8s ease-out both;
+  }
+  .main-content .article-item:nth-child(1) { animation-delay: 0.05s; }
+  .main-content .article-item:nth-child(2) { animation-delay: 0.17s; }
+  .main-content .article-item:nth-child(3) { animation-delay: 0.29s; }
+  .main-content .article-item:nth-child(4) { animation-delay: 0.41s; }
+  .main-content .article-item:nth-child(5) { animation-delay: 0.53s; }
+  .main-content .article-item:nth-child(6) { animation-delay: 0.65s; }
+  .main-content .article-item:nth-child(7) { animation-delay: 0.77s; }
+  .main-content .article-item:nth-child(8) { animation-delay: 0.89s; }
+  .main-content .article-item:nth-child(9) { animation-delay: 1.01s; }
+  .main-content .article-item:nth-child(10){ animation-delay: 1.13s; }
+  .main-content .article-item:nth-child(11){ animation-delay: 1.25s; }
+  .main-content .article-item:nth-child(12){ animation-delay: 1.37s; }
+  .main-content .article-item:nth-child(13){ animation-delay: 1.49s; }
+  .main-content .article-item:nth-child(14){ animation-delay: 1.61s; }
+  .main-content .article-item:nth-child(15){ animation-delay: 1.73s; }
+
+  /* Desktop tools card hover */
+  .main-content .tools-card {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  }
+  .main-content .tools-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+  .main-content .tools-card:active { transform: scale(0.97); }
+  .main-content .mc-icon-img { width: 64px; height: 64px; font-size: 32px; }
+  .main-content .mc-label { font-size: 17px; }
+  .main-content .mc-desc { font-size: 12px; }
+
+  /* Desktop WeChat cards - side by side */
+  .main-content .wechat-section {
+    flex-direction: row;
+    gap: 14px;
+  }
+  .main-content .wechat-follow {
+    flex: 1;
+    padding: 18px;
+  }
+
+  /* Desktop article list */
+  .main-content .article-item {
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+  }
+  .main-content .article-item:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+  }
+  .main-content .ai-title { font-size: 16px; }
+  .main-content .ai-summary { font-size: 14px; }
+
+  /* Desktop article detail */
+  .main-content .detail-wrap {
+    padding: 28px 28px;
+    line-height: 2;
+    font-size: 16px;
+    background: var(--bg-card);
+    box-shadow: var(--shadow);
+    border-radius: var(--radius);
+  }
+  .main-content .detail-wrap h1 { font-size: 24px; }
+
+  /* Desktop back to top */
+  .main-content .back-top {
+    bottom: 32px;
+    right: 32px;
+  }
+
+  /* Desktop footer */
+  .main-content .footer { padding: 32px 0 16px; }
+
+  /* Desktop ad */
+  .main-content .ad-placeholder { padding: 20px; font-size: 12px; margin: 24px 0; }
+
+  /* Desktop quote */
+  .main-content .quote-section {
+    padding: 32px 20px 8px;
+  }
+  .main-content .quote-section .quote-text {
+    font-size: 16px;
+  }
+
+  /* Desktop tools cards */
+  .main-content .tools-card-row {
+    flex-direction: row;
+    gap: 16px;
+  }
+  .main-content .tools-card {
+    flex: 1;
+    padding: 24px 20px;
+    transition: all 0.2s;
+  }
+  .main-content .tools-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
+  .main-content .tc-icon {
+    width: 60px; height: 60px;
+    font-size: 30px;
+  }
+  .main-content .tc-title { font-size: 17px; }
+  .main-content .tc-desc { font-size: 13px; }
+}
+
+/* ===== 4K超宽屏适配 ===== */
+@media (min-width: 2560px) {
+  .sidebar { --sidebar-w: 600px; width: 600px; min-width: 600px; }
+  .main-content { padding: 40px 60px; }
+  .main-content .page { max-width: 1200px; }
+  .main-content .menu-grid { gap: 22px; }
+  .right-sidebar { width: 500px; min-width: 500px; }
+
+  /* 全局基础字号放大 */
+  .sidebar-brand { padding: 48px 48px 28px; }
+  .sidebar-logo { width: 150px; height: 150px; }
+  .sidebar-brand .brand-sub { font-size: 20px; }
+  .sidebar-brand .brand-divider { width: 60px; height: 3px; }
+  .sidebar-nav { padding: 24px 36px; }
+  .sidebar-nav-item { font-size: 30px; padding: 20px 30px; gap: 20px; }
+  .sidebar-nav-item .sni-icon { font-size: 38px; width: 54px; }
+  .sidebar-wechat { padding: 30px 42px 42px; }
+  .sidebar-wechat .sw-title { font-size: 22px; }
+  .sidebar-wechat .sw-qr { width: 120px; height: 120px; }
+  .sidebar-wechat .sw-info h5 { font-size: 26px; }
+  .sidebar-wechat .sw-info p { font-size: 22px; }
+  .sidebar-wechat .sw-info .sw-tag { font-size: 18px; padding: 3px 14px; }
+  .sidebar-foot { font-size: 20px; padding: 24px 42px 42px; }
+  .right-sidebar { padding: 48px 36px 42px; }
+  .right-sidebar .rs-title { font-size: 24px; }
+  .right-sidebar .rs-item { font-size: 22px; padding: 16px 18px; gap: 16px; }
+  .right-sidebar .rs-hl-zodiac-btn { padding: 18px 28px; font-size: 24px; }
+  .right-sidebar .rs-hl-type-btn { padding: 20px 28px; font-size: 24px; }
+  .right-sidebar .rs-hl-zodiac-btn .rs-zi { font-size: 42px; }
+  .right-sidebar .rs-hl-zodiac-btn .rs-zn { font-size: 24px; }
+  .right-sidebar .rs-hl-type-btn .rs-ti { font-size: 32px; }
+  .rs-hl-date { font-size: 20px; }
+
+  /* 首页 */
+  .main-content .page-header h2 { font-size: 28px; }
+  .main-content .page-header .sub { font-size: 15px; }
+  .main-content .mc-icon-img { width: 80px; height: 80px; font-size: 40px; }
+  .main-content .mc-label { font-size: 20px; }
+  .main-content .mc-desc { font-size: 14px; }
+  .main-content .menu-card { padding: 36px 28px 28px; }
+
+  /* 文章列表 */
+  .main-content .article-item { padding: 20px 24px; }
+  .main-content .ai-title { font-size: 18px; }
+  .main-content .ai-summary { font-size: 15px; }
+
+  /* 文章详情 */
+  .main-content .detail-wrap { font-size: 18px; line-height: 2; padding: 36px 40px; }
+  .main-content .detail-wrap h1 { font-size: 28px; }
+  .main-content .back-btn { font-size: 15px; padding: 10px 20px; }
+
+  /* 工具卡片 */
+  .main-content .tools-card { padding: 28px 24px; }
+  .main-content .tc-icon { width: 72px; height: 72px; font-size: 36px; }
+  .main-content .tc-title { font-size: 19px; }
+  .main-content .tc-desc { font-size: 14px; }
+
+  /* 引用 */
+  .main-content .quote-section .quote-text { font-size: 18px; }
+
+  /* 广告位 */
+  .main-content .ad-placeholder { padding: 24px; font-size: 14px; }
+
+  /* 页脚 */
+  .main-content .wechat-follow { padding: 22px; }
+  .main-content .wechat-follow h4 { font-size: 17px; }
+
+  /* 4K日历 */
+  #page-huangli.active .hl-day { height: 300px; font-size: 56px; }
+  #page-huangli.active .hl-day .hl-day-lunar { font-size: 36px; }
+  #page-huangli.active .hl-day .hl-day-yiji { font-size: 32px; }
+  #page-huangli.active .hl-cal-header .hl-month { font-size: 30px; }
+  #page-huangli.active .hl-cal-header { margin-bottom: 24px; }
+  #page-huangli.active .hl-weekdays span { font-size: 20px; }
+}
+
+/* ===== 黄历日历 + 三级导航 ===== */
+.hl-cal { padding: 10px 0; }
+.hl-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.hl-cal-header .hl-month { font-size: 18px; font-weight: 700; color: var(--green-deep); }
+.hl-cal-header .hl-nav-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 4px 12px; cursor: pointer; font-size: 14px; color: #e8dcc0; }
+.hl-cal-header .hl-nav-btn:active { background: rgba(255,255,255,0.25); }
+.hl-weekdays { display: grid; grid-template-columns: repeat(7,1fr); text-align: center; font-size: 12px; color: var(--text-light); margin-bottom: 6px; }
+.hl-weekdays span { padding: 4px 0; }
+.hl-weekdays .wk-sun { color: #e74c3c; }
+.hl-days { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+.hl-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 14px; cursor: pointer; background: #fcf9f2; border: 1px solid #eee; color: var(--text); flex-direction: column; gap: 1px; font-weight: 600; }
+.hl-day:active { transform: scale(0.92); }
+.hl-day.today { background: var(--green-deep); color: #fff; font-weight: 700; border-color: var(--green-deep); }
+.hl-day.selected { background: #2d5a3e; color: #fff; font-weight: 700; border-color: var(--gold); border-width: 2px; }
+.hl-day .hl-day-lunar { font-size: 9px; color: #b8952e; font-weight: 400; }
+.hl-day .hl-day-yiji { font-size: 8px; font-weight: 400; line-height: 1.2; color: #b8a88a; white-space: nowrap; }
+.hl-day .hl-day-yiji em { font-style: normal; }
+.hl-day .hl-day-yiji em:first-child { color: #6bc46b; }
+.hl-day .hl-day-yiji em:last-child { color: #e8a080; }
+.hl-day.today .hl-day-lunar, .hl-day.selected .hl-day-lunar { color: rgba(255,255,255,0.8); }
+.hl-day.today .hl-day-yiji, .hl-day.selected .hl-day-yiji { color: rgba(255,255,255,0.6); }
+.hl-day.today .hl-day-yiji em, .hl-day.selected .hl-day-yiji em { color: inherit; }
+/* .hl-day.has-art { border-color: var(--gold); } */
+.hl-day.other-month { opacity: 0.3; }
+.hl-day.empty { visibility: hidden; }
+
+/* Mobile 黄历深绿背景（与侧栏统一） */
+#page-huangli { background: linear-gradient(135deg, #1a3c2a 0%, #0f2b1e 100%); border-radius: 14px; padding: 10px; overflow: hidden; }
+#page-huangli .page-header h2 { color: #e8dcc0; }
+
+/* 黄历页时去掉.page额外内边距（防止日历偏右被切） */
+body:has(#page-huangli.active) .page { padding: 0; }
+/* 日历模式卡死不可滑动（仅黄历页可见时生效） */
+body:has(#page-huangli.active.hl-cal-mode) { overflow: hidden; }
+/* 日历模式下隐藏底部导航栏 */
+body:has(#page-huangli.active.hl-cal-mode) .bottom-nav { display: none; }
+/* 返回按钮样式 */
+.hl-back-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 8px; cursor: pointer;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+  color: #e8c840; font-size: 13px; font-weight: 600;
+  margin-bottom: 12px; transition: background 0.15s; width: fit-content;
+}
+.hl-back-btn:active { background: rgba(255,255,255,0.15); transform: scale(0.96); }
+
+/* 黄历页面包屑/链接文字在深绿背景上可见 */
+#page-huangli .hl-breadcrumb { color: rgba(232,220,192,0.5); }
+#page-huangli .hl-breadcrumb span { color: #e8c840; font-weight: 600; }
+#page-huangli .hl-breadcrumb .sep { color: rgba(232,220,192,0.3); }
+#page-huangli .hl-zodiac-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #e8e0d6; }
+#page-huangli .hl-zodiac-btn .zn { color: #c8b88a; }
+#page-huangli .hl-zodiac-btn .rs-status { color: rgba(232,224,214,0.7); }
+#page-huangli .hl-type-btn.huangli { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #e8dcc0; }
+#page-huangli .hl-type-btn.majiang { background: rgba(42,72,42,0.8); border-color: #8B6914; color: #d4af37; }
+
+/* 深绿主题：易学小知识 / 十二生肖 / 梅花易数教程（移动端）— 仅侧栏不在移动端生效 */
+#page-huangli .hl-cal-header .hl-month { color: #e8dcc0; }
+#page-huangli .hl-weekdays span { color: rgba(232,220,192,0.6); }
+#page-huangli .hl-weekdays .wk-sun { color: #e8a080; }
+#page-huangli .hl-day { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #e8e0d6; }
+#page-huangli .hl-day:hover { background: rgba(255,255,255,0.15); }
+#page-huangli .hl-day .hl-day-lunar { color: #b8a88a; }
+#page-huangli .hl-day .hl-day-yiji { color: #b8a88a; }
+#page-huangli .hl-day .hl-day-yiji em:first-child { color: #6bc46b; }
+#page-huangli .hl-day .hl-day-yiji em:last-child { color: #e8a080; }
+#page-huangli .hl-day.today { background: #2d5a3e; border-color: #4a8a5e; }
+#page-huangli .hl-day.selected { background: rgba(212,175,55,0.25); border-color: var(--gold); border-width: 2px; }
+
+/* 二级：生肖选择 — 竖条形式 */
+.hl-zodiac-grid { display: flex; flex-direction: column; gap: 6px; padding: 8px 0; }
+.hl-zodiac-btn { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; background: var(--bg-card); border: 1px solid #eee; border-left: 3px solid var(--gold); cursor: pointer; font-size: 14px; transition: all 0.15s; font-weight: 600; }
+.hl-zodiac-btn:active { transform: scale(0.97); background: var(--green-light); }
+.hl-zodiac-btn .zi { font-size: 26px; }
+.hl-zodiac-btn .zn { font-size: 14px; color: var(--text); }
+.hl-zodiac-btn.zs-full { border-left-color: #27ae60 !important; }
+.hl-zodiac-btn.zs-half { border-left-color: #f39c12 !important; }
+.hl-zodiac-btn.zs-empty { opacity: 0.5; }
+
+/* 日期导航行 */
+.hl-date-nav-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; margin-bottom: 8px;
+}
+.hl-date-nav-btn {
+  background: none; border: 1px solid rgba(212,175,55,0.3);
+  color: var(--gold); font-size: 18px; width: 32px; height: 32px;
+  border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.hl-date-nav-btn:active { background: rgba(212,175,55,0.15); }
+.hl-date-nav-label {
+  font-size: 14px; color: #c8b88a; text-align: center;
+  font-weight: 500; min-width: 140px;
+}
+
+/* 三级：内容类型选择 — 竖条形式 */
+.hl-type-grid { display: flex; flex-direction: column; gap: 8px; padding: 8px 0; }
+.hl-type-btn { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-radius: 12px; cursor: pointer; transition: all 0.15s; font-weight: 600; font-size: 15px; }
+.hl-type-btn:active { transform: scale(0.97); }
+.hl-type-btn .ti { font-size: 26px; }
+.hl-type-btn .tn { font-size: 15px; font-weight: 600; }
+.hl-type-btn.huangli { background: linear-gradient(135deg,#f0f7ec,#e8f0e6); border: 1px solid #c8dcc4; color: var(--green-deep); }
+.hl-type-btn.majiang { background: linear-gradient(135deg,#fdf8ea,#faf3e0); border: 1px solid #e8dcc0; color: #8B6914; }
+
+/* 面包屑导航 */
+.hl-breadcrumb { display: flex; align-items: center; gap: 4px; padding: 8px 0; font-size: 13px; color: var(--text-light); }
+.hl-breadcrumb span { cursor: pointer; color: var(--green-deep); }
+.hl-breadcrumb span:active { opacity: 0.6; }
+.hl-breadcrumb .sep { color: #ccc; }
+</style>
+<!-- ===== PWA 安装引导 ===== -->
+<style>
+/* PWA 安装卡片（主页固定卡片） */
+.pwa-install-card {
+  background: linear-gradient(135deg, #1a3c2a, #2d5a3e);
+  border-radius: 16px;
+  padding: 18px 20px 16px;
+  margin: 14px 0 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 3px 15px rgba(26,60,42,0.15);
+  position: relative;
+}
+.pwa-ic-icon {
+  width: 54px; height: 54px; border-radius: 14px;
+  background: #1a3c2a; border: 2px solid #d4af37;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; color: #d4af37; font-weight: bold; flex-shrink: 0;
+}
+.pwa-ic-text { flex: 1; min-width: 0; }
+.pwa-ic-title { color: #d4af37; font-size: 16px; font-weight: 700; }
+.pwa-ic-desc { color: rgba(255,255,255,0.75); font-size: 12px; margin-top: 2px; line-height: 1.4; }
+.pwa-ic-btn {
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #d4af37, #b8962f);
+  border: none; border-radius: 10px;
+  padding: 10px 18px;
+  color: #1a3c2a; font-size: 14px; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+  transition: transform 0.15s;
+}
+.pwa-ic-btn:active { transform: scale(0.94); }
+.pwa-ic-btn.installed { opacity: 0.5; pointer-events: none; }
+.pwa-install-card.hidden { display: none; }
+
+/* 桌面端：隐藏每日详查并排卡片，每日黄历占满 */
+@media (min-width: 768px) {
+  #mc-huangli .mc-e-gap { display: none; }
+  #mc-huangli .mc-e-spine { display: none; }
+}
+
+/* 桌面端隐藏安装卡片 */
+@media (min-width: 768px) {
+  .pwa-install-card { display: none; }
+}
+/* 安装说明（点击后展开） */
+.pwa-ic-guide {
+  display: none;
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 10px;
+  width: 100%;
+}
+.pwa-ic-guide.show { display: block; }
+.pwa-ic-guide .step {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  padding: 4px 0;
+  line-height: 1.6;
+}
+.pwa-ic-guide .step em { color: #d4af37; font-style: normal; font-weight: 600; }
+.pwa-ic-guide .step b { color: #fff; }
+</style>
+</head>
+<body>
+
+
+<!-- ================================================================
+     DESKTOP SIDEBAR (hidden on mobile via .sidebar display via media)
+     ================================================================ -->
+<div class="sidebar">
+  <div class="sidebar-brand">
+    <img src="/images/logo-brand.png" alt="老六茶事" class="sidebar-logo" loading="lazy">
+    <div class="brand-sub">老六茶事</div>
+    <div class="brand-divider"></div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="sidebar-nav-item active" data-page="home" onclick="deskNav('home')">
+      <span class="sni-icon">🏠</span>首页
+    </div>
+    <div class="sidebar-nav-item" data-page="huangli" onclick="deskNav('huangli')">
+      <span class="sni-icon">📅</span>每日黄历
+    </div>
+    <div class="sidebar-nav-item" data-page="zhishi" onclick="deskNav('zhishi')">
+      <span class="sni-icon">📖</span>易学小知识
+    </div>
+    <div class="sidebar-nav-item" data-page="shengxiao" onclick="deskNav('shengxiao')">
+      <span class="sni-icon">🐉</span>十二生肖运势
+    </div>
+    <div class="sidebar-nav-item" data-page="library" onclick="deskNav('library')">
+      <span class="sni-icon">📚</span>藏书阁
+    </div>
+    <div class="sidebar-nav-item" data-page="tools" onclick="deskNav('tools')">
+      <span class="sni-icon">🎯</span>互动工具
+    </div>
+    <div class="sidebar-nav-item" data-page="service" onclick="window.location.href='/tools/service.html'" onclick="deskNav('service')">
+      <span class="sni-icon">🔮</span>易学咨询
+    </div>
+  </div>
+  <!-- Search box -->
+  <div class="sidebar-search" onclick="showSearch()">
+    <span class="ss-icon">🔍</span>
+    <span class="ss-text">搜索文章</span>
+  </div>
+  <div class="sidebar-wechat">
+    <div class="sw-title">📱 联系我们</div>
+    <div class="sw-row">
+      <div class="sw-qr"><img src="/images/qrcode-official.jpg" alt="公众号二维码" loading="lazy"></div>
+      <div class="sw-info">
+        <h5>📢 老六茶事</h5>
+        <p>每日运势文章</p>
+        <span class="sw-tag">微信搜：老六茶事</span>
+      </div>
+    </div>
+    <div class="sw-row">
+      <div class="sw-qr"><img src="/images/qrcode-wechat.jpg" alt="个人微信" loading="lazy"></div>
+      <div class="sw-info">
+        <h5>💬 老六查事</h5>
+        <p>咨询交流</p>
+        <span class="sw-tag">微信号：laoliuchashi</span>
+      </div>
+    </div>
+  </div>
+  <div class="sidebar-foot">© 老六茶事 · 内容仅供娱乐参考</div>
+</div>
+
+<!-- ================================================================
+     RIGHT SIDEBAR (desktop only — article directory for current category)
+     ================================================================ -->
+<div class="right-sidebar" id="rightSidebar">
+  <div class="rs-title" id="rightDirTitle"></div>
+  <div id="rightDirList"></div>
+</div>
+<!-- 梅花动画（桌面端右侧固定位置，仅在主页显示） -->
+<div id="plumContainer"></div>
+
+<!-- ================================================================
+     MOBILE TOP BAR (hidden on desktop)
+     ================================================================ -->
+<div class="topbar">
+  <h1><img src="/images/logo-brand.png" alt="老六茶事" class="mobile-logo" loading="lazy"> 老六茶事</h1>
+  <div class="sub">每日黄历 · 易学知识</div>
+  <div class="topbar-search" onclick="showSearch()">🔍</div>
+</div>
+
+<!-- ================================================================
+     MAIN CONTENT
+     ================================================================ -->
+<div class="main-content">
+  <div id="app">
+
+    <!-- ===== Home ===== -->
+    <div class="page active" id="page-home">
+      <div class="menu-grid">
+        <div class="menu-card green" id="mc-huangli">
+          <div class="mc-e-wrap">
+            <div class="mc-e-spine" onclick="goCategory('huangli')">
+              <span class="mc-e-spine-text">每日黄历</span>
+            </div>
+            <div class="mc-e-body">
+              <div class="mc-e-top" onclick="goCategory('huangli')">
+                <div class="mc-icon-img green">📅</div>
+                <div>
+                  <div class="mc-label">每日黄历</div>
+                  <div class="mc-desc">生肖运势 · 麻将运势</div>
+                </div>
+              </div>
+              <div class="mc-e-gap" onclick="goDailyDetail()">
+                <span class="mc-e-gap-text">每日详查</span>
+              </div>
+              <div class="mc-e-bottom" onclick="goCategory('huangli')">
+                <div class="mc-desc">每日宜忌</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="menu-card purple" onclick="goCategory('zhishi')">
+          <div class="mc-icon-img purple">📖</div>
+          <div class="mc-label">易学小知识</div>
+          <div class="mc-desc">民俗 · 节气<br>实用易学冷知识</div>
+        </div>
+        <div class="menu-card blue" onclick="goCategory('library')">
+          <div class="mc-icon-img blue">📚</div>
+          <div class="mc-label">藏书阁</div>
+          <div class="mc-desc">易经·古籍<br>小白入门教程</div>
+        </div>
+        <div class="menu-card purple" onclick="goCategory('shengxiao')">
+          <div class="mc-icon-img purple">🐉</div>
+          <div class="mc-label">十二生肖运势</div>
+          <div class="mc-desc">2026下半年<br>各生肖详解</div>
+        </div>
+        <div class="menu-card green" onclick="goCategory('tools')">
+          <div class="mc-icon-img green">🎯</div>
+          <div class="mc-label">互动工具</div>
+          <div class="mc-desc">梅花起卦<br>每日运势转盘</div>
+        </div>
+        <div class="menu-card gold" onclick="window.location.href='/tools/service.html'">
+          <div class="mc-icon-img gold">🔮</div>
+          <div class="mc-label">易学咨询</div>
+          <div class="mc-desc">感情 · 事业 · 学业<br>一事一卦</div>
+        </div>
+      </div>
+
+      <!-- ===== PWA 安装卡片 ===== -->
+      <div class="pwa-install-card" id="pwa-install-card">
+        <img src="/images/pwa-install-icon.jpg" class="pwa-ic-icon" alt="老六茶事" style="width:54px;height:54px;border-radius:14px;object-fit:cover;flex-shrink:0;">
+        <div class="pwa-ic-text">
+          <div class="pwa-ic-title">📲 添加到桌面</div>
+          <div class="pwa-ic-desc">一键打开，每天看运势更方便</div>
+        </div>
+        <button class="pwa-ic-btn" id="pwa-ic-btn">安装到桌面</button>
+        <!-- 点击后展开的指引 -->
+        <div class="pwa-ic-guide" id="pwa-ic-guide">
+          <div id="pwa-guide-content"></div>
+          <div class="step" style="text-align:center;color:rgba(255,255,255,0.5);font-size:11px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.1);margin-top:4px">
+            安装后下次直接点桌面图标进入 ✨
+          </div>
+        </div>
+      </div>
+
+      <div class="wechat-section">
+        <div class="wechat-follow">
+          <div class="wechat-qr"><img src="/images/qrcode-official.jpg" alt="公众号二维码" loading="lazy"></div>
+          <div class="wechat-info">
+            <h4>📢 老六茶事</h4>
+            <p>每日运势 · 易学知识</p>
+            <span class="wc-id">微信搜：老六茶事</span>
+          </div>
+        </div>
+        <div class="wechat-follow personal">
+          <div class="wechat-qr"><img src="/images/qrcode-wechat.jpg" alt="个人微信" loading="lazy"></div>
+          <div class="wechat-info">
+            <h4>💬 老六查事</h4>
+            <p>咨询交流</p>
+            <span class="wc-id">微信号：laoliuchashi</span>
+          </div>
+        </div>
+      </div>
+      <div class="ad-placeholder">📢 广告位</div>
+      <div class="quote-section">
+        <div class="quote-text">天之道，损有余而补不足。<br>人之道，损不足以奉有余。</div>
+        <div class="quote-source">——《道德经》第七十七章</div>
+      </div>
+      <div class="recent-articles" id="recentArticles">
+        <div class="ra-title">📝 最近更新</div>
+        <div class="ra-list" id="raList"></div>
+      </div>
+    </div>
+
+    <!-- ===== 每日黄历（日历+三级导航） ===== -->
+    <div class="page" id="page-huangli">
+      <div class="page-header">
+        <h2><span class="cat-header-icon green">📅</span>每日黄历</h2>
+        <div class="sub" style="color:rgba(232,220,192,0.5);font-size:12px;">生肖运势 · 麻将运势 · 每日宜忌</div>
+      </div>
+      <div id="huangli-container">
+        <!-- JS动态生成: 日历 / 生肖选择 / 内容选择 -->
+      </div>
+    </div>
+
+    <!-- ===== 易学小知识 ===== -->
+    <div class="page" id="page-zhishi">
+      <div class="page-header">
+        <h2><span class="cat-header-icon purple">📖</span>易学小知识</h2>
+        <div class="sub">民俗 · 节气 · 冷知识 · <span id="count-zhishi">0</span></div>
+      </div>
+      <div class="article-list" id="list-zhishi"></div>
+      <div class="article-list" id="list-zhishi-empty" style="display:none">
+        <div class="empty-list">📚 知识文库建设中，敬请期待 ✨</div>
+      </div>
+    </div>
+
+    <!-- ===== 十二生肖运势 ===== -->
+    <div class="page" id="page-shengxiao">
+      <div class="page-header">
+        <h2><span class="cat-header-icon purple">🐉</span><span id="shengxiao-title">十二生肖运势</span></h2>
+        <div class="sub">2026下半年 · 各生肖详解 · <span id="count-shengxiao">0</span></div>
+      </div>
+      <div class="article-list" id="list-shengxiao"></div>
+      <div class="article-list" id="list-shengxiao-empty" style="display:none">
+        <div class="empty-list">📚 生肖运势更新中，敬请期待 ✨</div>
+      </div>
+    </div>
+
+    <!-- ===== 藏书阁 ===== -->
+    <div class="page" id="page-library">
+      <div class="page-header">
+        <h2><span class="cat-header-icon blue">📚</span>藏书阁</h2>
+        <div class="sub">易经 · 小白教程 · 梅花易数 · 京氏易传 · 大易象数钩深图</div>
+      </div>
+      <div class="article-list" id="list-library">
+        <div class="tools-card-row">
+          <div class="tools-card" onclick="window.location.href='/books/book-yijing.html'">
+            <div class="tc-icon">☰</div>
+            <div class="tc-info">
+              <div class="tc-title">易经·周易</div>
+              <div class="tc-desc">六十四卦全文 · 卦象SVG图 · 彖象传</div>
+            </div>
+          </div>
+          <div class="tools-card" onclick="window.location.href='/books/book-xiaobai.html'">
+            <div class="tc-icon">📖</div>
+            <div class="tc-info">
+              <div class="tc-title">梅花易数小白入门自编</div>
+              <div class="tc-desc">八节课 · 零基础从入门到解卦</div>
+            </div>
+          </div>
+        </div>
+        <div class="tools-card-row">
+          <div class="tools-card" onclick="window.location.href='/books/book-梅花易数.html'">
+            <div class="tc-icon">🌸</div>
+            <div class="tc-info">
+              <div class="tc-title">梅花易数</div>
+              <div class="tc-desc">宋·邵雍 原著 · 象数易理 · 体用生克 · 断占总诀</div>
+            </div>
+          </div>
+          <div class="tools-card" onclick="window.location.href='/books/book-京氏易传.html'">
+            <div class="tc-icon">☯</div>
+            <div class="tc-info">
+              <div class="tc-title">京氏易传</div>
+              <div class="tc-desc">汉·京房 著 · 八宫卦序 · 五行六位 · 飞伏纳甲</div>
+            </div>
+          </div>
+        </div>
+        <div class="tools-card-row">
+          <div class="tools-card" onclick="window.location.href='/books/book-大易象数钩深图.html'">
+            <div class="tc-icon">🔮</div>
+            <div class="tc-info">
+              <div class="tc-title">大易象数钩深图</div>
+              <div class="tc-desc">元·张理 撰 · 图解周易象数 · 河图洛书 · 卦气诸图</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 互动工具 ===== -->
+    <div class="page" id="page-tools">
+      <div class="page-header">
+        <h2><span class="cat-header-icon green">🎯</span>互动工具</h2>
+        <div class="sub">免费易学互动工具 · 欢迎体验</div>
+      </div>
+      <div class="article-list" id="list-tools">
+        <!-- 工具卡片 -->
+        <div class="tools-card-row">
+          <div class="tools-card" onclick="window.location.href='/tools/divination.html'">
+            <div class="tc-icon">☯</div>
+            <div class="tc-info">
+              <div class="tc-title">梅花易数起卦</div>
+              <div class="tc-desc">支持时间起卦和报数起卦，自动排卦解卦</div>
+            </div>
+          </div>
+          <div class="tools-card" onclick="window.location.href='/tools/wheel.html'">
+            <div class="tc-icon">🎡</div>
+            <div class="tc-info">
+              <div class="tc-title">每日运势转盘</div>
+              <div class="tc-desc">转动轮盘试试手气，最高奖「老六免费一卦」</div>
+            </div>
+          </div>
+        </div>
+        <div class="tools-card-row">
+          <div class="tools-card" onclick="window.location.href='/tools/naming'">
+            <div class="tc-icon">✏️</div>
+            <div class="tc-info">
+              <div class="tc-title">取名参考系统</div>
+              <div class="tc-desc">从《诗经》《楚辞》等典籍中精挑细选，为您寻一个好名字</div>
+            </div>
+          </div>
+        </div>
+        <div class="tools-card-row">
+          <div class="tools-card" onclick="window.location.href='/tools/answer-card/'">
+            <div class="tc-icon" style="background:#f5eff8;">📖</div>
+            <div class="tc-info">
+              <div class="tc-title">答案之书 · 心灵指引</div>
+              <div class="tc-desc">心中默念问题，翻牌获得答案——来自塔罗、易学与现代心理学的智慧</div>
+            </div>
+          </div>
+        </div>
+        <div class="tools-card-row">
+          <div class="tools-card" onclick="window.location.href='/tools/jili.html'">
+            <div class="tc-icon" style="background:#e8f0e6;">📅</div>
+            <div class="tc-info">
+              <div class="tc-title">己历 · 个人定制黄历</div>
+              <div class="tc-desc">输入出生年月日，生成专属每日运势——事业、财运、感情、健康四维分析</div>
+            </div>
+          </div>
+          <div class="tools-card" onclick="window.location.href='/tools/paiyun.html'">
+            <div class="tc-icon" style="background:#fdf8ea;">🀄</div>
+            <div class="tc-info">
+              <div class="tc-title">牌运 · 每日麻将运势</div>
+              <div class="tc-desc">出生日柱推演牌运，坐向策略幸运数字全解析</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 搜索结果 ===== -->
+    <div class="page" id="page-search">
+      <div class="page-header">
+        <h2>🔍 搜索</h2>
+      </div>
+      <div class="search-input-wrap">
+        <input type="text" id="searchInput" class="search-input" placeholder="输入关键词搜索…" oninput="doSearch(this.value)">
+        <button class="search-clear" onclick="clearSearch()" id="searchClearBtn">✕</button>
+      </div>
+      <div class="search-results" id="searchResults">
+        <div class="search-hint">输入关键词搜索文章标题</div>
+      </div>
+    </div>
+
+    <!-- ===== 文章详情 ===== -->
+    <div class="page" id="page-article">
+      <div class="back-btn" onclick="backToList()">← 返回</div>
+      <div class="detail-wrap" id="article-body"></div>
+    </div>
+
+    <!-- ===== 隐私政策 ===== -->
+    <div class="page" id="page-privacy">
+      <div class="back-btn" onclick="showPage('home')">← 返回首页</div>
+      <div class="privacy-content" style="padding:20px;max-width:800px;margin:0 auto;line-height:1.8;font-size:15px;">
+        <h1 style="font-size:24px;margin-bottom:8px;color:var(--green-deep);">隐私政策</h1>
+        <p style="color:#888;font-size:13px;margin-bottom:24px;">最后更新：2026年5月26日</p>
+
+        <p>欢迎访问老六茶事（laoliuchashi.top）。我们深知隐私对您的重要性，并承诺保护您的个人信息。本隐私政策说明了我们如何收集、使用和保护您的信息。</p>
+
+        <h2 style="font-size:18px;margin:24px 0 10px;color:var(--green-deep);">1. 我们收集的信息</h2>
+        <p><strong>百度统计：</strong>本网站使用百度统计（Baidu Analytics）来了解访问情况。百度统计可能会收集您的IP地址、浏览器类型、访问页面、访问时长等匿名信息。这些信息仅用于分析网站流量和改进用户体验。</p>
+        <p><strong>您主动提供的信息：</strong>当您通过联系页面或微信联系我们时，您自愿提供的任何个人信息（如昵称、联系方式）仅用于回复您的咨询，不会用于其他目的。</p>
+
+        <h2 style="font-size:18px;margin:24px 0 10px;color:var(--green-deep);">2. Cookie 的使用</h2>
+        <p>本网站可能使用Cookie来改善您的浏览体验。Cookie是存储在您设备上的小型文本文件。您可以在浏览器设置中管理或禁用Cookie。</p>
+        <p>如果未来本网站接入Google AdSense等广告服务，这些第三方服务也可能使用Cookie来投放个性化广告。详情请参阅Google的<a href="https://policies.google.com/privacy" target="_blank" style="color:var(--green-deep);text-decoration:underline;">隐私政策</a>。</p>
+
+        <h2 style="font-size:18px;margin:24px 0 10px;color:var(--green-deep);">3. 第三方服务</h2>
+        <p>本网站可能使用以下第三方服务：</p>
+        <ul style="padding-left:20px;margin:8px 0;">
+          <li><strong>Vercel</strong> — 网站托管服务</li>
+          <li><strong>百度统计</strong> — 网站流量分析</li>
+          <li><strong>Google AdSense</strong>（如适用）— 广告投放</li>
+        </ul>
+
+        <h2 style="font-size:18px;margin:24px 0 10px;color:var(--green-deep);">4. 数据安全</h2>
+        <p>我们采取合理的技术措施保护您的信息安全，但请注意，互联网上的数据传输无法做到100%安全。</p>
+
+        <h2 style="font-size:18px;margin:24px 0 10px;color:var(--green-deep);">5. 您的权利</h2>
+        <p>您有权了解我们收集了哪些关于您的信息，并要求更正或删除这些信息。如需行使这些权利，请通过以下方式联系我们。</p>
+
+        <h2 style="font-size:18px;margin:24px 0 10px;color:var(--green-deep);">6. 联系我们</h2>
+        <p>如您对本隐私政策有任何疑问，请通过以下方式联系我们：</p>
+        <p style="margin:8px 0;">📧 邮箱：Xiao-Sa@outlook.com</p>
+        <p>💬 微信：老六查事（公众号菜单栏获取最新联系方式）</p>
+
+        <h2 style="font-size:18px;margin:24px 0 10px;color:var(--green-deep);">7. 本政策的更新</h2>
+        <p>我们可能会不时更新本隐私政策。更新后的政策将在本页面发布，并注明最后更新日期。建议您定期查看。</p>
+
+        <p style="margin-top:32px;padding-top:16px;border-top:1px solid var(--border);color:#888;font-size:13px;text-align:center;">老六茶事 · laoliuchashi.top</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       MOBILE BOTTOM NAV (hidden on desktop)
+       ================================================================ -->
+  <div class="bottom-nav" id="bottomNav">
+    <div class="nav-item active" data-page="home"><span class="ni-icon">🏠</span>首页</div>
+    <div class="nav-item" data-page="huangli"><span class="ni-icon">📅</span>黄历</div>
+    <div class="nav-item" data-page="tools"><span class="ni-icon">🎯</span>工具</div>
+    <div class="nav-item" data-page="library"><span class="ni-icon">📚</span>书库</div>
+    <div class="nav-item" data-page="shengxiao"><span class="ni-icon">🐉</span>生肖</div>
+    <div class="nav-item" data-page="service" onclick="window.location.href='/tools/service.html'"><span class="ni-icon">🔮</span>咨询</div>
+  </div>
+
+  <!-- ================================================================
+       BACK TO TOP
+       ================================================================ -->
+  <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <!-- ================================================================
+       FOOTER
+       ================================================================ -->
+  <div class="footer">
+    <div style="margin-bottom:6px;">
+      <a href="javascript:showPage('privacy')" style="color:var(--text-light);text-decoration:underline;">隐私政策</a>
+      <span style="color:var(--text-muted);margin:0 8px;">·</span>
+      <a href="javascript:showPage('home')" style="color:var(--text-light);">首页</a>
+    </div>
+    © 老六茶事 · 内容仅供娱乐参考 · 切勿过度依赖
+  </div>
+
+</div>
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
+<script>
+// ===== Category Labels =====
+const CAT_LABELS = {
+  huangli: '每日黄历',
+  zhishi: '易学知识',
+  shengxiao: '十二生肖运势',
+  library: '藏书阁',
+  tools: '互动工具',
+  service: '易学咨询'
+};
+
+// ===== State =====
+let allArticles = [];
+let currentPage = 'home';
+let lastCategory = 'home';
+let navHistory = ['home'];
+
+// ===== Load Article Data =====
+async function loadData() {
+  try {
+    const resp = await fetch('/articles/index.json?_t=' + Date.now());
+    const data = await resp.json();
+    allArticles = data.articles || [];
+  } catch(e) {
+    allArticles = [];
+  }
+  // If no articles loaded from JSON, use fallback
+  if (allArticles.length === 0) {
+    allArticles = FALLBACK_ARTICLES;
+  }
+  renderAll();
+  // Show home by default — nav sync happens in renderAll
+}
+
+function renderAll() {
+  // Render each category list (huangli uses calendar now)
+  ['zhishi', 'shengxiao'].forEach(cat => {
+    const items = allArticles.filter(a => a.category === cat);
+    const list = document.getElementById('list-' + cat);
+    const empty = document.getElementById('list-' + cat + '-empty');
+    const count = document.getElementById('count-' + cat);
+
+    if (count) count.textContent = items.length + '篇';
+
+    if (items.length === 0) {
+      if (list) list.innerHTML = '';
+      if (empty) empty.style.display = 'block';
+      return;
+    }
+    if (empty) empty.style.display = 'none';
+
+    if (list) {
+      list.innerHTML = items.map(a => `
+        <div class="article-item" onclick="openArticle('${a.id}')">
+          <span class="ai-label">${a.label || cat}</span>
+          <div class="ai-date">${a.date}</div>
+          <div class="ai-title">${a.title}</div>
+          <div class="ai-summary">${a.summary}</div>
+        </div>
+      `).join('');
+    }
+  });
+  renderRecentArticles();
+}
+
+const CAT_ICONS = { huangli:'📅', zhishi:'📖', shengxiao:'🐉', jiaocheng:'☯', tools:'🎯', service:'🔮' };
+const CAT_LABELS2 = { huangli:'黄历', zhishi:'知识', shengxiao:'生肖', jiaocheng:'教程', tools:'工具', service:'咨询' };
+
+function renderRecentArticles() {
+  const list = document.getElementById('raList');
+  if (!list) return;
+  const sorted = [...allArticles].sort((a,b) => b.date.localeCompare(a.date));
+  const recent = sorted.slice(0, 10);
+  list.innerHTML = recent.map(a => {
+    const cat = a.category || 'zhishi';
+    return `<a class="ra-item" onclick="openArticle('${a.id}')">
+      <span class="ra-icon">${CAT_ICONS[cat] || '📄'}</span>
+      <span class="ra-text">
+        <span class="ra-title-text">${a.title}</span>
+        <span class="ra-meta">${a.date} · ${a.label || CAT_LABELS2[cat] || cat}</span>
+      </span>
+      <span class="ra-badge">${a.label || CAT_LABELS2[cat] || cat}</span>
+    </a>`;
+  }).join('');
+}
+
+// ===== Site Search =====
+function showSearch() {
+  showPage('search');
+  setTimeout(() => document.getElementById('searchInput')?.focus(), 100);
+}
+function doSearch(q) {
+  const results = document.getElementById('searchResults');
+  const clearBtn = document.getElementById('searchClearBtn');
+  if (!results) return;
+  clearBtn.style.display = q ? 'block' : 'none';
+  if (!q || q.length < 1) {
+    results.innerHTML = '<div class="search-hint">输入关键词搜索文章标题</div>';
+    return;
+  }
+  const kw = q.toLowerCase();
+  const matches = allArticles.filter(a => {
+    const t = (a.title + ' ' + (a.summary || '') + ' ' + (a.label || '')).toLowerCase();
+    return t.includes(kw);
+  }).slice(0, 30);
+  if (matches.length === 0) {
+    results.innerHTML = '<div class="search-none">😕 没有找到相关文章</div>';
+    return;
+  }
+  const re = new RegExp(`(${kw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  results.innerHTML = matches.map(a => {
+    const hlTitle = a.title.replace(re, '<span class="sr-highlight">$1</span>');
+    return `<a class="sr-item" onclick="openArticle('${a.id}')">
+      <span class="sr-title">${hlTitle}</span>
+      <span class="sr-meta">${a.date} · ${a.label || CAT_LABELS[a.category] || a.category}</span>
+    </a>`;
+  }).join('');
+}
+function clearSearch() {
+  const input = document.getElementById('searchInput');
+  if (input) { input.value = ''; input.focus(); }
+  doSearch('');
+}
+
+// ===== Page Navigation =====
+function showPage(page) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // Show target
+  const el = document.getElementById('page-' + page);
+  if (el) el.classList.add('active');
+  currentPage = page;
+
+  // If navigating to huangli page, ensure calendar is rendered
+  if (page === 'huangli') {
+    const container = document.getElementById('huangli-container');
+    if (container && !container.innerHTML.trim()) {
+      fillHuangli();
+    } else if (window.innerWidth >= 768 && container && hlState.day === 0) {
+      // 首次导航到黄历（无已选日期）：重置到今日
+      const now = new Date();
+      hlState.year = now.getFullYear();
+      hlState.month = now.getMonth() + 1;
+      hlState.day = now.getDate();
+      hlState.level = 'zodiac';
+      renderHuangli();
+      renderDir('huangli', null);
+    } else if (container) {
+      // 已有 hlState 状态（从文章返回等）：确保年月有效
+      if (hlState.year === 0) {
+        const now = new Date();
+        hlState.year = now.getFullYear();
+        hlState.month = now.getMonth() + 1;
+      }
+      renderHuangli();
+      if (window.innerWidth >= 768) {
+        renderDir('huangli', null);
+      }
+    }
+  }
+
+  // If navigating away from article page, clear old article content
+  if (page !== 'article') {
+    const body = document.getElementById('article-body');
+    if (body) body.innerHTML = '';
+  }
+  
+  // Update meta tags per page
+  const metaMap = {
+    home: ['首页', '老六茶事 - 每日黄历、生肖运势、梅花易数。每日更新通胜宜忌。'],
+    huangli: ['每日黄历', '老六茶事每日黄历 - 生肖运势、麻将运势、每日宜忌，一页尽览。'],
+    zhishi: ['易学小知识', '民俗节气、实用易学冷知识 - 老六茶事易学小知识合集。'],
+    shengxiao: ['十二生肖运势', '2026下半年十二生肖运势详解 - 老六茶事。'],
+    library: ['藏书阁', '易经、小白教程 - 老六茶事藏书阁。'],
+    tools: ['互动工具', '梅花起卦、每日运势转盘 - 老六茶事互动工具。'],
+    search: ['搜索', '搜索老六茶事文章 - 每日黄历、生肖运势、易学知识。'],
+    privacy: ['隐私政策', '老六茶事隐私政策 - 了解我们如何收集和保护您的信息。']
+  };
+  const m = metaMap[page];
+  if (m) updateMeta(m[0], m[1]);
+
+  // Sync bottom nav
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.page === page);
+  });
+
+  // Scroll to top
+  window.scrollTo(0, 0);
+
+  // Sync sidebar nav items
+  document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.page === page || (page === 'article' && item.dataset.page === lastCategory));
+  });
+
+  // Sync sidebar directory: highlight active article if on article page
+  // NOTE: openArticle() already calls renderDir after fetch — skip here to avoid double-render
+  if (page === 'article') {
+    // sidebar already handled by openArticle after content loads
+  } else if (page === 'huangli') {
+    // 黄历页的侧栏已在上方huangli区块处理，跳过避免重复
+  } else if (page !== 'home') {
+    renderDir(page, null);
+  } else {
+    renderDir(null, null);
+  }
+  
+  // 非首页隐藏梅花动画（防止盖住右侧栏和日历）
+  const plum = document.getElementById('plumContainer');
+  if (plum) plum.style.display = (page === 'home') ? '' : 'none';
+}
+
+// ===== Browser History (fix mobile swipe-back =====
+function pushAppState(type, data) {
+  // type: 'home', 'category', 'article'
+  // data: category name or {category, articleId}
+  const state = { type, data };
+  const title = type === 'home' ? '首页' : 
+    type === 'category' ? CAT_LABELS[data] || data :
+    (allArticles.find(a => a.id === data.articleId)?.title || '文章');
+  history.pushState(state, '', window.location.pathname + window.location.search);
+}
+
+window.addEventListener('popstate', function(e) {
+  const state = e.state;
+  if (!state) {
+    // 如果是从书页返回（sessionStorage已消费），不走回首页
+    if (_bookReturnHandled) {
+      _bookReturnHandled = false;
+      return;
+    }
+    // No app state — go to home
+    navHistory = ['home'];
+    showPage('home');
+    return;
+  }
+  if (state.type === 'home') {
+    navHistory = ['home'];
+    showPage('home');
+  } else if (state.type === 'category') {
+    lastCategory = state.data;
+    navHistory = ['category', state.data];
+    showPage(state.data);
+  } else if (state.type === 'article') {
+    openArticle(state.data.articleId, true);
+  }
+});
+
+// ===== URL参数路由 + SessionStorage（用于从书页返回等场景）=====
+let _bookReturnHandled = false; // 标记是否已从书页返回
+(function() {
+  // 优先检查 sessionStorage（微信浏览器更可靠）
+  const returnTo = sessionStorage.getItem('returnTo');
+  if (returnTo === 'library') {
+    sessionStorage.removeItem('returnTo');
+    showPage('library');
+    _bookReturnHandled = true;
+    return;
+  }
+  const params = new URLSearchParams(window.location.search);
+  const pageParam = params.get('page');
+  if (pageParam === 'library') {
+    showPage('library');
+    _bookReturnHandled = true;
+  } else if (pageParam === 'tools') {
+    showPage('tools');
+  }
+})();
+
+function getCurrentArticleId() {
+  // Extract article id from the currently displayed content
+  const el = document.getElementById('article-body');
+  if (!el) return null;
+  const h1 = el.querySelector('h1');
+  if (!h1) return null;
+  const title = h1.textContent;
+  const a = allArticles.find(x => x.title === title);
+  return a ? a.id : null;
+}
+
+// ===== Related Articles =====
+function renderRelated(a) {
+  const related = allArticles
+    .filter(x => x.category === a.category && x.id !== a.id)
+    .sort((x, y) => y.date.localeCompare(x.date))
+    .slice(0, 3);
+  if (related.length === 0) return '';
+  return `<div class="related-wrap">
+    <div class="rw-title">📌 相关推荐</div>
+    ${related.map(r => `<a class="rw-item" onclick="openArticle('${r.id}')">
+      <span class="rw-title-text">${r.title}</span>
+      <span class="rw-meta">${r.date} · ${r.label || CAT_LABELS[r.category] || r.category}</span>
+    </a>`).join('')}
+  </div>`;
+}
+
+let _rdPend = false;
+function updateMeta(title, desc) {
+  document.title = (title ? title + ' | ' : '') + '老六茶事 · 每日黄历 易学知识';
+  let m = document.querySelector('meta[name="description"]');
+  if (!m) { m = document.createElement('meta'); m.name = 'description'; document.head.appendChild(m); }
+  m.content = desc || '老六茶事 - 每日黄历、生肖运势、麻将运势、梅花易数。每日更新通胜宜忌，传播实用易学知识。';
+}
+function renderDir(category, activeId) {
+  // 防抖：如果一帧内已经被调用了，跳过这次
+  if (_rdPend) return;
+  _rdPend = true;
+  requestAnimationFrame(() => { _rdPend = false; });
+
+  const dir = document.getElementById('rightSidebar');
+  const title = document.getElementById('rightDirTitle');
+  const list = document.getElementById('rightDirList');
+
+  if (!category || category === 'home') {
+    dir.classList.remove('show');
+    delete dir.dataset.sidebarCat;
+    return;
+  }
+
+  dir.dataset.sidebarCat = category;
+
+  // ---- 黄历及麻将运势：右侧栏展示生肖/类型导航 ----
+  if (category === 'huangli' || category === 'majiang') {
+    dir.classList.add('show');
+    title.textContent = '📅 每日黄历';
+
+    if (hlState.day === 0) {
+      list.innerHTML = '<div class="rs-hl-hint">👆 请先点击日历上的日期<br>选择日期查看对应生肖运势</div>';
+      return;
+    }
+
+    const dayStr = hlState.year + '年' + hlState.month + '月' + hlState.day + '日';
+
+    if (hlState.level === 'type') {
+      // 三级：显示类型选择
+      const z = ZODIACS.find(z => z.id === hlState.zodiac);
+      const zodiacStr = z ? (z.emoji + ' 属' + z.name) : '';
+      let html = '<div class="rs-hl-date">' + dayStr + ' · ' + zodiacStr + '</div>';
+      const m = ('0' + hlState.month).slice(-2);
+      const d = ('0' + hlState.day).slice(-2);
+      const dateStr = hlState.year + '-' + m + '-' + d;
+      const hasHL = allArticles.some(a => a.date === dateStr && a.category === 'huangli' && a.zodiac === hlState.zodiac);
+      const hasMJ = allArticles.some(a => a.date === dateStr && a.category === 'majiang' && a.zodiac === hlState.zodiac);
+      html += '<div class="rs-hl-type-grid">';
+      html += '<div class="rs-hl-type-btn huangli' + (hasHL ? ' has-article' : '') + '" onclick="openHuangliArticle()"><span class="rs-ti">📅</span>生肖黄历' + (hasHL ? ' <span class="rs-check">✅</span>' : '') + '</div>';
+      html += '<div class="rs-hl-type-btn majiang' + (hasMJ ? ' has-article' : '') + '" onclick="openMajiangArticle()"><span class="rs-ti">🀄</span>生肖麻将运势' + (hasMJ ? ' <span class="rs-check">✅</span>' : '') + '</div>';
+      html += '</div>';
+      html += '<div class="rs-hl-type-btn back" onclick="hlState.level=\'zodiac\';renderDir(\'huangli\')"><span class="rs-ti">↩️</span>返回选择生肖</div>';
+      list.innerHTML = html;
+    } else {
+      // 二级：显示12生肖
+      const m = ('0' + hlState.month).slice(-2);
+      const d = ('0' + hlState.day).slice(-2);
+      const dateStr = hlState.year + '-' + m + '-' + d;
+      let html = '<div class="rs-hl-date">' + dayStr + '</div>';
+      html += '<div class="rs-hl-zodiac-grid">';
+      ZODIACS.forEach(z => {
+        const count = allArticles.filter(a => a.date === dateStr && a.zodiac === z.id).length;
+        let statusClass = 'zs-none';
+        let statusText = '';
+        if (count === 2) { statusClass = 'zs-full'; statusText = '✅'; }
+        else if (count === 1) { statusClass = 'zs-half'; statusText = '⚠️'; }
+        else { statusClass = 'zs-empty'; statusText = '—'; }
+        html += '<div class="rs-hl-zodiac-btn ' + statusClass + '" onclick="selectZodiac(\'' + z.id + '\')">';
+        html += '<span class="rs-zi">' + z.emoji + '</span>';
+        html += '<span class="rs-zn">属' + z.name + '</span>';
+        html += '<span class="rs-status">' + statusText + '</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+      list.innerHTML = html;
+    }
+    return;
+  }
+
+  // ---- 十二生肖运势：右侧栏展示12生肖导航 ----
+  if (category === 'shengxiao') {
+    dir.classList.add('show');
+    title.textContent = '🐉 十二生肖';
+    let html = '<div class="rs-hl-zodiac-grid">';
+    ZODIACS.forEach(z => {
+      const isActive = _shengxiaoZodiac === z.id;
+      const count = allArticles.filter(a => a.zodiac === z.id && a.category === 'shengxiao').length;
+      html += '<div class="rs-hl-zodiac-btn' + (isActive ? ' active' : '') + '" onclick="selectShengxiaoZodiac(\'' + z.id + '\')">';
+      html += '<span class="rs-zi">' + z.emoji + '</span>';
+      html += '<span class="rs-zn">属' + z.name + '</span>';
+      html += '<span class="rs-status">' + (count > 0 ? count + '篇' : '—') + '</span>';
+      html += '</div>';
+    });
+    html += '</div>';
+    list.innerHTML = html;
+    return;
+  }
+
+  // ---- 其他分类：文章目录 ----
+  dir.classList.add('show');
+  title.textContent = CAT_LABELS[category] || category;
+  
+  const items = allArticles.filter(a => a.category === category);
+  
+  if (items.length === 0) {
+    list.innerHTML = '<div class="rs-empty">暂无文章</div>';
+    return;
+  }
+
+  list.innerHTML = items.map((a, i) => `
+    <div class="rs-item${a.id === activeId ? ' active' : ''}" onclick="openArticle('${a.id}')">
+      <span class="rs-num">${String(i + 1).padStart(2, '0')}</span>
+      <span>${a.title.replace(/^.{0,30}/, m => m.length < a.title.length ? m + '…' : m)}</span>
+    </div>
+  `).join('');
+}
+
+function deskNav(page) {
+  if (page === 'home') {
+    navHistory = ['home'];
+    showPage('home');
+    pushAppState('home', null);
+  } else {
+    lastCategory = page;
+    navHistory = ['category', page];
+    showPage(page);
+    pushAppState('category', page);
+  }
+}
+
+function goCategory(cat) {
+  lastCategory = cat;
+  navHistory = ['category', cat];
+  showPage(cat);
+  pushAppState('category', cat);
+}
+
+async function openArticle(id, fromPopState) {
+  const a = allArticles.find(x => x.id === id);
+  if (!a) return;
+  lastCategory = a.category;
+  navHistory = ['article', a.category];
+  const el = document.getElementById('article-body');
+  if (!el) return;
+
+  // Clear old content and show loading immediately
+  el.innerHTML = '<div class="placeholder-text" style="text-align:center;padding:40px 0;font-size:15px;color:#bbb;">📖 加载中...</div>';
+
+  // Show article page immediately (showPage before fetch so user sees feedback)
+  showPage('article');
+  updateMeta(a.title, a.summary ? a.summary.replace(/<[^>]*>/g,'').substring(0,150) + '…' : '');
+
+  if (a.has_content) {
+    try {
+      const resp = await fetch(`/articles/${id}?_t=${Date.now()}`);
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const html = await resp.text();
+      el.innerHTML = `<h1 style="font-size:22px;color:var(--green-deep);margin-bottom:6px;line-height:1.4;">${a.title}</h1>
+        <div class="detail-meta"><span class="dl-tag">${CAT_LABELS[a.category] || a.category}</span> ${a.date}</div>
+        <div class="article-inner">${html}</div>
+        <div class="ad-placeholder">📢 广告位</div>
+        ${renderRelated(a)}`;
+      renderDir(lastCategory, id);
+    } catch(e) {
+      el.innerHTML = `<h1>${a.title}</h1>
+        <div class="detail-meta"><span class="dl-tag">${CAT_LABELS[a.category] || a.category}</span> ${a.date}</div>
+        <p>${a.summary}</p>
+        <p class="placeholder-text">—— 内容加载失败，请稍后再试 ——</p>`;
+      renderDir(lastCategory, id);
+    }
+  } else {
+    el.innerHTML = `<h1>${a.title}</h1>
+      <div class="detail-meta"><span class="dl-tag">${CAT_LABELS[a.category] || a.category}</span> ${a.date}</div>
+      <p>${a.summary}</p>
+      <div class="dl-section">📖 全文</div>
+      <p class="placeholder-text">—— 完整内容陆续上线 ——</p>`;
+    renderDir(lastCategory, id);
+  }
+
+  if (!fromPopState) {
+    pushAppState('article', { category: a.category, articleId: id });
+  }
+}
+
+function backToList() {
+  if (navHistory.length >= 2 && navHistory[0] === 'article') {
+    const target = navHistory[1];
+    // 黄历和麻将运势文章返回时，回到黄历页面（保持hlState）
+    if (target === 'huangli' || target === 'majiang') {
+      showPage('huangli');
+    } else {
+      showPage(target || 'home');
+    }
+  } else {
+    showPage('home');
+  }
+}
+
+// ===== Bottom Nav Clicks =====
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', function() {
+    const page = this.dataset.page;
+    if (page === 'home') {
+      navHistory = ['home'];
+      showPage('home');
+      pushAppState('home', null);
+    } else {
+      lastCategory = page;
+      navHistory = ['category', page];
+      showPage(page);
+      pushAppState('category', page);
+    }
+  });
+});
+
+// ===== Back to Top + 导航栏自动隐藏 =====
+let lastScrollY = 0;
+window.addEventListener('scroll', function() {
+  const currentScrollY = window.scrollY;
+  const nav = document.getElementById('bottomNav');
+  
+  // 上滑 → 显示导航栏
+  if (currentScrollY < lastScrollY) {
+    nav.classList.remove('hidden');
+  }
+  // 下滑 → 隐藏导航栏（近顶部时保留）
+  else if (currentScrollY > 80 && currentScrollY > lastScrollY) {
+    nav.classList.add('hidden');
+  }
+  
+  lastScrollY = currentScrollY;
+  
+  // Back to top button
+  document.getElementById('backTop').classList.toggle('show', currentScrollY > 400);
+});
+
+// ===== Fallback Data =====
+const FALLBACK_ARTICLES = [
+  { id:'hl-0523', category:'huangli', title:'【梅花易数・今日运势】5月23日（周六）', date:'2026-05-23', summary:'【梅花易数・今日运势】5月23日（周六） body{max-width:700px;margin:0…', label:'今日黄历', has_content:true },
+  { id:'mj-0523', category:'majiang', title:'【今日麻将运势】5月23日（周六）—— 十二生肖逐一点评', date:'2026-05-23', summary:'【今日麻将运势】5月23日（周六）—— 十二生肖逐一点评 body{max-width:700px;…', label:'今日麻将', has_content:true },
+  { id:'bk-0523', category:'zhishi', title:'床头放三样东西，睡眠好财运旺', date:'2026-05-23', summary:'床头放三样东西，睡眠好财运旺     床头放三样东西，睡眠好财运旺   老话说："床头摆对物，财神找…', label:'小知识', has_content:true },
+  { id:'hl-0501', category:'huangli', title:'【梅花易数・今日运势】5月1日（周五）', date:'2026-05-01', summary:'【梅花易数・今日运势】5月1日（周五） body{max-width:700px;margin:0 …', label:'今日黄历', has_content:true },
+  { id:'bk-0516', category:'zhishi', title:'2026年这几个生肖下半年要走大运了，看看有你吗？', date:'2026-05-16', summary:'2026年这几个生肖下半年要走大运了，看看有你吗？         2026年这几个生肖下半年要走大…', label:'小知识', has_content:true },
+  { id:'hl-0522', category:'huangli', title:'【梅花易数・今日运势】5月22日｜今日冲虎煞西南，这三个生肖却好运连连', date:'2026-05-22', summary:'火天大有用克体，冲虎煞西南。属龙属蛇属鼠三合六合，今日好运连连。金被火克，注意压力。', label:'今日黄历', has_content:true },
+  { id:'mj-0522', category:'majiang', title:'【今日麻将运势】5月22日｜今天牌桌上这个生肖逆势翻盘，连胡三把', date:'2026-05-22', summary:'火天大有䷍用克体，宜沉着应战。属蛇属龙大吉，属虎谨慎。财神西南，坐西南位最佳。', label:'今日麻将', has_content:true },
+  { id:'bk-0522', category:'zhishi', title:'小满后30天转运指南，这3个生肖要抓住时机，越干越顺', date:'2026-05-22', summary:'小满后30天运势转换期，属龙属蛇属鼠运势将迎来向上拐点。水运助力、火气渐旺，抓住节气窗口。', label:'小知识', has_content:true },
+  { id:'hl-0521', category:'huangli', title:'【梅花易数・今日运势】5月21日｜今日冲牛煞东北，这三个生肖却好运连连', date:'2026-05-21', summary:'小满节气，泽地萃卦。冲牛煞东北，但兔、马、猪三生肖运势最佳。体生用土生金，先劳后逸之象。', label:'今日黄历', has_content:true },
+  { id:'mj-0521', category:'majiang', title:'【今日麻将运势】5月21日｜小满时节打麻将，耐心就是最好的运气', date:'2026-05-21', summary:'宜打牌，耐心即收益。体生用土生金，先劳后得。今日财神东北，喜神西北。属兔猪运势最佳。', label:'今日麻将', has_content:true },
+  { id:'bk-0521', category:'zhishi', title:'🌾 小满节气禁忌与民俗：这4件事千万别做，否则下半年不顺', date:'2026-05-21', summary:'小满是最有智慧的节气。贪凉过度、说话太满、久坐不动、情绪过激——这4件事今天千万别做。', label:'小知识', has_content:true },
+  { id:'sx-01', category:'shengxiao', title:'2026下半年生肖鼠运势详解：子午相冲，先抑后扬', date:'2026-05-22', summary:'子午相冲，变动之年。下半年运势先抑后扬，农历七月贵人运抬头，十月运势回升明显。', label:'生肖运势', has_content:true, zodiac:'rat' },
+  { id:'sx-02', category:'shengxiao', title:'2026下半年生肖牛运势详解：丑午相害，防小人', date:'2026-05-22', summary:'害太岁之年，人际关系易生摩擦。下半年稳中向好，十月有意外之喜。', label:'生肖运势', has_content:true, zodiac:'ox' },
+  { id:'sx-03', category:'shengxiao', title:'2026下半年生肖虎运势详解：寅午半合，大展拳脚', date:'2026-05-22', summary:'三合之年得天时之利。下半年能量充沛，农历九月三合火局成，运势巅峰。', label:'生肖运势', has_content:true, zodiac:'tiger' },
+  { id:'sx-04', category:'shengxiao', title:'2026下半年生肖兔运势详解：卯午相破，守成为主', date:'2026-05-22', summary:'破太岁之年，表面顺利暗藏波折。谨言慎行，十月后运势回升。', label:'生肖运势', has_content:true, zodiac:'rabbit' },
+  { id:'sx-05', category:'shengxiao', title:'2026下半年生肖龙运势详解：辰土晦火，积蓄力量', date:'2026-05-22', summary:'运势中平偏上。下半年泄火生金，农历七月三合水局，运势最佳。', label:'生肖运势', has_content:true, zodiac:'dragon' },
+  { id:'sx-06', category:'shengxiao', title:'2026下半年生肖蛇运势详解：巳午比和，能量充沛', date:'2026-05-22', summary:'比和相助之年，下半年精力充沛。农历九月三会火方，运势小高峰。', label:'生肖运势', has_content:true, zodiac:'snake' },
+  { id:'sx-07', category:'shengxiao', title:'2026下半年生肖马运势详解：值太岁，宜静不宜动', date:'2026-05-22', summary:'值太岁之年运势起伏大。大事不宜冲动，年底逐渐稳定。', label:'生肖运势', has_content:true, zodiac:'horse' },
+  { id:'sx-08', category:'shengxiao', title:'2026下半年生肖羊运势详解：午未六合，贵人相助', date:'2026-05-22', summary:'六合之年运势顺遂。得贵人相助，事业财运均有不错表现。', label:'生肖运势', has_content:true, zodiac:'goat' },
+  { id:'sx-09', category:'shengxiao', title:'2026下半年生肖猴运势详解：火克金，化压力为动力', date:'2026-05-22', summary:'压力之年但能化压力为动力。下半年先苦后甜，八月后运势好转。', label:'生肖运势', has_content:true, zodiac:'monkey' },
+  { id:'sx-10', category:'shengxiao', title:'2026下半年生肖鸡运势详解：火克金，磨砺中闪耀', date:'2026-05-22', summary:'压力之年但有贵人相助。十月后压力骤减，年底谈薪资晋升好时机。', label:'生肖运势', has_content:true, zodiac:'rooster' },
+  { id:'sx-11', category:'shengxiao', title:'2026下半年生肖狗运势详解：戌午半合，人际关系和谐', date:'2026-05-22', summary:'运势中平，九月后逐渐升温。人际关系和谐，年底有意外之财。', label:'生肖运势', has_content:true, zodiac:'dog' },
+  { id:'sx-12', category:'shengxiao', title:'2026下半年生肖猪运势详解：亥水克火，掌控局面', date:'2026-05-22', summary:'以水克火，表面压力大但能掌控。十月亥水当令，运势最佳。', label:'生肖运势', has_content:true, zodiac:'pig' },
+  { id:'jc-01', category:'jiaocheng', title:'《梅花易数》小白快速入门教程一：简单整体认识梅花易数', date:'2026-04-20', summary:'发现很多朋友对《梅花易数》特别感兴趣，但普遍反馈书看不懂、网上资料又乱又散，踩了不少入门坑。这篇帮你理清核心认知。', label:'教程', has_content:true },
+  { id:'jc-02', category:'jiaocheng', title:'梅花易数小白快速入门教程（二）：书的结构与解字', date:'2026-04-21', summary:'为什么前半本讲起卦解卦，后半本突然变成了一本汉字拆解手册？解字才是梅花易数的隐藏秘籍。', label:'教程', has_content:true },
+  { id:'jc-03', category:'jiaocheng', title:'八卦次序、符号及相关易理（上）', date:'2026-04-22', summary:'先天八卦排序、符号口诀、太极两仪四象的易理内涵。乾1兑2离3震4巽5坎6艮7坤8。', label:'教程', has_content:true },
+  { id:'jc-04', category:'jiaocheng', title:'八卦次序、符号以及相关易理（下）', date:'2026-04-23', summary:'四象之少阴太阴，从乾坤衍生的六子卦。理解即记忆，八卦符号一网打尽。', label:'教程', has_content:true },
+  { id:'jc-05', category:'jiaocheng', title:'八卦属性及五行生克理解', date:'2026-04-24', summary:'金生水 → 水生木 → 木生火 → 火生土 → 土生金。八卦五行属性对照表，生克关系完整解读。', label:'教程', has_content:true },
+  { id:'jc-06', category:'jiaocheng', title:'干支排序及时辰对照', date:'2026-04-25', summary:'天干地支的排序与记忆方法，时辰与生肖对照表。手节掌诀帮你轻松记住干支时辰。', label:'教程', has_content:true },
+  { id:'jc-07', category:'jiaocheng', title:'起卦示例', date:'2026-04-26', summary:'梅花易数起卦方式多种多样，大体可以分为先天起卦和后天起卦两大类。', label:'教程', has_content:true },
+  { id:'jc-08', category:'jiaocheng', title:'解卦示例', date:'2026-04-27', summary:'起卦只是第一步，解卦才是真正的精髓。本篇通过真实案例，带你一步步理解如何解读卦象。', label:'教程', has_content:true },
+  { id:'hl-rat-0524', category:'huangli', title:'生肖鼠今日运势 | 5月24日', date:'2026-05-24', summary:'今日戊戌日，子鼠稳中向好。偏财有小惊喜，催款对账趁上午。人际关系和谐，宜整理财务做规划。', label:'生肖运势', has_content:true , zodiac:'rat'},
+  { id:'mj-rat-0524', category:'majiang', title:'生肖鼠今日麻将运势 | 5月24日打牌全攻略', date:'2026-05-24', summary:'戊戌日子鼠排名第4。宜打！子辰半合水局，赢面70%。吉位坐正北，吉时子时。以稳为主平胡优先。', label:'麻将运势', has_content:true , zodiac:'rat'},
+  { id:'hl-ox-0524', category:'huangli', title:'生肖牛今日运势 | 5月24日', date:'2026-05-24', summary:'今日戊戌日，丑牛土土比和。按部就班最安稳，财运中平。适合整理、收尾、归档，不宜强出头。', label:'生肖运势', has_content:true , zodiac:'ox'},
+  { id:'mj-ox-0524', category:'majiang', title:'生肖牛今日麻将运势 | 5月24日打牌全攻略', date:'2026-05-24', summary:'戊戌日丑牛排名第7。可打！丑未相冲输赢交替。吉位坐正南，吉时巳时。今天适合打短局见好就收。', label:'麻将运势', has_content:true , zodiac:'ox'},
+  { id:'hl-tiger-0524', category:'huangli', title:'生肖虎今日运势 | 5月24日', date:'2026-05-24', summary:'今日戊戌日，寅虎与戌狗半合。贵人运好，财星当令提成和奖金。精力足效率高，宜攻坚克难。', label:'生肖运势', has_content:true , zodiac:'tiger'},
+  { id:'mj-tiger-0524', category:'majiang', title:'生肖虎今日麻将运势 | 5月24日打牌全攻略', date:'2026-05-24', summary:'戊戌日寅虎排名第3。宜打！寅午戌合火局赢面65%。吉位坐正南，吉时午时。有翻盘潜质勿急勿躁。', label:'麻将运势', has_content:true , zodiac:'tiger'},
+  { id:'hl-rabbit-0524', category:'huangli', title:'生肖兔今日运势 | 5月24日', date:'2026-05-24', summary:'今日戊戌日，卯兔戌狗相合。社交运佳，利于合作和人脉拓展。财运偏正财稳定，适合推进项目。', label:'生肖运势', has_content:true , zodiac:'rabbit'},
+  { id:'mj-rabbit-0524', category:'majiang', title:'生肖兔今日麻将运势 | 5月24日打牌全攻略', date:'2026-05-24', summary:'戊戌日卯兔排名第8。可打！卯戌合火局但冲劲不足。吉位正南，谨慎为主。今天偏稳健防守型选手。', label:'麻将运势', has_content:true , zodiac:'rabbit'},
+  { id:'hl-dragon-0524', category:'huangli', title:'生肖龙今日运势 | 5月24日', date:'2026-05-24', summary:'今日戊戌日，辰龙戌狗相冲。冲日大事不宜，防破财和小人。情绪易波动，宜静不宜动保平安。', label:'生肖运势', has_content:true , zodiac:'dragon'},
+  { id:'mj-dragon-0524', category:'majiang', title:'生肖龙今日麻将运势 | 5月24日打牌全攻略', date:'2026-05-24', summary:'戊戌日辰龙排名第1。大吉！辰戌相冲反而激活气场。吉位坐西北，吉时辰时。主动进攻型打法赢面大。', label:'麻将运势', has_content:true , zodiac:'dragon'},
+  { id:'hl-snake-0524', category:'huangli', title:'生肖蛇今日运势 | 5月24日', date:'2026-05-24', summary:'今日戊戌日，巳蛇与戌狗无冲无合。运势平稳，财运中平偏上适合收尾旧账。不宜冲动消费。', label:'生肖运势', has_content:true , zodiac:'snake'},
+  { id:'mj-snake-0524', category:'majiang', title:'生肖蛇今日麻将运势 | 5月24日打牌全攻略', date:'2026-05-24', summary:'戊戌日巳蛇排名第2。宜打！巳酉丑三合赢面75%。吉位坐西南，吉时申时。防守反击稳中求胜。', label:'麻将运势', has_content:true , zodiac:'snake'},
+  { id:'hl-horse-0524', category:'huangli', title:'生肖马今日运势 | 5月24日', date:'2026-05-24', summary:'今日戊戌日，午马戌狗半合。精力充沛，执行力强。财运中上，偏财有机遇但别贪心。适宜社交。', label:'生肖运势', has_content:true , zodiac:'horse'},
+  { id:'mj-horse-0524', category:'majiang', title:'生肖马今日麻将运势 | 5月24日打牌全攻略', date:'2026-05-24', summary:'戊戌日午马排名第6。可打！午戌半合火局赢面55%。吉位正西，子时勿战。今天靠气势不靠运气。', label:'麻将运势', has_content:true , zodiac:'horse'},
+  { id:'hl-goat-0524', category:'huangli', title:'生肖羊今日运势 | 5月24日', date:'2026-05-24', summary:'今日戊戌日，未羊与戌狗相刑。防小人和口舌，财运不稳不宜做重大财务决定。宜低调勿冲动。', label:'生肖运势', has_content:true , zodiac:'goat'},
+  { id:'mj-goat-0524', category:'majiang', title:'生肖羊今日麻将运势 | 5月24日打牌全攻略', date:'2026-05-24', summary:'戊戌日未羊排名第11。慎打！未戌相刑暗斗不断。吉位西南亥时。今天适合陪打不宜动真格。', label:'麻将运势', has_content:true , zodiac:'goat'},
+  { id:'hl-monkey-0524', category:'huangli', title:'生肖猴今日运势 | 5月24日', date:'2026-05-24', summary:'今日戊戌日，申猴无冲无合。运势中平，财运一般但有小惊喜。适合专注做事，不宜社交。', label:'生肖运势', has_content:true , zodiac:'monkey'},
+  { id:'mj-monkey-0524', category:'majiang', title:'生肖猴今日麻将运势 | 5月24日打牌全攻略', date:'2026-05-24', summary:'戊戌日申猴排名第5。可打！申酉戌三会金局赢面60%。吉位正西巳时申时。观察先行不冒进。', label:'麻将运势', has_content:true , zodiac:'monkey'},
+  { id:'hl-rooster-0524', category:'huangli', title:'生肖鸡今日运势 | 5月24日', date:'2026-05-24', summary:'今日戊戌日，酉鸡戌狗相害。暗藏不顺，大事不宜。财运不稳利短平快。易遇小人，谨言慎行。', label:'生肖运势', has_content:true , zodiac:'rooster'},
+  { id:'mj-rooster-0524', category:'majiang', title:'生肖鸡今日麻将运势 | 5月24日打牌全攻略', date:'2026-05-24', summary:'戊戌日酉鸡排名第10。不宜大赌！酉戌相害小人当道。吉位西南，不宜与属龙同桌。', label:'麻将运势', has_content:true , zodiac:'rooster'},
+  { id:'hl-dog-0524', category:'huangli', title:'生肖狗今日运势 | 5月24日', date:'2026-05-24', summary:'今日戊戌日，值日！戌狗当令最强运势。能量爆棚，财运贵人运双旺。适合推动重要事务。', label:'生肖运势', has_content:true , zodiac:'dog'},
+  { id:'mj-dog-0524', category:'majiang', title:'生肖狗今日麻将运势 | 5月24日打牌全攻略', date:'2026-05-24', summary:'戊戌日戌狗排名第9。平打！本命值日气场最强但难控制。吉位正南午时。见好就收输了不追。', label:'麻将运势', has_content:true , zodiac:'dog'},
+  { id:'hl-pig-0524', category:'huangli', title:'生肖猪今日运势 | 5月24日', date:'2026-05-24', summary:'今日戊戌日，亥猪戌狗无冲无合。运势中平偏上，财运不错但不稳定。宜按计划推进不宜冒进。', label:'生肖运势', has_content:true , zodiac:'pig'},
+  { id:'mj-pig-0524', category:'majiang', title:'生肖猪今日麻将运势 | 5月24日打牌全攻略', date:'2026-05-24', summary:'戊戌日亥猪排名第12。不宜！亥戌相破输面大于赢面。避战为主，若打短局浅尝辄止。', label:'麻将运势', has_content:true , zodiac:'pig'},
+  // ===== 5月25日（己亥日）=====
+  { id:'hl-rat-0525', category:'huangli', title:'生肖鼠今日运势 | 5月25日', date:'2026-05-25', summary:'今日己亥日，子亥比和水气相通。运势中上，财运不错适合催款对账。工作效率高，感情平稳。宜整理财务巩固关系。', label:'生肖运势', has_content:true , zodiac:'rat'},
+  { id:'mj-rat-0525', category:'majiang', title:'生肖鼠今日麻将运势 | 5月25日打牌全攻略', date:'2026-05-25', summary:'子亥比和第三名！运势不错赢面75%。坐正北子时最佳。技术流路线平胡优先。', label:'麻将运势', has_content:true , zodiac:'rat'},
+  { id:'hl-ox-0525', category:'huangli', title:'生肖牛今日运势 | 5月25日', date:'2026-05-25', summary:'今日己亥日，丑土克亥水。运势中平偏紧，守财为主不宜冲动消费。工作适合慢工出细活，下午比上午效率高。', label:'生肖运势', has_content:true , zodiac:'ox'},
+  { id:'mj-ox-0525', category:'majiang', title:'生肖牛今日麻将运势 | 5月25日打牌全攻略', date:'2026-05-25', summary:'丑土克水第八名！运势偏弱赢面40%。坐东北巳时最佳。短局娱乐别打大场子。', label:'麻将运势', has_content:true , zodiac:'ox'},
+  { id:'hl-tiger-0525', category:'huangli', title:'生肖虎今日运势 | 5月25日', date:'2026-05-25', summary:'今日己亥日，寅亥六合化木！大吉之日。财运事业感情全线飘红，大胆行动必有收获。今天是你展现能力的好日子。', label:'生肖运势', has_content:true , zodiac:'tiger'},
+  { id:'mj-tiger-0525', category:'majiang', title:'生肖虎今日麻将运势 | 5月25日打牌全攻略', date:'2026-05-25', summary:'寅亥六合第一名！赢面95%大胆做庄。坐正东最佳卯时上桌。红中必碰，今天你最大。', label:'麻将运势', has_content:true , zodiac:'tiger'},
+  { id:'hl-rabbit-0525', category:'huangli', title:'生肖兔今日运势 | 5月25日', date:'2026-05-25', summary:'今日己亥日，卯亥半合木局。运势中上，财运中等偏上偏财有惊喜。工作稳步推进，感情和谐。适合社交和约见。', label:'生肖运势', has_content:true , zodiac:'rabbit'},
+  { id:'mj-rabbit-0525', category:'majiang', title:'生肖兔今日麻将运势 | 5月25日打牌全攻略', date:'2026-05-25', summary:'卯亥半合第五名！运势中上赢面65%。坐正东卯时最佳。平胡保底不贪大牌。', label:'麻将运势', has_content:true , zodiac:'rabbit'},
+  { id:'hl-dragon-0525', category:'huangli', title:'生肖龙今日运势 | 5月25日', date:'2026-05-25', summary:'今日己亥日，辰土为库收纳亥水。运势中平偏紧压力不小。财运不宜大动作，工作适合埋头苦干。', label:'生肖运势', has_content:true , zodiac:'dragon'},
+  { id:'mj-dragon-0525', category:'majiang', title:'生肖龙今日麻将运势 | 5月25日打牌全攻略', date:'2026-05-25', summary:'辰为水库第七名！运势中平赢面55%。坐东南巳时最佳。休闲消遣不宜较真。', label:'麻将运势', has_content:true , zodiac:'dragon'},
+  { id:'hl-snake-0525', category:'huangli', title:'生肖蛇今日运势 | 5月25日', date:'2026-05-25', summary:'今日己亥日，巳亥相冲！冲日运势波动大。不利远行和重大决定。低调保平安，明天运势就回转。', label:'生肖运势', has_content:true , zodiac:'snake'},
+  { id:'mj-snake-0525', category:'majiang', title:'生肖蛇今日麻将运势 | 5月25日打牌全攻略', date:'2026-05-25', summary:'巳亥相冲第12名！冲日赢面10%。坐正南全天不宜。远离牌桌就是赚钱。', label:'麻将运势', has_content:true , zodiac:'snake'},
+  { id:'hl-horse-0525', category:'huangli', title:'生肖马今日运势 | 5月25日', date:'2026-05-25', summary:'今日己亥日，午亥暗合。运势中平，财运暗财有惊喜。工作节奏正好适合清旧账。陪伴家人最暖心。', label:'生肖运势', has_content:true , zodiac:'horse'},
+  { id:'mj-horse-0525', category:'majiang', title:'生肖马今日麻将运势 | 5月25日打牌全攻略', date:'2026-05-25', summary:'午亥暗合第六名！运势中平赢面60%。坐正南午时最佳。见好就收技术流。', label:'麻将运势', has_content:true , zodiac:'horse'},
+  { id:'hl-goat-0525', category:'huangli', title:'生肖羊今日运势 | 5月25日', date:'2026-05-25', summary:'今日己亥日，未土克亥水。运势中平偏紧，财运偏紧小单子跑量。工作适合独立干事不被打扰。', label:'生肖运势', has_content:true , zodiac:'goat'},
+  { id:'mj-goat-0525', category:'majiang', title:'生肖羊今日麻将运势 | 5月25日打牌全攻略', date:'2026-05-25', summary:'未土克水第十名！运势偏弱赢面30%。坐西南卯时最佳。陪跑型选手别当真。', label:'麻将运势', has_content:true , zodiac:'goat'},
+  { id:'hl-monkey-0525', category:'huangli', title:'生肖猴今日运势 | 5月25日', date:'2026-05-25', summary:'今日己亥日，申亥相害。运势偏弱易遇小人。财运不佳多检查，凡事留痕书面确认。低调保平安。', label:'生肖运势', has_content:true , zodiac:'monkey'},
+  { id:'mj-monkey-0525', category:'majiang', title:'生肖猴今日麻将运势 | 5月25日打牌全攻略', date:'2026-05-25', summary:'申亥相害第11名！运势低赢面25%。坐西南巳时最佳。远离牌桌做点别的。', label:'麻将运势', has_content:true , zodiac:'monkey'},
+  { id:'hl-rooster-0525', category:'huangli', title:'生肖鸡今日运势 | 5月25日', date:'2026-05-25', summary:'今日己亥日，酉金生亥水。运势不错！财运佳签单运旺。工作状态好大胆展示。感情甜蜜适合表白。', label:'生肖运势', has_content:true , zodiac:'rooster'},
+  { id:'mj-rooster-0525', category:'majiang', title:'生肖鸡今日麻将运势 | 5月25日打牌全攻略', date:'2026-05-25', summary:'酉金生亥水第四名！赢面70%靠技术取胜。坐正西申时最佳。平胡稳扎稳打。', label:'麻将运势', has_content:true , zodiac:'rooster'},
+  { id:'hl-dog-0525', category:'huangli', title:'生肖狗今日运势 | 5月25日', date:'2026-05-25', summary:'今日己亥日，戌土克亥水。运势中平偏紧容易疲惫烦躁。守财为主别冲动，累了就休息别硬撑。', label:'生肖运势', has_content:true , zodiac:'dog'},
+  { id:'mj-dog-0525', category:'majiang', title:'生肖狗今日麻将运势 | 5月25日打牌全攻略', date:'2026-05-25', summary:'戌土克水第九名！运势偏弱赢面35%。坐西北卯时最佳。今天最好别打牌。', label:'麻将运势', has_content:true , zodiac:'dog'},
+  { id:'hl-pig-0525', category:'huangli', title:'生肖猪今日运势 | 5月25日', date:'2026-05-25', summary:'今日己亥日，亥亥比和当令日！运势最佳。财运工作感情全线开花。大胆出击别让好运溜走。', label:'生肖运势', has_content:true , zodiac:'pig'},
+  { id:'mj-pig-0525', category:'majiang', title:'生肖猪今日麻将运势 | 5月25日打牌全攻略', date:'2026-05-25', summary:'亥亥比和第二名！当令之日运势高涨赢面90%。坐正北申时最佳。红中见了就碰别留。', label:'麻将运势', has_content:true , zodiac:'pig'},
+];
+
+// ===== Init =====
+loadData();
+
+// ===== 🏵️ 梅花动画（仅桌面端-原版恢复） =====
+(function() {
+  if (window.innerWidth < 768) return;
+  
+  let cv, ctx, W, H, blossoms = [], branch = [], anim, time = 0, grow = 0;
+  let held = null;
+
+  function init() {
+    const container = document.getElementById('plumContainer');
+    if (!container) return;
+    cv = document.createElement('canvas');
+    cv.id = 'plumCanvas';
+    cv.style.cssText = 'width:100%;display:block;cursor:default;';
+    container.appendChild(cv);
+    resize(); window.addEventListener('resize', resize);
+    genBranch();
+    cv.addEventListener('mousedown', onDown);
+    cv.addEventListener('mousemove', onMove);
+    cv.addEventListener('mouseup', onUp);
+    cv.addEventListener('mouseleave', onUp);
+    cv.addEventListener('touchstart',  e => { const t = e.touches[0]; onDown({clientX:t.clientX,clientY:t.clientY,preventDefault:()=>{}}); }, {passive:false});
+    cv.addEventListener('touchmove',   e => { const t = e.touches[0]; onMove({clientX:t.clientX,clientY:t.clientY,preventDefault:()=>{}}); e.preventDefault(); }, {passive:false});
+    cv.addEventListener('touchend',    onUp);
+    anim = requestAnimationFrame(tick);
+  }
+
+  function resize() {
+    const w = 240, h = 500;
+    const dpr = window.devicePixelRatio || 1;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    ctx = cv.getContext('2d'); ctx.scale(dpr, dpr);
+    W = w; H = h;
+    grow = 0;
+    if (branch.length > 0) genBranch();
+  }
+
+  let sideBranches = [];
+
+  function genBranch() {
+    branch = []; sideBranches = []; blossoms = [];
+    const segments = 28;
+    // Main branch — curved, not straight
+    for (let i = 0; i <= segments; i++) {
+      const t = i / segments;
+      branch.push({
+        x: W/2 + Math.sin(t * 2.5) * W * 0.18 - t * W * 0.06,
+        y: H + 10 - t * (H + 10 - 80),
+        r: 5.5 * (1 - t * 0.8) + 1
+      });
+    }
+    // Side branches — drawn visibly
+    for (let i = 6; i < segments; i += 5 + Math.floor(Math.random() * 4)) {
+      if (i > segments - 4) break;
+      const b = branch[i];
+      const dir = Math.sin(i * 1.5) > 0 ? 1 : -1;
+      const pts = [];
+      const len = 25 + Math.random() * 30;
+      for (let j = 0; j <= 3; j++) {
+        const st = j / 3;
+        pts.push({
+          x: b.x + dir * st * len + Math.sin(st * 1.5) * 6,
+          y: b.y - 5 - st * (20 + Math.random() * 15)
+        });
+      }
+      sideBranches.push({ pts, thickness: b.r * 0.45 });
+      // Blossoms at side branch tip
+      const tip2 = pts[pts.length - 1];
+      blossoms.push(makeBlossom(tip2.x, tip2.y, i + 1));
+      if (Math.random() > 0.4) {
+        blossoms.push(makeBlossom(
+          tip2.x + (Math.random() - 0.5) * 10,
+          tip2.y + (Math.random() - 0.5) * 8,
+          i + 1
+        ));
+      }
+    }
+    // Blossoms on main branch
+    for (let i = 4; i < branch.length - 2; i += 2) {
+      if (Math.random() > 0.35) {
+        const b = branch[i];
+        blossoms.push(makeBlossom(b.x + (Math.random()-0.5)*18, b.y - 5 + Math.random()*10, i));
+      }
+    }
+    // Tip cluster
+    const tip = branch[branch.length-1];
+    for (let i = 0; i < 5; i++) {
+      const a = Math.random() * Math.PI - Math.PI * 0.5;
+      const d = 15 + Math.random() * 35;
+      blossoms.push(makeBlossom(tip.x + Math.cos(a)*d, tip.y + Math.sin(a)*d - 12, branch.length-1));
+    }
+  }
+
+  function makeBlossom(x, y, idx) {
+    const pinks = ['#f0a0b8','#e88296','#f5b8ca','#d47084','#f0c4cc','#e898a8'];
+    return {
+      x, y, size: 10 + Math.random() * 12,
+      color: pinks[Math.floor(Math.random()*pinks.length)],
+      bloom: Math.random() * 0.2,
+      speed: 0.003 + Math.random() * 0.006,
+      angle: Math.random() * Math.PI * 2,
+      sway: Math.random() * 2 + 1,
+      swaySpeed: 0.001 + Math.random() * 0.002,
+      picked: false, falling: false,
+      fallY: 0, fallV: 0, fallXoff: 0,
+      branchIdx: idx
+    };
+  }
+
+  function drawBranch(ctx, p) {
+    const max = Math.floor(p * branch.length);
+    const drawTo = Math.min(max, branch.length - 1);
+    if (drawTo < 1) return;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    for (let i = 0; i < drawTo; i++) {
+      const b = branch[i], nb = branch[i+1] || b;
+      ctx.beginPath();
+      ctx.moveTo(b.x, b.y);
+      ctx.lineTo((b.x+nb.x)/2, (b.y+nb.y)/2);
+      ctx.strokeStyle = '#4a3728';
+      ctx.lineWidth = b.r;
+      ctx.stroke();
+    }
+    if (drawTo >= 2 && max > drawTo) {
+      const frac = max - drawTo;
+      const b = branch[drawTo];
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r * frac, 0, Math.PI*2);
+      ctx.fillStyle = '#4a3728';
+      ctx.fill();
+    }
+    // Side branches
+    for (const sb of sideBranches) {
+      if (sb.pts[0].y > branch[0].y - (1-p) * H) continue;
+      ctx.beginPath();
+      ctx.moveTo(sb.pts[0].x, sb.pts[0].y);
+      for (let j = 1; j < sb.pts.length; j++) {
+        ctx.lineTo(sb.pts[j].x, sb.pts[j].y);
+      }
+      ctx.strokeStyle = '#4a3728';
+      ctx.lineWidth = sb.thickness;
+      ctx.stroke();
+    }
+  }
+
+  function drawBlossom(ctx, b, scale) {
+    if (b.picked && !b.falling && !held) return;
+    scale = scale || 1;
+    const p = Math.min(1, b.bloom * scale);
+    if (p < 0.05) return;
+    const s = b.size * Math.min(1, p * 1.4);
+    const sway = Math.sin(time * b.swaySpeed + b.angle) * b.sway * p;
+    const cx = b.x + sway + (b.falling ? b.fallXoff : 0);
+    const cy = b.y + (b.falling ? b.fallY : 0);
+    const rot = b.angle + (b.falling ? time * 0.03 : 0);
+
+    for (let i = 0; i < 5; i++) {
+      const a = (Math.PI*2/5) * i + rot;
+      const px = cx + Math.cos(a) * s * 0.45 * p;
+      const py = cy + Math.sin(a) * s * 0.45 * p;
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.rotate(a);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, s * 0.40 * p, s * 0.50 * p, 0, 0, Math.PI*2);
+      ctx.fillStyle = b.color;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(180,80,100,0.15)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    if (p > 0.5) {
+      const cp = (p - 0.5) / 0.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, s * 0.12 * cp, 0, Math.PI*2);
+      ctx.fillStyle = '#e8c040';
+      ctx.fill();
+      for (let i = 0; i < 6; i++) {
+        const a = Math.random() * Math.PI*2;
+        const d = s * 0.14 * cp;
+        ctx.beginPath();
+        ctx.arc(cx + Math.cos(a)*d, cy + Math.sin(a)*d, s*0.03, 0, Math.PI*2);
+        ctx.fillStyle = '#c89820';
+        ctx.fill();
+      }
+    }
+  }
+
+  function onDown(e) {
+    const rect = cv.getBoundingClientRect();
+    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    for (let i = blossoms.length - 1; i >= 0; i--) {
+      const b = blossoms[i];
+      if (b.picked || b.bloom < 0.7) continue;
+      const dx = mx - b.x, dy = my - b.y;
+      if (dx*dx + dy*dy < (b.size*0.7)**2) {
+        b.picked = true;
+        held = { blossom: b, offX: mx - b.x, offY: my - b.y };
+        cv.style.cursor = 'grabbing';
+        e.preventDefault();
+        break;
+      }
+    }
+  }
+
+  function onMove(e) {
+    const rect = cv.getBoundingClientRect();
+    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    if (held) {
+      held.blossom.x = mx - held.offX;
+      held.blossom.y = my - held.offY;
+      cv.style.cursor = 'grabbing';
+      return;
+    }
+    let over = false;
+    for (const b of blossoms) {
+      if (b.picked || b.bloom < 0.7) continue;
+      if ((mx - b.x)**2 + (my - b.y)**2 < (b.size*0.7)**2) { over = true; break; }
+    }
+    cv.style.cursor = over ? 'grab' : 'default';
+  }
+
+  function onUp() {
+    if (held) {
+      held.blossom.falling = true;
+      held.blossom.fallY = 0;
+      held.blossom.fallV = 0;
+      held.blossom.fallXoff = 0;
+      held = null;
+      cv.style.cursor = 'default';
+    }
+  }
+
+  function tick(ts) {
+    time++;
+    ctx.clearRect(0, 0, W, H);
+    
+    const g = ctx.createLinearGradient(0, H*0.3, 0, H);
+    g.addColorStop(0, 'rgba(239,228,208,0)');
+    g.addColorStop(1, 'rgba(239,228,208,0.5)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    if (grow < 1) grow = Math.min(1, grow + 0.006);
+
+    drawBranch(ctx, grow);
+
+    for (let i = blossoms.length - 1; i >= 0; i--) {
+      const b = blossoms[i];
+      const idx = b.branchIdx;
+      const bp = grow * branch.length;
+      
+      if (!b.picked && idx < bp + 3) {
+        b.bloom = Math.min(1, b.bloom + b.speed);
+      }
+
+      if (b.falling) {
+        b.fallV += 0.12;
+        b.fallY += b.fallV;
+        b.fallXoff += Math.sin(time * 0.015 + b.angle) * 0.4;
+        b.angle += 0.015;
+        if (b.fallY > H + 30) {
+          blossoms.splice(i, 1);
+          const tip = branch[branch.length-1];
+          const na = Math.random() * Math.PI * 2;
+          const nd = 15 + Math.random() * 40;
+          setTimeout(() => {
+            const nb = makeBlossom(tip.x + Math.cos(na)*nd, tip.y + Math.sin(na)*nd - 15, branch.length-1);
+            nb.bloom = 0;
+            blossoms.push(nb);
+          }, 2000 + Math.random() * 3000);
+          continue;
+        }
+        drawBlossom(ctx, b, 1);
+      } else if (!b.picked || held && held.blossom === b) {
+        drawBlossom(ctx, b, 1);
+      }
+    }
+
+    anim = requestAnimationFrame(tick);
+  }
+
+  if (document.readyState === 'complete') setTimeout(init, 200);
+  else window.addEventListener('load', () => setTimeout(init, 200));
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && anim) { cancelAnimationFrame(anim); anim = null; }
+    else if (!document.hidden && !anim) anim = requestAnimationFrame(tick);
+  });
+})();
+
+// ===== 农历日期转换 =====
+const LUNAR_INFO = [
+  0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+  0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+  0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+  0x06566,0x0d4a0,0x0ea50,0x16a95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+  0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
+  0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,
+  0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
+  0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,
+  0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
+  0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x05ac0,0x0ab60,0x096d5,0x092e0,
+  0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,
+  0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,
+  0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,
+  0x05aa0,0x076a3,0x096d0,0x04afb,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,
+  0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,
+  0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06aa0,0x1a6c4,0x0aae0,
+  0x09e24,0x092e0,0x0c960,0x0d4a0,0x0da50,0x0da55,0x056a0,0x056d0,0x1ae6b,0x05350,
+  0x0a950,0x0b4a0,0x0ba50,0x0b5a0,0x0ada0,0x0ada2,0x09570,0x05370,0x14a45,0x0a4b0,
+  0x0a4b0,0x0a930,0x0a930,0x06a50,0x0ad50,0x199f6,0x0b5a0,0x056d0,0x056d0,0x04b60,
+  0x0a670,0x0a4e0,0x0d260,0x0ea50,0x06d50,0x05a50,0x0ab60,0x0ab60,0x09570,0x124bb,
+  0x0a4b0
+];
+const LUNAR_MONTHS = ['正','二','三','四','五','六','七','八','九','十','冬','腊'];
+const LUNAR_DAYS = ['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十',
+  '十一','十二','十三','十四','十五','十六','十七','十八','十九','二十',
+  '廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
+
+function lunarLeapMonth(y) { return LUNAR_INFO[y - 1900] & 0xf; }
+function lunarLeapDays(y) { return lunarLeapMonth(y) ? ((LUNAR_INFO[y - 1900] & 0x10000) ? 30 : 29) : 0; }
+function lunarMonthDays(y, m) { return (LUNAR_INFO[y - 1900] & (0x10000 >> m)) ? 30 : 29; }
+function lunarYearDays(y) {
+  let sum = 348;
+  for (let i = 0x8000; i > 0x8; i >>= 1) sum += (LUNAR_INFO[y - 1900] & i) ? 1 : 0;
+  return sum + lunarLeapDays(y);
+}
+
+function solarToLunar(year, month, day) {
+  const baseDate = new Date(1900, 0, 31); // 1900-01-31 = lunar 1900-01-01
+  const targetDate = new Date(year, month - 1, day);
+  let offset = Math.floor((targetDate - baseDate) / 86400000);
+  
+  if (offset < 0) return {lunarYear:1900,lunarMonth:1,lunarDay:1,isLeap:false};
+  
+  let lunarYear, i;
+  for (lunarYear = 1900; lunarYear < 2101 && offset > 0; lunarYear++) {
+    const yd = lunarYearDays(lunarYear);
+    offset -= yd;
+  }
+  if (offset < 0) { offset += lunarYearDays(lunarYear - 1); lunarYear--; }
+  
+  const leapM = lunarLeapMonth(lunarYear);
+  let isLeap = false;
+  for (i = 1; i < 13 && offset > 0; i++) {
+    if (leapM > 0 && i === (leapM + 1) && !isLeap) {
+      i--;
+      isLeap = true;
+      const ld = lunarLeapDays(lunarYear);
+      if (offset < ld) break;
+      offset -= ld;
+      isLeap = false;
+    } else {
+      const md = lunarMonthDays(lunarYear, i);
+      if (offset < md) break;
+      offset -= md;
+    }
+  }
+  
+  return { lunarYear, lunarMonth: i, lunarDay: offset + 1, isLeap };
+}
+
+function getLunarStr(y, m, d) {
+  const l = solarToLunar(y, m, d);
+  const monthStr = (l.isLeap ? '闰' : '') + LUNAR_MONTHS[l.lunarMonth - 1] + '月';
+  const dayStr = LUNAR_DAYS[l.lunarDay - 1] || '';
+  // 初一显示月份，其他显示日期
+  if (l.lunarDay === 1) return monthStr;
+  return dayStr;
+}
+
+// 简单宜忌（按农历日期轮换）
+const YI_LIST = ['嫁娶','出行','开业','搬家','动土','入宅','安床','祭祀','祈福','求财','交易','签约'];
+const JI_LIST = ['嫁娶','出行','动土','开市','入宅','安葬','移徙','理发','安床','破土','上梁','交易'];
+function getYiJi(y, m, d) {
+  const l = solarToLunar(y, m, d);
+  const idx = (l.lunarDay + l.lunarMonth * 3) % 12;
+  return { yi: YI_LIST[idx], ji: JI_LIST[(idx + 5) % 12] };
+}
+
+// ===== 黄历日历 + 三级导航 =====
+const ZODIACS = [
+  { id: 'rat', name: '鼠', emoji: '🐭' },
+  { id: 'ox', name: '牛', emoji: '🐮' },
+  { id: 'tiger', name: '虎', emoji: '🐯' },
+  { id: 'rabbit', name: '兔', emoji: '🐰' },
+  { id: 'dragon', name: '龙', emoji: '🐲' },
+  { id: 'snake', name: '蛇', emoji: '🐍' },
+  { id: 'horse', name: '马', emoji: '🐴' },
+  { id: 'goat', name: '羊', emoji: '🐑' },
+  { id: 'monkey', name: '猴', emoji: '🐵' },
+  { id: 'rooster', name: '鸡', emoji: '🐔' },
+  { id: 'dog', name: '狗', emoji: '🐶' },
+  { id: 'pig', name: '猪', emoji: '🐷' }
+];
+
+let hlState = { level: 'cal', year: 0, month: 0, day: 0, zodiac: '' };
+let _shengxiaoZodiac = ''; // 十二生肖运势页当前选中的生肖
+
+function getArticleForDate(day, month, year) {
+  const m = ('0' + month).slice(-2);
+  const d = ('0' + day).slice(-2);
+  const dateStr = year + '-' + m + '-' + d;
+  return allArticles.find(a => a.date === dateStr) || null;
+}
+
+function fillHuangli() {
+  const now = new Date();
+  hlState.year = now.getFullYear();
+  hlState.month = now.getMonth() + 1;
+  if (window.innerWidth >= 768) {
+    hlState.day = now.getDate();
+    hlState.level = 'zodiac';
+  } else {
+    hlState.day = 0;
+    hlState.level = 'cal';
+  }
+  renderHuangli();
+  // 桌面端：默认选中当日，右侧栏显示12生肖
+  if (window.innerWidth >= 768) {
+    renderDir('huangli', null);
+  }
+}
+
+function renderHuangli() {
+  const container = document.getElementById('huangli-container');
+  if (!container) return;
+  
+  const isDesktop = window.innerWidth >= 768;
+  
+  if (isDesktop) {
+    renderCalendar(container);
+  } else {
+    // 移动端：日历模式固定，生肖/类型模式可滑动
+    const huangliPage = document.getElementById('page-huangli');
+    if (hlState.level === 'cal') {
+      huangliPage.classList.add('hl-cal-mode');
+    } else {
+      huangliPage.classList.remove('hl-cal-mode');
+    }
+    if (hlState.level === 'cal') renderCalendar(container);
+    else if (hlState.level === 'zodiac') renderZodiac(container);
+    else if (hlState.level === 'type') renderType(container);
+    
+    // 绑定左边缘右滑返回手势
+    setupHuangliSwipe(container);
+  }
+}
+
+let hlSwipeStartX = 0;
+let hlSwipeBound = false;
+function setupHuangliSwipe(container) {
+  if (hlSwipeBound) return;
+  hlSwipeBound = true;
+  container.addEventListener('touchstart', function(e) {
+    hlSwipeStartX = e.touches[0].clientX;
+  }, { passive: true });
+  container.addEventListener('touchend', function(e) {
+    const dx = e.changedTouches[0].clientX - hlSwipeStartX;
+    // 左边缘（距离左边界<40px）向右滑>60px → 返回上一级
+    if (dx > 60 && hlSwipeStartX < 40) {
+      if (hlState.level === 'zodiac') {
+        hlState.level = 'cal';
+        renderHuangli();
+      } else if (hlState.level === 'type') {
+        hlState.level = 'zodiac';
+        renderHuangli();
+      }
+    }
+  }, { passive: true });
+}
+
+function renderCalendar(container) {
+  const y = hlState.year, m = hlState.month;
+  const firstDay = new Date(y, m - 1, 1).getDay();
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const today = new Date();
+  const isToday = (d) => today.getFullYear() === y && today.getMonth() === m - 1 && today.getDate() === d;
+  
+  let html = '<div class="hl-cal">';
+  
+  // 返回首页大按钮（横跨整行）
+  html += '<div class="hl-back-btn" style="padding:14px 0;font-size:16px;margin-bottom:10px;width:100%;justify-content:center;" onclick="navHistory=[\'home\'];showPage(\'home\');pushAppState(\'home\',null)">🏠 返回首页</div>';
+  
+  // Breadcrumb
+  html += '<div class="hl-breadcrumb">📅 日历</div>';
+  
+  // Month navigation
+  html += '<div class="hl-cal-header">';
+  html += '<button class="hl-nav-btn" onclick="prevMonth()">‹ 上月</button>';
+  html += '<span class="hl-month">' + y + '年' + m + '月</span>';
+  html += '<button class="hl-nav-btn" onclick="nextMonth()">下月 ›</button>';
+  html += '</div>';
+  
+  // Weekday headers
+  html += '<div class="hl-weekdays">';
+  ['日','一','二','三','四','五','六'].forEach((d, i) => {
+    html += '<span' + (i === 0 ? ' class="wk-sun"' : '') + '>' + d + '</span>';
+  });
+  html += '</div>';
+  
+  // Day grid
+  html += '<div class="hl-days">';
+  // Empty cells before first day
+  for (let i = 0; i < firstDay; i++) html += '<div class="hl-day empty"></div>';
+  // Days
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cls = 'hl-day' + (isToday(d) ? ' today' : '') + (d === hlState.day && hlState.day !== 0 ? ' selected' : '');
+    const lunarStr = getLunarStr(y, m, d);
+    const yj = getYiJi(y, m, d);
+    html += '<div class="' + cls + '" onclick="selectDay(' + d + ')">' + d + '<span class="hl-day-lunar">' + lunarStr + '</span><span class="hl-day-yiji"><em>宜</em>' + yj.yi + ' <em>忌</em>' + yj.ji + '</span></div>';
+  }
+  html += '</div></div>';
+  
+  container.innerHTML = html;
+}
+
+function renderZodiac(container) {
+  let html = '<div class="hl-cal">';
+  
+  // 返回按钮（替代面包屑）
+  const dayStr = hlState.year + '年' + hlState.month + '月' + hlState.day + '日';
+  const _m = ('0' + hlState.month).slice(-2);
+  const _d = ('0' + hlState.day).slice(-2);
+  const dateStr = hlState.year + '-' + _m + '-' + _d;
+  html += '<div class="hl-back-btn" onclick="hlState.level=\'cal\';renderHuangli()">← 返回日历</div>';
+  
+  // 日期导航行：前一日 | 日期 · 选择生肖 | 后一日
+  html += '<div class="hl-date-nav-row">';
+  html += '<button class="hl-date-nav-btn" onclick="prevDay()">‹</button>';
+  html += '<div class="hl-date-nav-label">' + dayStr + ' · 选择生肖</div>';
+  html += '<button class="hl-date-nav-btn" onclick="nextDay()">›</button>';
+  html += '</div>';
+  
+  html += '<div class="hl-zodiac-grid">';
+  ZODIACS.forEach(z => {
+    const count = allArticles.filter(a => a.date === dateStr && a.zodiac === z.id).length;
+    let statusClass = 'zs-none';
+    let statusText = '';
+    if (count === 2) { statusClass = 'zs-full'; statusText = '✅'; }
+    else if (count === 1) { statusClass = 'zs-half'; statusText = '⚠️'; }
+    else { statusClass = 'zs-empty'; statusText = '—'; }
+    html += '<div class="hl-zodiac-btn ' + statusClass + '" onclick="selectZodiac(\'' + z.id + '\')">';
+    html += '<span class="zi">' + z.emoji + '</span>';
+    html += '<span class="zn">属' + z.name + '</span>';
+    html += '<span class="rs-status">' + statusText + '</span>';
+    html += '</div>';
+  });
+  html += '</div></div>';
+  
+  container.innerHTML = html;
+}
+
+function renderType(container) {
+  const z = ZODIACS.find(z => z.id === hlState.zodiac);
+  const dayStr = hlState.year + '年' + hlState.month + '月' + hlState.day + '日';
+  const zodiacStr = (z ? z.emoji + '属' + z.name : '');
+  
+  let html = '<div class="hl-cal">';
+  
+  // 返回按钮（替代面包屑）
+  html += '<div class="hl-back-btn" onclick="hlState.level=\'zodiac\';renderHuangli()">← 返回选择生肖</div>';
+  
+  // 日期导航行
+  html += '<div class="hl-date-nav-row">';
+  html += '<button class="hl-date-nav-btn" onclick="prevDay()">‹</button>';
+  html += '<div class="hl-date-nav-label">' + zodiacStr + ' · ' + dayStr + '</div>';
+  html += '<button class="hl-date-nav-btn" onclick="nextDay()">›</button>';
+  html += '</div>';
+  const m = ('0' + hlState.month).slice(-2);
+  const d = ('0' + hlState.day).slice(-2);
+  const dateStr = hlState.year + '-' + m + '-' + d;
+  const hasHL = allArticles.some(a => a.date === dateStr && a.category === 'huangli' && a.zodiac === hlState.zodiac);
+  const hasMJ = allArticles.some(a => a.date === dateStr && a.category === 'majiang' && a.zodiac === hlState.zodiac);
+  html += '<div class="hl-type-grid">';
+  html += '<div class="hl-type-btn huangli' + (hasHL ? ' has-article' : '') + '" onclick="openHuangliArticle()"><span class="ti">📅</span><span class="tn">生肖黄历' + (hasHL ? ' ✅' : '') + '</span></div>';
+  html += '<div class="hl-type-btn majiang' + (hasMJ ? ' has-article' : '') + '" onclick="openMajiangArticle()"><span class="ti">🀄</span><span class="tn">生肖麻将运势' + (hasMJ ? ' ✅' : '') + '</span></div>';
+  html += '</div></div>';
+  
+  container.innerHTML = html;
+}
+
+function prevMonth() {
+  hlState.month--;
+  if (hlState.month < 1) { hlState.month = 12; hlState.year--; }
+  hlState.level = 'cal';
+  renderHuangli();
+}
+
+function nextMonth() {
+  hlState.month++;
+  if (hlState.month > 12) { hlState.month = 1; hlState.year++; }
+  hlState.level = 'cal';
+  renderHuangli();
+}
+
+// 日期前进/后退
+function prevDay() {
+  var d = new Date(hlState.year, hlState.month - 1, hlState.day - 1);
+  hlState.year = d.getFullYear();
+  hlState.month = d.getMonth() + 1;
+  hlState.day = d.getDate();
+  renderHuangli();
+}
+function nextDay() {
+  var d = new Date(hlState.year, hlState.month - 1, hlState.day + 1);
+  hlState.year = d.getFullYear();
+  hlState.month = d.getMonth() + 1;
+  hlState.day = d.getDate();
+  renderHuangli();
+}
+
+// 每日详查：直接跳转到今日生肖选择页
+function goDailyDetail() {
+  var now = new Date();
+  hlState.year = now.getFullYear();
+  hlState.month = now.getMonth() + 1;
+  hlState.day = now.getDate();
+  hlState.level = 'zodiac';
+  showPage('huangli');
+  renderHuangli();
+}
+
+function selectDay(day) {
+  hlState.day = day;
+  hlState.level = 'zodiac';
+  renderHuangli();
+  if (window.innerWidth >= 768) {
+    renderDir('huangli', null);
+  }
+}
+
+// ===== 十二生肖运势：选生肖 → 显示该生肖文章目录 =====
+function selectShengxiaoZodiac(zodiacId) {
+  _shengxiaoZodiac = zodiacId;
+  const z = ZODIACS.find(x => x.id === zodiacId);
+  const title = z ? (z.emoji + ' 属' + z.name + '·文章') : '十二生肖运势';
+  document.getElementById('shengxiao-title').textContent = title;
+
+  // 筛选该生肖的文章
+  const items = allArticles.filter(a => a.zodiac === zodiacId && a.category === 'shengxiao')
+    .sort((a, b) => b.date.localeCompare(a.date)); // 最新在前
+
+  const list = document.getElementById('list-shengxiao');
+  if (items.length === 0) {
+    list.innerHTML = '<div class="empty-list">📚 暂无生肖运势文章</div>';
+  } else {
+    list.innerHTML = items.map(a => `
+      <div class="article-item" onclick="openArticle('${a.id}')">
+        <span class="ai-label">${a.label || '生肖运势'}</span>
+        <div class="ai-date">${a.date}</div>
+        <div class="ai-title">${a.title}</div>
+        <div class="ai-summary">${a.summary}</div>
+      </div>
+    `).join('');
+  }
+
+  // 更新侧栏高亮
+  if (window.innerWidth >= 768) {
+    renderDir('shengxiao', zodiacId);
+  }
+}
+
+function selectZodiac(zodiacId) {
+  hlState.zodiac = zodiacId;
+  hlState.level = 'type';
+  renderHuangli();
+  if (window.innerWidth >= 768) {
+    renderDir('huangli', null);
+  }
+}
+
+function openHuangliArticle() {
+  const m = ('0' + hlState.month).slice(-2);
+  const d = ('0' + hlState.day).slice(-2);
+  const dateStr = hlState.year + '-' + m + '-' + d;
+  // 按日期+生肖查找对应文章（待文章上线后自动匹配）
+  const art = allArticles.find(a => a.date === dateStr && a.category === 'huangli'
+    && a.zodiac === hlState.zodiac);
+  if (art) openArticle(art.id);
+  else alert('暂无该日属相黄历内容');
+}
+
+function openMajiangArticle() {
+  const m = ('0' + hlState.month).slice(-2);
+  const d = ('0' + hlState.day).slice(-2);
+  const dateStr = hlState.year + '-' + m + '-' + d;
+  // 按日期+生肖查找对应文章
+  const art = allArticles.find(a => a.date === dateStr && a.category === 'majiang'
+    && a.zodiac === hlState.zodiac);
+  if (art) openArticle(art.id);
+  else alert('暂无该日生肖麻将运势');
+}
+
+// 拦截goCategory('huangli')使用日历
+const origGoCategory = window.goCategory;
+window.goCategory = function(cat) {
+  if (cat === 'huangli') {
+    showPage('huangli');
+    // fillHuangli is already handled inside showPage
+  } else {
+    origGoCategory(cat);
+  }
+};
+</script>
+<!-- Register Service Worker for PWA -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(reg) {
+      console.log('SW registered:', reg.scope);
+    }).catch(function(err) {
+      console.log('SW registration failed:', err);
+    });
+  });
+}
+
+// ===== PWA 安装卡片 =====
+(function(){
+  var card = document.getElementById('pwa-install-card');
+  var btn = document.getElementById('pwa-ic-btn');
+  var guide = document.getElementById('pwa-ic-guide');
+  var gc = document.getElementById('pwa-guide-content');
+  if (!card) return;
+
+  // 已安装（桌面图标打开）→ 隐藏卡片
+  try {
+    if (window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true) {
+      card.classList.add('hidden');
+      return;
+    }
+  } catch(e) {}
+
+  var deferredPrompt = null;
+  var ua = navigator.userAgent.toLowerCase();
+  var isWechat = /micromessenger/i.test(ua);
+  var isIOS = /iphone|ipad|ipod/i.test(ua) && !isWechat;
+  var isAndroid = /android/i.test(ua) && !isWechat;
+  var isSamsung = /samsung/i.test(ua) || /sm-[a-z]/i.test(ua);
+
+  // Android Chrome/Samsung: 捕获安装事件
+  window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+
+  // 点击按钮
+  btn.onclick = function() {
+    if (deferredPrompt) {
+      // 浏览器支持一键安装（Chrome/Samsung 等）
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function(r) {
+        if (r.outcome === 'accepted') {
+          card.classList.add('hidden');
+          btn.textContent = '✅ 已安装';
+          btn.classList.add('installed');
+        }
+        deferredPrompt = null;
+      });
+    } else if (isSamsung) {
+      // 三星浏览器专属指引
+      gc.innerHTML =
+        '<div class="step"><em>①</em> 点底部 <b>菜单按钮</b> ☰（三横线）</div>' +
+        '<div class="step"><em>②</em> 往下滑，点 <b>「添加页面到」</b></div>' +
+        '<div class="step"><em>③</em> 选 <b>「主屏幕」</b> → 点 <b>「添加」</b> ✅</div>';
+      guide.classList.add('show');
+      btn.textContent = '看指引';
+    } else if (isIOS) {
+      // iOS - 显示指引
+      gc.innerHTML =
+        '<div class="step"><em>①</em> 点底部 <b>分享按钮</b> 📤</div>' +
+        '<div class="step"><em>②</em> 往下滑，点 <b>「添加到主屏幕」</b></div>' +
+        '<div class="step"><em>③</em> 点右上角 <b>「添加」</b> ✅</div>';
+      guide.classList.add('show');
+      btn.textContent = '看指引';
+    } else if (isWechat) {
+      gc.innerHTML =
+        '<div class="step"><em>①</em> 点右上角 <b>「…」</b> → <b>「在浏览器中打开」</b></div>' +
+        '<div class="step"><em>②</em> 打开后回到本页面点 <b>「安装到桌面」</b></div>';
+      guide.classList.add('show');
+      btn.textContent = '看指引';
+    } else if (isAndroid) {
+      // 安卓但 beforeinstallprompt 没触发 → 手动指引
+      gc.innerHTML =
+        '<div class="step"><em>①</em> 点右上角 <b>「⋮」</b></div>' +
+        '<div class="step"><em>②</em> 选 <b>「添加到主屏幕」</b></div>' +
+        '<div class="step"><em>③</em> 点 <b>「添加」</b> ✅</div>';
+      guide.classList.add('show');
+      btn.textContent = '看指引';
+    } else {
+      // 桌面浏览器 → 直接隐藏卡片
+      card.classList.add('hidden');
+    }
+  };
+})();
+</script>
+</body>
+</html><!-- deploy-trigger: Thu May 21 23:52:45 CST 2026 -->

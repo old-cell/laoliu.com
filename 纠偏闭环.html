@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公众号运营纠偏闭环</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f0e8;display:flex;justify-content:center;padding:40px 20px;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.diagram{max-width:780px;width:100%}
+.title{text-align:center;margin-bottom:28px}
+.title h1{font-size:26px;color:#1a3c2a;font-weight:700;letter-spacing:2px;margin-bottom:6px}
+.title p{font-size:14px;color:#999;letter-spacing:1px}
+.box{background:#fff;border-radius:12px;padding:14px 20px;border:2px solid;margin-bottom:0}
+.box-red{border-color:#c0392b}.box-red .lb{color:#c0392b}
+.box-orange{border-color:#e67e22}.box-orange .lb{color:#e67e22}
+.lb{font-size:16px;font-weight:600;margin-bottom:4px}
+.desc{font-size:14px;color:#555;line-height:1.6}
+.arr{text-align:center;padding:6px 0;color:#d4af37;font-size:18px}
+.dc{text-align:center;background:#fff8e1;border:3px solid #d4af37;border-radius:14px;padding:16px}
+.dc .q{font-size:16px;font-weight:600;color:#1a3c2a;margin-bottom:4px}
+.dc .h{font-size:13px;color:#999}
+.br{display:flex;gap:0;margin-top:4px}
+.by,.bn{flex:1}
+.by{padding-right:8px}.bn{padding-left:8px}
+.bp{display:flex;align-items:center;gap:6px;margin:8px 0}
+.bp .l{flex:1;height:2px}
+.by .bp .l{background:#27ae60}.bn .bp .l{background:#e74c3c}
+.bl{font-size:14px;font-weight:600}
+.by .bl{color:#27ae60}.bn .bl{color:#e74c3c}
+.rc{border-radius:10px;padding:12px 16px;text-align:center;background:#e8f5e8;border:2px solid #27ae60}
+.rc .rt{font-size:15px;font-weight:600;color:#27ae60;margin-bottom:4px}
+.rc .rd{font-size:13px;color:#666}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.dc2{border-radius:8px;padding:10px 12px;border:1px solid}
+.dc2.r1{background:#fff5f5;border-color:#e74c3c}.dc2.r1 .sg{color:#e74c3c}
+.dc2.r2{background:#fff8f0;border-color:#e67e22}.dc2.r2 .sg{color:#e67e22}
+.dc2.r3{background:#f8f0ff;border-color:#9b59b6}.dc2.r3 .sg{color:#9b59b6}
+.dc2.r4{background:#f0f7ff;border-color:#2980b9}.dc2.r4 .sg{color:#2980b9}
+.sg{font-size:13px;font-weight:600;margin-bottom:2px}
+.rn{font-size:12px;color:#666;margin-bottom:2px}
+.ac{font-size:12px;color:#999}
+.fb{background:#f0f7ff;border:2px solid #2980b9;border-radius:12px;padding:14px 20px;text-align:center;margin-top:8px}
+.fb .ft{font-size:15px;font-weight:600;color:#2980b9;margin-bottom:4px}
+.fb .fd{font-size:13px;color:#555}
+.cr{background:#ffe0e0;border:3px solid #c0392b;border-radius:12px;padding:14px 20px;text-align:center;margin-top:8px}
+.cr .ct{font-size:15px;font-weight:600;color:#c0392b;margin-bottom:4px}
+.cr .cd{font-size:13px;color:#c0392b}
+.tr{background:#f0f7ff;border:1px solid #85c1e9;border-radius:10px;padding:12px 16px;margin-top:8px}
+.tr .tt{font-size:14px;font-weight:600;color:#2980b9;margin-bottom:8px}
+.tl{font-size:13px;color:#555;line-height:1.8;padding-left:4px}
+.op{background:#f9f9f9;border:1px solid #ccc;border-radius:10px;padding:12px 16px;margin-top:8px;text-align:center}
+.op .ot{font-size:14px;font-weight:600;color:#1a3c2a;margin-bottom:8px}
+.ol{font-size:13px;color:#555;line-height:1.8}
+.fn{background:linear-gradient(135deg,#1a3c2a,#2d5a3e);border:3px solid #d4af37;border-radius:14px;padding:16px;text-align:center;margin-top:12px}
+.fn span{font-size:16px;font-weight:600;color:#d4af37;letter-spacing:2px}
+</style>
+</head>
+<body>
+<div class="diagram">
+<div class="title"><h1>公众号运营 · 纠偏闭环</h1><p>不做预设，不设门槛，一切跟自己的历史数据比</p></div>
+<div class="box box-red"><div class="lb">① 选题</div><div class="desc">来源：搜一搜下拉词（看排位）| 同类号阅读（看热度）| 用户评论（看需求）</div></div>
+<div class="arr">↓</div>
+<div class="box box-orange"><div class="lb">② 生产 → 发布 → 等数据出来</div><div class="desc">不做预设门槛。发完等后台出数据，跟自己的旧文章比</div></div>
+<div class="arr">↓</div>
+<div class="dc"><div class="q">❓ 跟自己的历史数据比</div><div class="h">搜一搜量 &nbsp; 转发量 &nbsp; 关注量 &nbsp; 完读率</div></div>
+<div class="br">
+<div class="by">
+<div class="bp"><span class="bl">比以前高</span><div class="l"></div></div>
+<div class="rc"><div class="rt">方向对</div><div class="rd">加大同类选题</div></div>
+</div>
+<div class="bn">
+<div class="bp"><div class="l"></div><span class="bl">比以前低</span></div>
+<div class="dg">
+<div class="dc2 r1"><div class="sg">搜一搜↓ 转发↓</div><div class="rn">这个方向没需求</div><div class="ac">→ 换方向</div></div>
+<div class="dc2 r2"><div class="sg">搜一搜↑ 转发↓</div><div class="rn">方向OK内容不够好</div><div class="ac">→ 深挖同类内容</div></div>
+<div class="dc2 r3"><div class="sg">搜一搜↓ 转发↑</div><div class="rn">内容不错标题没吸引力</div><div class="ac">→ 优化标题关键词</div></div>
+<div class="dc2 r4"><div class="sg">都还行但没关注</div><div class="rn">号没给人印象留不住人</div><div class="ac">→ 加关注引导/改介绍</div></div>
+</div>
+</div>
+</div>
+<div class="arr">↓ 回①换方向</div>
+<div class="fb"><div class="ft">⚙️ 纠偏：方向走不通多次 → 标灰 → 始终走不通 → 彻底淘汰</div><div class="fd">所有可选方向都淘汰 → 说明当前定位/受众/内容方向整体有问题</div></div>
+<div class="arr">↓</div>
+<div class="cr"><div class="ct">⚠️ 可选方向都走不通 → 暂停发文，全面复盘</div><div class="cd">不是循环而是熔断 — 此时不应继续选题，需要重新思考账号方向</div></div>
+<div class="arr">↓</div>
+<div class="tr"><div class="tt">📊 操作路径示例（每个判断有真实依据）</div>
+<div class="tl">① 搜一搜发现某个词排位靠前 → 判断有搜索需求 → 选为选题</div>
+<div class="tl">② 发布后 → 后台出数据 → 搜一搜量和转发量跟上一篇比</div>
+<div class="tl">③ 假设搜一搜比以前高但转发比以前低 → 方向OK但内容不够 → 下次增强</div>
+<div class="tl">④ 换题 → 数据出来再比 → 反复找到持续高数据的模式 → 固定下来</div></div>
+<div class="arr">↓</div>
+<div class="op"><div class="ot">📋 你每天的操作</div>
+<div class="ol">① 发布后等后台出数据 → 看搜一搜量/转发量/关注量（跟自己的历史比）</div>
+<div class="ol">② 比历史高还是低 → 对号入座 → 执行对应动作 → 记录方向</div></div>
+<div class="arr">↓</div>
+<div class="fn"><span>形成稳定运营模式</span></div>
+</div>
+</body>
+</html>
